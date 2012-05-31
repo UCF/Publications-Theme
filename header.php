@@ -52,9 +52,6 @@
 						<div class="span4 description">
 							The Magazine of the University of Central Florida
 						</div>
-						<div class="toggle_story_nav">
-							<a>&#9650;</a>
-						</div>
 					</div>
 				</div>
 			</div>
