@@ -2,6 +2,17 @@
 	<?php $options = get_option(THEME_OPTIONS_NAME);?>
 	<?php $page    = get_page_by_title('Home');?>
 	<div class="page-content" id="home" data-template="home-description">
+		<div class="row" id="pubsort">
+			<div class="span9">
+				<strong style="float: left; margin: 10px 30px 0 0;">Sort By</strong>
+				<ul class="tabs group">
+					<li><a href="#">Category</a></li>
+					<li><a href="#">Alphabetical</a></li>
+					<li class="active"><a href="#">Date</a></li>
+					<li><a href="#">List All</a></li>
+				</ul>
+			</div>
+		</div>
 		<div class="row">
 				
 				<?php get_pubs_list(); ?>
