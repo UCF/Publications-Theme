@@ -335,7 +335,6 @@ function get_pubs_list() {
 				
 				//$publink = get_term_link( $publicationName, 'publications' );
 				$publink = get_post_meta($post->ID, 'pubedition_url', TRUE);
-				
 				?>
 				
 				<div class="pub_details">		
