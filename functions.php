@@ -262,73 +262,7 @@ if ($theme_options['bw_verify']){
 		'content' => htmlentities($theme_options['bw_verify']),
 	);
 }
-
-/**
- * Dynamically populate the Alumni Notes 'Class Year' form field with years ranging from 1969 to the current year
- * 
- * Note that the new input select name and id values must match the name and id of the empty dropdown within the
- * form that this function is replacing
- *
- * @author Jo Greybill
- *  
-**/
-
-add_action("gform_field_input", "class_year_input", 10, 5);	
-function class_year_input($input, $field, $value, $lead_id, $form_id){
-    if($field["cssClass"] == "alumninotes_class_year"){
-        $input = '<div class="ginput_container"><select multiple="multiple" id="input_2_4" class="small gfield_select" tabindex="5" name="input_4">';
-		$current_year = date('Y');
-		foreach ( range($current_year, 1968) as $year ) {
-			$input .= '<option value='.$year.'>'.$year.'</option>';
-		}
-		$input .= '</select></div>';
-    }
-    return $input;
-}
-
-/* 
- * Retrieve a list of the current edition stories
- */
-function get_current_edition_stories($exclude=array(), $limit=-1) {
-
-	$current_edition_term = get_term_by('slug', CURRENT_EDITION_TERM_SLUG, 'editions');
-	if($current_edition_term === FALSE) {
-		return array();
-	} else {
-		return get_posts(array(
-			'numberposts' => $limit,
-			'post_type'   => 'story',
-			'orderby'     => 'rand',
-			'exclude'     => $exclude,
-			'tax_query'   => array(
-				'taxonomy' => 'editions',
-				'field'    => 'id',
-				'terms'    => $current_edition_term->term_id
-			),
-		));
-	}
-}
-
-/*
- * Retrieve a list of stories for navigation. Exclude a story if we are on
- * its page otherwise pick 4 at random.
- */
-function get_navigation_stories() {
-	global $post;
-
-	$exclude = array();
-
-	if(is_front_page()) {
-		$story_id = get_theme_option('front_page_story');
-		if( ($story = get_post($story_id)) !== Fales) {
-			$exclude = $story->ID;
-		}
-	} if($post->post_type == 'story') {
-		$exclude[] = $post->ID;
-	}
-	return get_current_edition_stories($exclude, 4);
-}
-
+				
 /*
  * Returns featured image URL of a specified post ID
  */
@@ -339,6 +273,7 @@ function get_featured_image_url($id) {
 		&& ($image = wp_get_attachment_image_src($thumb_id, 'single-post-thumbnail')) !== False) {
 		return $image[0];
 	}
+	else { $url = THEME_IMG_URL.'/placeholder.jpg'; }
 	return $url;
 }
 
@@ -364,9 +299,43 @@ function get_front_page_story_choices() {
 }
 
 /*
- * Is the iPad app deployed or not
+ * Get all publications and output them with their latest pub editions
  */
-function ipad_deployed() {
-	$ipad_app_url = get_theme_option('ipad_app_url');
-	return (is_null($ipad_app_url) || $ipad_app_url == '') ? False : True;
+function get_pubs_list() { 
+ 
+	$publications = get_terms( 'publications', 'order=DESC&hide_empty=0' );
+	foreach ($publications as $publication) {
+		$publicationID 		= $publication->term_taxonomy_id;
+		$publicationName 	= $publication->name;
+		?>
+						
+		<div class="span3">
+			PUBLICATION: <?=$publicationName?><br/>
+						
+			<?php
+			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
+			foreach ($latestEdition as $post) { ?> 
+						
+				LATEST EDITION:
+				<?=$post->post_title?><br/>
+				<img src="<?php print get_featured_image_url($post->ID); ?>" alt="<?=$post->post_title?>" title="<?=$post->post_title?>" /><br/>
+				CATEGORY: <?php $cats = get_the_category($post->ID); 
+								if ($cats[0] =="") { print "None"; } 
+								else { 
+									foreach ($cats as $cat) {
+										$catlist .= $cat->cat_name.", ";
+									}
+									$catlist = substr($catlist, 0, -2);
+									print $catlist;
+								} ?><br/>
+				PUBLISH DATE: <? $pubDate = $post->post_date; $pubDate = date('M j, Y', strtotime($pubDate)); print $pubDate; ?><br/>
+				LINK: <?php print get_term_link( $publicationName, 'publications' ); ?><br/>
+				PRINT: _____<br/>
+							
+			<?php } ?>
+						
+		</div>
+						
+	<?php	
+	} // end foreach			
 }

@@ -4,32 +4,7 @@
 	<div class="page-content" id="home" data-template="home-description">
 		<div class="row">
 				
-				<?php 
-					$publications = get_terms( 'publications', 'order=DESC&hide_empty=0' );
-					foreach ($publications as $publication) {
-						$publicationID 		= $publication->term_taxonomy_id;
-						$publicationName 	= $publication->name;
-						?>
-						
-						<div class="span3">
-						PUBLICATION: <?=$publicationName?>
-						
-						<?php
-						$latestEdition 		= get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
-						
-						foreach ($latestEdition as $post) :  setup_postdata($post); ?> 
-						
-							LATEST EDITION:
-							<?php the_title(); ?>
-							<br/>
-							
-						<?php endforeach; ?>
-						
-						</div>
-						
-					<?php	
-					}
-				?> 
+				<?php get_pubs_list(); ?>
 				
 		</div>
 		<div class="row">
