@@ -325,7 +325,7 @@ function get_pubs_list() {
 				if ($cats[0] =="") { $catlist = "n/a"; } 
 				else { 
 					foreach ($cats as $cat) {
-						$catlist .= $cat->cat_name.", ";
+						$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
 					}
 					$catlist = substr($catlist, 0, -2);
 				} 
