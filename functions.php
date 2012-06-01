@@ -273,7 +273,6 @@ function get_featured_image_url($id) {
 		&& ($image = wp_get_attachment_image_src($thumb_id, 'single-post-thumbnail')) !== False) {
 		return $image[0];
 	}
-	else { $url = THEME_IMG_URL.'/placeholder.jpg'; }
 	return $url;
 }
 
@@ -314,22 +313,37 @@ function get_pubs_list() {
 						
 			<?php
 			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
-			foreach ($latestEdition as $post) { ?> 
+			foreach ($latestEdition as $post) { 
+				
+				$thumb = get_featured_image_url($post->ID);
+				if ($thumb =="") {
+					$thumb = THEME_IMG_URL.'/placeholder.jpg';	
+				}
+				$thumb = "<img src='".$thumb."' alt='".$post->post_title."' title='".$post->post_title."' />";
+				
+				$cats = get_the_category($post->ID);
+				$catlist =""; 
+				if ($cats[0] =="") { $catlist = "None"; } 
+				else { 
+					foreach ($cats as $cat) {
+						$catlist .= $cat->cat_name.", ";
+					}
+					$catlist = substr($catlist, 0, -2);
+				} 
+				
+				$pubdate = $post->post_date; 
+				$pubdate = date('M j, Y', strtotime($pubdate));
+				
+				$publink = get_term_link( $publicationName, 'publications' );
+				
+				?>
 						
 				LATEST EDITION:
 				<?=$post->post_title?><br/>
-				<img src="<?php print get_featured_image_url($post->ID); ?>" alt="<?=$post->post_title?>" title="<?=$post->post_title?>" /><br/>
-				CATEGORY: <?php $cats = get_the_category($post->ID); 
-								if ($cats[0] =="") { print "None"; } 
-								else { 
-									foreach ($cats as $cat) {
-										$catlist .= $cat->cat_name.", ";
-									}
-									$catlist = substr($catlist, 0, -2);
-									print $catlist;
-								} ?><br/>
-				PUBLISH DATE: <? $pubDate = $post->post_date; $pubDate = date('M j, Y', strtotime($pubDate)); print $pubDate; ?><br/>
-				LINK: <?php print get_term_link( $publicationName, 'publications' ); ?><br/>
+				<a href="<?=$publink?>"><?=$thumb?></a><br/>
+				CATEGORY: <?=$catlist?><br/>
+				PUBLISH DATE: <?=$pubdate?><br/>
+				LINK: <?=$publink?><br/>
 				PRINT: _____<br/>
 							
 			<?php } ?>
