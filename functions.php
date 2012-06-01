@@ -322,7 +322,7 @@ function get_pubs_list() {
 				
 				$cats = get_the_category($post->ID);
 				$catlist =""; 
-				if ($cats[0] =="") { $catlist = "None"; } 
+				if ($cats[0] =="") { $catlist = "n/a"; } 
 				else { 
 					foreach ($cats as $cat) {
 						$catlist .= $cat->cat_name.", ";
@@ -341,9 +341,9 @@ function get_pubs_list() {
 				<div class="pub_details">		
 					<h3><?=$post->post_title?></h3>
 					<p><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>
-					<p>CATEGORY: <?=$catlist?></p>
-					<p>PUBLISH DATE: <?=$pubdate?></p>
-					<p><?=$publink?></p>
+					<p><strong>Found Under</strong> <?=$catlist?></p>
+					<p><strong>Published On</strong> <?=$pubdate?></p>
+					<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
 					<p>PRINT: _____</p>
 				</div>
 							
