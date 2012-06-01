@@ -7,14 +7,17 @@
 						<a href="<?=site_url()?>"><h2 id="footer_logo">UCF</h2></a>
 						<?php if(!function_exists('dynamic_sidebar') or !dynamic_sidebar('Footer - Column One')):?><?php endif;?>
 					</div>
-					<div class="span3">
+					<div class="span2">
 						<?php if(!function_exists('dynamic_sidebar') or !dynamic_sidebar('Footer - Column Two')):?><?php endif;?>
 					</div>
-					<div class="span3">
+					<div class="span2">
 						<?php if(!function_exists('dynamic_sidebar') or !dynamic_sidebar('Footer - Column Three')):?><?php endif;?>
 					</div>
-					<div class="span3">
+					<div class="span2">
 						<?php if(!function_exists('dynamic_sidebar') or !dynamic_sidebar('Footer - Column four')):?><?php endif;?>
+					</div>
+					<div class="span3 search">
+						<?php get_search_form();?>
 					</div>
 				</div>
 			</div>

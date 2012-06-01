@@ -45,10 +45,6 @@
 						<h1>Publications</h1>
 					</a>
 				</div>
-			
-				<div class="span4 offset4 search">
-					<?php get_search_form();?>
-				</div>
 			</div>
 		</div>
 		<div class="container">

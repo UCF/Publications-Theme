@@ -71,7 +71,7 @@ p.caption {font-family:"Helvetica Neue",Helvetica,sans-serif;font-size:12px;}
 #header .title {
 	width:319px;
 	height:29px;
-	margin-top:20px;
+	margin: 20px 0;
 	text-indent:-500em;
 	background-repeat:no-repeat;
 	background-image: url(static/img/publications-logo.png);
@@ -93,6 +93,10 @@ button.search-submit {
 }
 label[for="s"] {
 	color: #888;
+}
+input[id="s"] {
+	background: #fff url('static/img/mag-glass.png') center left no-repeat;
+	text-indent: 28px;
 }
 
 /* Footer */
@@ -123,11 +127,16 @@ h2#footer_logo {
 	padding: 30px 0 0;
 }
 
-#footer_navigation .span3 {
-	padding-top: 15px;	
+#footer_navigation .span2 {
+	padding-top: 23px;	
+	text-align: center;
 }
-	#footer_navigation .span3:first-child {
+	#footer_navigation .span2:first-child {
 		padding-top: 0;	
+		text-align: left;
+	}
+	#footer_navigation .search {
+		margin-top: -5px;	
 	}
 
 #footer_navigation ul {
