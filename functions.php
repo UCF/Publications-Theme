@@ -343,7 +343,6 @@ function get_pubs_list() {
 					<p><strong>Found Under</strong> <?=$catlist?></p>
 					<p><strong>Published On</strong> <?=$pubdate?></p>
 					<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
-					<p>PRINT: _____</p>
 				</div>
 							
 			<?php } ?>
