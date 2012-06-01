@@ -432,13 +432,6 @@ class PubEdition extends CustomPostType{
 				'type' => 'text',
 				'std'  => '',
 			),
-			array(
-				'name' => 'Shortcode',
-				'desc' => 'To include this publication in other posts, use the following shortcode: <input disabled="disabled" type="text" value="[publication name=]" />',
-				'id'   => 'publication_shortcode',
-				'type' => 'help',
-				'value' => '[publication name="TITLE"]',
-			),
 		);
 	}
 }
