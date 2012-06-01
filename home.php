@@ -4,13 +4,15 @@
 	<div class="page-content" id="home" data-template="home-description">
 		<div class="row" id="pubsort">
 			<div class="span9">
-				<strong style="float: left; margin: 10px 30px 0 0;">Sort By</strong>
-				<ul class="tabs group">
-					<li><a href="#">Category</a></li>
-					<li><a href="#">Alphabetical</a></li>
-					<li class="active"><a href="#">Date</a></li>
-					<li><a href="#">List All</a></li>
-				</ul>
+				<strong style="float: left; margin: 10px 30px 0 0;">Sort By:</strong>
+				<div class="tabs-below">
+					<ul class="nav nav-tabs">
+						<li><a href="#">Category</a></li>
+						<li><a href="#">Alphabetical</a></li>
+						<li class="active"><a href="#">Date</a></li>
+						<li><a href="#">List All</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		<div class="row">
