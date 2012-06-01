@@ -396,7 +396,7 @@ class PubEdition extends CustomPostType{
 		$use_order      = True,
 		$use_title      = True,
 		$use_metabox    = True,
-		$taxonomies     = array('publications');
+		$taxonomies     = array('publications', 'category');
 	
 	public function toHTML($pub){
 		return sc_publication(array('pub' => $pub));
