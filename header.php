@@ -40,19 +40,14 @@
 	
 		<div class="container wide" id="header">
 			<div class="row">
-				<div class="span12">
-					<div class="row" style="position:relative;">
-						<a href="<?=site_url()?>" class="span3 title">
-						PEGASUS
-						</a>
-						<div class="span5 edition">
-							Summer 2012
-						</div>
+				<div class="span5 title">
+					<a href="<?=site_url()?>">
+						<h1>Publications</h1>
+					</a>
+				</div>
 			
-						<div class="span4 description">
-							The Magazine of the University of Central Florida
-						</div>
-					</div>
+				<div class="span4 offset4 search">
+					<?php get_search_form();?>
 				</div>
 			</div>
 		</div>
