@@ -309,8 +309,7 @@ function get_pubs_list() {
 		?>
 						
 		<div class="span3">
-			PUBLICATION: <?=$publicationName?><br/>
-						
+		
 			<?php
 			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
 			foreach ($latestEdition as $post) { 
@@ -334,17 +333,19 @@ function get_pubs_list() {
 				$pubdate = $post->post_date; 
 				$pubdate = date('M j, Y', strtotime($pubdate));
 				
-				$publink = get_term_link( $publicationName, 'publications' );
+				//$publink = get_term_link( $publicationName, 'publications' );
+				$publink = get_post_meta($post->ID, 'pubedition_url', TRUE);
 				
 				?>
-						
-				LATEST EDITION:
-				<?=$post->post_title?><br/>
-				<a href="<?=$publink?>"><?=$thumb?></a><br/>
-				CATEGORY: <?=$catlist?><br/>
-				PUBLISH DATE: <?=$pubdate?><br/>
-				LINK: <?=$publink?><br/>
-				PRINT: _____<br/>
+				
+				<div class="pub_details">		
+					<h3><?=$post->post_title?></h3>
+					<p><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>
+					<p>CATEGORY: <?=$catlist?></p>
+					<p>PUBLISH DATE: <?=$pubdate?></p>
+					<p><?=$publink?></p>
+					<p>PRINT: _____</p>
+				</div>
 							
 			<?php } ?>
 						
