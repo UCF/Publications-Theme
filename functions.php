@@ -40,12 +40,11 @@ define('CURRENT_EDITION_TERM_SLUG', '2012-summer');
  **/
 Config::$custom_post_types = array(
 	'Page',
-	'AlumniNote',
-	'Story'
+	'PubEdition'
 );
 
 Config::$custom_taxonomies = array(
-	'Editions'
+	'Publications'
 );
 
 Config::$body_classes = array();

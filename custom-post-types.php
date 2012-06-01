@@ -382,98 +382,63 @@ class Page extends CustomPostType {
 }
 
 
-/**
- * Describes an Alumni Note 
- * 
- * @author Jo Greybill
- *
-**/
-class AlumniNote extends CustomPostType{
+class PubEdition extends CustomPostType{
 	public 
-		$name           = 'alumninote',
-		$plural_name    = 'Alumni Notes',
-		$singular_name  = 'Alumni Note',
-		$add_new_item   = 'Add New Alumni Note',
-		$edit_item      = 'Edit Alumni Note',
-		$new_item       = 'New Alumni Note',
+		$name           = 'pubedition',
+		$plural_name    = 'Pub. Editions',
+		$singular_name  = 'Pub. Edition',
+		$add_new_item   = 'Add New Pub. Edition',
+		$edit_item      = 'Edit Pub. Edition',
+		$new_item       = 'New Pub. Edition',
 		$public         = True,
-		$use_editor     = True,
+		$use_editor     = False,
 		$use_thumbnails = True,
 		$use_order      = True,
 		$use_title      = True,
-		$use_metabox    = True;
+		$use_metabox    = True,
+		$taxonomies     = array('publications');
 	
-	public function toHTML($alumninote){
-		return sc_alumninote(array('alumninote' => $alumninote));
+	public function toHTML($pub){
+		return sc_publication(array('pub' => $pub));
 	}
+	
+	public function metabox(){
+		$metabox = parent::metabox();
+		
+		$metabox['title']   = 'Publications on Media Page';
+		$metabox['helptxt'] = 'Publication cover icon will be resized to width 153px, height 198px.';
+		return $metabox;
+	}
+	
+	
+	public function register_metaboxes(){
+		$metabox = $this->metabox();
+			
+		global $wp_meta_boxes;
+		remove_meta_box('postimagediv', $metabox['page'], 'side');
+		add_meta_box('postimagediv', __('Edition Thumbnail'), 'post_thumbnail_meta_box', $metabox['page'], 'normal', 'high');
+			
+		parent::register_metaboxes();
+	}
+		
 	
 	public function fields(){
 		$prefix = $this->options('name').'_';
 		return array(
 			array(
-				'name'  => 'Author',
-				'desc' => 'The note\'s author(\'s) name',
-				'id'   => $prefix.'author',
+				'name'  => 'Publication URL',
+				'desc' => 'Example: <span style="font-family:monospace;font-weight:bold;color:#21759B;">http://publications.smca.ucf.edu/admissions/viewbook.html</span>',
+				'id'   => $prefix.'url',
 				'type' => 'text',
+				'std'  => '',
 			),
 			array(
-				'name'  => 'Email',
-				'desc' => 'The author\'s email address',
-				'id'   => $prefix.'email',
-				'type' => 'text',
-			),
-			array(
-				'name' => 'Class Year',
-				'desc' => 'The year(s) in which the author graduated from UCF',
-				'id'   => $prefix.'class_year',
-				'type' => 'text',
+				'name' => 'Shortcode',
+				'desc' => 'To include this publication in other posts, use the following shortcode: <input disabled="disabled" type="text" value="[publication name=]" />',
+				'id'   => 'publication_shortcode',
+				'type' => 'help',
+				'value' => '[publication name="TITLE"]',
 			),
 		);
 	}
 }
-
-/**
- * Describes a story
- *
- * @author Chris Conover
- **/
-class Story extends CustomPostType {
-	public
-		$name           = 'story',
-		$plural_name    = 'Stories',
-		$singular_name  = 'Story',
-		$add_new_item   = 'Add Story',
-		$edit_item      = 'Edit Story',
-		$new_item       = 'New Story',
-		$public         = True,
-		$use_shortcode  = True,
-		$use_metabox    = True,
-		$use_thumbnails = True,
-		$use_order      = False,
-		$taxonomies     = array('editions');
-
-	public function fields() {
-		$prefix = $this->options('name').'_';
-		return array(
-			array(
-				'name' => 'Story Subtitle',
-				'desc' => 'A subtitle for the story.  This will be displayed next to the story title where stories are listed; i.e., the site header and footer.',
-				'id'   => $prefix.'subtitle',
-				'type' => 'text',
-			),
-			array(
-				'name' => 'Stylesheet',
-				'desc' => '',
-				'id'   => $prefix.'stylesheet',
-				'type' => 'file',
-			),
-			array(
-				'name' => 'Home Page Feature',
-				'desc' => 'Check this box if this story is a main featured story on the home page.  It will not appear as a duplicate story in the footer on the home page if this box is checked.',
-				'id'   => $prefix.'isfeatured',
-				'type' => 'checkbox',
-			)
-		);
-	}
-}
-?>
