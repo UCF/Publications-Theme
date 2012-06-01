@@ -8,17 +8,9 @@
 ?>
 <?php get_header();?>
 	<div class="page-content" id="search-results">
-		<div id="sidebar" class="span-6 append-1">
-			<?php if($options['enable_search_events']):?>
-				<?php display_events('h2')?>
-			<?php else:?>&nbsp;
-				<?php debug("Events feed is disabled.")?>
-			<?php endif;?>
-			<?=get_sidebar();?>&nbsp;
-		</div>
 		
 		<div class="results span-17 last">
-			<h2>Search results</h2>
+			<h2>Search results for "<?=htmlentities($_GET['s'])?>"</h2>
 			<?php get_search_form()?>
 			
 			<?php if(count($results['items'])):?>
@@ -54,23 +46,14 @@
 			<?php endif;?>
 		</div>
 		
-		<?php get_template_part('includes/below-the-fold'); ?>
 	</div>
 <?php get_footer();?>
 <?php else:?>
 	<?php get_header();?>
 	<div class="page-content" id="search-results">
-		<div id="sidebar" class="span-6 append-1">
-			<?php if($options['enable_search_events']):?>
-				<?php display_events('h2')?>
-			<?php else:?>&nbsp;
-				<?php debug("Events feed is disabled.")?>
-			<?php endif;?>
-			<?=get_sidebar();?>&nbsp;
-		</div>
 		
 		<div class="results span-17 last">
-			<h2>Search results</h2>
+			<h2>Search results for "<?=htmlentities($_GET['s'])?>"</h2>
 			<?php get_search_form()?>
 			
 			<?php if(have_posts()):?>
@@ -90,7 +73,6 @@
 			<p>No results found for "<?=htmlentities($_GET['s'])?>".</p>
 			<?php endif;?>
 		</div>
-		<?php get_template_part('includes/below-the-fold'); ?>
 	</div>
 	<?php get_footer();?>
 <?php endif;?>
