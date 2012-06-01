@@ -91,7 +91,9 @@ form.search-form {
 button.search-submit {
 	display: none;	
 }
-
+label[for="s"] {
+	color: #888;
+}
 
 /* Footer */
 #footer {
