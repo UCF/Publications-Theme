@@ -77,7 +77,7 @@ p.caption {font-family:"Helvetica Neue",Helvetica,sans-serif;font-size:12px;}
 	background-position:center left;
 }
 #pubsort {
-	margin-bottom: 30px;	
+	margin-bottom: 20px;	
 	height: auto;
 }
 
@@ -165,6 +165,10 @@ input[id="s"] {
 .pub_details img {
 	text-align: center;
 	margin: 1em 0;	
+}
+
+.pagination {
+	text-align: center;
 }
 	
 /* Forms: */
