@@ -300,9 +300,22 @@ function get_front_page_story_choices() {
 /*
  * Get all publications and output them with their latest pub editions
  */
-function get_pubs_list() { 
- 
-	$publications = get_terms( 'publications', 'order=DESC&hide_empty=0' );
+function get_pubs_list() {
+	$per_page = 2;
+	
+	if ( !isset($_GET['pagenum']) ) {
+		$offset = 0;
+	}
+	else { $offset = $per_page*(($_GET['page'])-1); }
+
+	if ( !isset($_GET['showall']) ) {
+    	$args = array( 'number' => $per_page, 'offset' => $offset, 'hide_empty' => 0 );
+	}
+	else { $args = array('hide_empty' => 0); }
+	
+	$publications = get_terms( 'publications', $args );
+
+	
 	foreach ($publications as $publication) {
 		$publicationID 		= $publication->term_taxonomy_id;
 		$publicationName 	= $publication->name;
@@ -350,5 +363,35 @@ function get_pubs_list() {
 		</div>
 						
 	<?php	
-	} // end foreach			
+	} // end foreach	
+	?>
+	</div> <!-- Close row of publications -->
+	<?php
+	
+	// If showall isn't set, serve up some pagination
+	if( !isset($_GET['showall']) ) {
+	
+		$total_terms = wp_count_terms( 'publications' );
+		$pages = ceil($total_terms/$per_page);
+	
+		// If there's more than one page...
+		if( $pages > 1 ) {
+		?>
+			<div class="row">
+				<div class="pagination">
+					<ul>
+						<li <?php if ($pagecount == 1 || (!isset($_GET['pagenum']))) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>">1</a></li>
+					<?php
+					for ($pagecount = 2; $pagecount <= $pages; $pagecount++) { ?>
+						<li <?php if ($pagecount == $_GET['pagenum']) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?pagenum=<?=$pagecount?>"><?=$pagecount?></a></li>
+					<?php
+					}
+					?>
+	
+					</ul>
+				</div>
+			</div>
+			<?php
+		}
+	}		
 }
