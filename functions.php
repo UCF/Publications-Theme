@@ -301,73 +301,98 @@ function get_front_page_story_choices() {
  * Get all publications and output them with their latest pub editions
  */
 function get_pubs_list() {
-	$per_page = 2;
+	
+	$per_page = 2; //number of publications shown per page
 	
 	if ( !isset($_GET['pagenum']) ) {
 		$offset = 0;
 	}
 	else { $offset = $per_page*(($_GET['page'])-1); }
 
-	if ( !isset($_GET['showall']) ) {
+	if ( !isset($_GET['showall']) ) { //NEED TO FORCE THIS TO SORT BY NEWEST POSTS
     	$args = array( 'number' => $per_page, 'offset' => $offset, 'hide_empty' => 0 );
+	}
+	if ( isset ($_GET['alphabetical']) ) {
+		$args = array( 'number' => $per_page, 'offset' => $offset, 'hide_empty' => 0 );
 	}
 	else { $args = array('hide_empty' => 0); }
 	
 	$publications = get_terms( 'publications', $args );
 
-	
+	//Need to start unordered list for Show All pg before the publications foreach loop
+	if (isset($_GET['showall'])) { print '<div class="span12"><ul class="showall_pubs">'; }
+
 	foreach ($publications as $publication) {
 		$publicationID 		= $publication->term_taxonomy_id;
 		$publicationName 	= $publication->name;
 		?>
-						
-		<div class="span3">
 		
+		<?php if (!isset($_GET['showall'])) { print '<div class="span3">'; } ?>
+						
 			<?php
 			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
-			foreach ($latestEdition as $post) { 
-				
-				$thumb = get_featured_image_url($post->ID);
-				if ($thumb =="") {
-					$thumb = THEME_IMG_URL.'/placeholder.jpg';	
-				}
-				$thumb = "<img src='".$thumb."' alt='".$post->post_title."' title='".$post->post_title."' />";
-				
-				$cats = get_the_category($post->ID);
-				$catlist =""; 
-				if ($cats[0] =="") { $catlist = "n/a"; } 
-				else { 
-					foreach ($cats as $cat) {
-						$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
-					}
-					$catlist = substr($catlist, 0, -2);
-				} 
-				
-				$pubdate = $post->post_date; 
-				$pubdate = date('M j, Y', strtotime($pubdate));
-				
-				//$publink = get_term_link( $publicationName, 'publications' );
-				$publink = get_post_meta($post->ID, 'pubedition_url', TRUE);
-				?>
-				
-				<div class="pub_details">		
-					<h3><?=$post->post_title?></h3>
-					<p><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>
-					<p><strong>Found Under</strong> <?=$catlist?></p>
-					<p><strong>Published On</strong> <?=$pubdate?></p>
-					<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
-				</div>
-							
-			<?php } ?>
+			?>
+			
+				<?php
+					foreach ($latestEdition as $post) {
+					
+						$thumb = get_featured_image_url($post->ID);
+						if ($thumb =="") {
+							$thumb = THEME_IMG_URL.'/placeholder.jpg';
+						}
+						$thumb = "<img src='".$thumb."' alt='".$post->post_title."' title='".$post->post_title."' />";
 						
-		</div>
+						$cats = get_the_category($post->ID);
+						$catlist =""; 
+						if ($cats[0] =="") { $catlist = "n/a"; } 
+						else { 
+							foreach ($cats as $cat) {
+								$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
+							}
+							$catlist = substr($catlist, 0, -2);
+						} 
 						
-	<?php	
+						$pubdate = $post->post_date; 
+						$pubdate = date('M j, Y', strtotime($pubdate));
+						
+						//$publink = get_term_link( $publicationName, 'publications' );
+						$publink = get_post_meta($post->ID, 'pubedition_url', TRUE);
+						
+						if (!isset($_GET['showall'])) {
+						?>
+						
+						<div class="pub_details">		
+							<h3><?=$post->post_title?></h3>
+							<p><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>
+							<p><strong>Found Under</strong> <?=$catlist?></p>
+							<p><strong>Published On</strong> <?=$pubdate?></p>
+							<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
+						</div>
+								
+						<?php
+						} else { ?>
+							<li>
+								<h3><i class="icon-file"> </i><a target="_blank" href="<?=$publink?>"><?=$post->post_title?></a></h3>
+								<p><strong>Found Under</strong> <?=$catlist?></p>
+								<p><strong>Published On</strong> <?=$pubdate?></p>
+							</li>
+						<?php
+						}
+					} //end foreach
+				
+				//Close span3 wrapper for non-Show All pages
+				if (!isset($_GET['showall'])) { print '</div>'; }
+				
+				
 	} // end foreach	
-	?>
-	</div> <!-- Close row of publications -->
-	<?php
 	
+	//Close unordered list/div for Show All pg
+	if (isset($_GET['showall'])) { print '</ul></div>'; }
+	?>
+	
+	</div> <!-- Close containing .row div -->
+	
+	<?php	
 	// If showall isn't set, serve up some pagination
 	if( !isset($_GET['showall']) ) {
 	
