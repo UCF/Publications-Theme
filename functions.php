@@ -374,7 +374,7 @@ function get_pubs_list() {
 						<div class="pub_details">		
 							<h3><a href="<?=$publink?>"><?=$post->post_title?></a></h3>
 							<p><a href="<?=$publink?>"><?=$thumb?></a></p>
-							<p><a class="btn" target="_blank" href="<?=$issuulink?>">Click to View</a></p>
+							<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
 							<p><strong>Found Under</strong> <?=$catlist?></p>
 							<p><strong>Published On</strong> <?=$pubdate?></p>
 						</div>
