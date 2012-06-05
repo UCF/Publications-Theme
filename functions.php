@@ -371,7 +371,7 @@ function get_pubs_list() {
 						
 						<div class="pub_details">		
 							<h3><?=$post->post_title?></h3>
-							<p><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>
+							<p><a href="<?=$publink?>"><?=$thumb?></a></p>
 							<p><strong>Found Under</strong> <?=$catlist?></p>
 							<p><strong>Published On</strong> <?=$pubdate?></p>
 							<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
@@ -380,7 +380,7 @@ function get_pubs_list() {
 						<?php
 						} else { ?>
 							<li>
-								<h3><i class="icon-file"> </i><a target="_blank" href="<?=$publink?>"><?=$post->post_title?></a></h3>
+								<h3><i class="icon-file"> </i><a href="<?=$publink?>"><?=$post->post_title?></a></h3>
 								<p><strong>Found Under</strong> <?=$catlist?></p>
 								<p><strong>Published On</strong> <?=$pubdate?></p>
 							</li>
