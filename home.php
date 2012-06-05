@@ -8,9 +8,9 @@
 				<div class="tabs-below">
 					<ul class="nav nav-tabs">
 						<li><a href="<?=get_site_url()?>">Category</a></li>
-						<li <?php if (isset($_GET['alphabetical'])) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?alphabetical=true">Alphabetical</a></li>
-						<li <?php if (isset($_GET['newest'])) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?newest=true">Newest</a></li>
-						<li <?php if (isset($_GET['showall'])) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?showall=true">List All</a></li>
+						<li <?php if ($_GET['sort'] == "alphabetical") { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?sort=alphabetical">Alphabetical</a></li>
+						<li <?php if ($_GET['sort'] == "newest") { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?sort=newest">Newest</a></li>
+						<li <?php if ($_GET['sort'] == "showall") { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?sort=showall">List All</a></li>
 					</ul>
 				</div>
 			</div>
