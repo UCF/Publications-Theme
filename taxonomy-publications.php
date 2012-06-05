@@ -30,7 +30,7 @@
 			</div>
 			<div class="span9">
 				<?php if (get_post_meta($post->ID, 'pubedition_url', TRUE) == "") { print "<p id='issuuerror'>The online publication viewer could not be loaded at this time.</p>"; } ?>
-				<iframe class="issuuembed" src="<?=get_post_meta($post->ID, 'pubedition_url', TRUE);?>"></iframe>
+				<iframe class="issuuembed" src="<?=get_post_meta($post->ID, 'pubedition_url', TRUE); ?>" <?php if (get_post_meta($post->ID, 'pubedition_url', TRUE)) { print "style=\"background: url('static/img/loading.gif') center center no-repeat;\""; } ?>></iframe>
 			</div>
 		</div>
 		
