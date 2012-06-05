@@ -314,13 +314,13 @@ function get_pubs_list() {
 	if (!(strpos($url, '='))) { //Default args; no query string params set
     	$args = array( 'number' => $per_page, 'offset' => $offset );
 	}
-	if ( isset($_GET['alphabetical']) ) {
+	if ( isset($_GET['alphabetical']) && ($_GET['alphabetical'] == "true") ) {
 		$args = array( 'number' => $per_page, 'offset' => $offset );
 	}
-	if ( isset($_GET['newest']) ) { //NEED TO SET TO ORDER BY NEWEST POSTS
+	if ( isset($_GET['newest']) && ($_GET['newest'] == "true") ) { //NEED TO SET TO ORDER BY NEWEST POSTS
 		$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'none', 'order' => 'DESC' );
 	}
-	if ( isset($_GET['showall']) ) { 
+	if ( isset($_GET['showall']) && ($_GET['showall'] == "true") ) { 
 		$args = array('hide_empty' => 0); 
 	}
 	
@@ -366,7 +366,7 @@ function get_pubs_list() {
 						$publink = get_term_link( $publicationName, 'publications' );
 						//$publink = get_post_meta($post->ID, 'pubedition_url', TRUE);
 						
-						if (!isset($_GET['showall'])) {
+						if (!($_GET['showall'] == "true")) {
 						?>
 						
 						<div class="pub_details">		
@@ -389,20 +389,20 @@ function get_pubs_list() {
 					} //end foreach
 				
 				//Close span3 wrapper for non-Show All pages
-				if (!isset($_GET['showall'])) { print '</div>'; }
+				if (!($_GET['showall'] == "true")) { print '</div>'; }
 				
 				
 	} // end foreach	
 	
 	//Close unordered list/div for Show All pg
-	if (isset($_GET['showall'])) { print '</ul></div>'; }
+	if ($_GET['showall'] == "true") { print '</ul></div>'; }
 	?>
 	
 	</div> <!-- Close containing .row div -->
 	
 	<?php	
 	// If showall isn't set, serve up some pagination
-	if( !isset($_GET['showall']) ) {
+	if(!($_GET['showall'] == "true")) {
 	
 		$total_terms = wp_count_terms( 'publications' );
 		$pages = ceil($total_terms/$per_page);
