@@ -303,7 +303,7 @@ function get_front_page_story_choices() {
  */
 function get_pubs_list() {
 	
-	$per_page = 2; //number of publications shown per page
+	$per_page = 16; //number of publications shown per page
 	
 	//define an offset for pagination based on whether Show All is activated or not
 	if ( !isset($_GET['pagenum']) ) { 
