@@ -301,7 +301,7 @@ function get_front_page_story_choices() {
 /*
  * Get all publications and output them with their latest pub editions
  */
-function get_pubs_list() {
+function get_pubs_list($catid) {
 	
 	$per_page = 16; //number of publications shown per page
 	
@@ -321,16 +321,16 @@ function get_pubs_list() {
 				$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'none', 'order' => 'DESC' );
 				break;
 			case 'showall':
-				$args = array('hide_empty' => 0); 
+				$args = array('hide_empty' => 0);
 				break;
 		}
 	}
 	else { $args = array( 'number' => $per_page, 'offset' => $offset ); }	
 	
-	$publications = get_terms( 'publications', $args );
-
 	//Need to start unordered list for Show All pg before the publications foreach loop
-	if ($_GET['sort'] == "showall") { print '<div class="span12"><ul class="showall_pubs">'; }
+	if ($_GET['sort'] == "showall") { print '<div class="span12"><h2>All Publications</h2><ul class="showall_pubs">'; }
+	
+	$publications = get_terms( 'publications', $args );
 
 	foreach ($publications as $publication) {
 		$publicationID 		= $publication->term_taxonomy_id;
@@ -340,7 +340,8 @@ function get_pubs_list() {
 		<?php if (!($_GET['sort'] == "showall")) { print '<div class="span3">'; } ?>
 						
 			<?php
-			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
+			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'category' => $catid, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
+			
 			?>
 			
 				<?php
@@ -415,9 +416,9 @@ function get_pubs_list() {
 			<div class="row">
 				<div class="pagination">
 					<ul>
-						<li <?php if ($pagecount == 1 || (!isset($_GET['pagenum']))) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>">1</a></li>
+						
 					<?php
-					for ($pagecount = 2; $pagecount <= $pages; $pagecount++) { ?>
+					for ($pagecount = 1; $pagecount <= $pages; $pagecount++) { ?>
 						<li <?php if ($pagecount == $_GET['pagenum']) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?pagenum=<?=$pagecount?><?php if ($_GET['sort'] == "alphabetical") { print "&sort=alphabetical"; } else if ($_GET['sort'] == "newest") { print "&sort=newest"; } ?>"><?=$pagecount?></a></li>
 					<?php
 					}
