@@ -18,10 +18,6 @@
 	?>
 	<div class="publication-content" id="<?=$latestEdition->post_name?>">
 	
-		<div class="row" id="subpage-nav">
-			<a class="btn" href="<?=get_site_url()?>"><i class="icon-chevron-left"></i> Back to All Publications</a>
-		</div>
-	
 		<div class="row">
 			<div class="span3" id="single_pub_details">
 				<h2><?=$latestEdition->post_title?></h2>
