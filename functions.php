@@ -365,17 +365,17 @@ function get_pubs_list() {
 						$pubdate = date('M j, Y', strtotime($pubdate));
 						
 						$publink = get_term_link( $publicationName, 'publications' );
-						//$publink = get_post_meta($post->ID, 'pubedition_url', TRUE);
+						$issuulink = get_post_meta($post->ID, 'pubedition_url', TRUE);
 						
 						if (!($_GET['sort'] == "showall")) {
 						?>
 						
 						<div class="pub_details">		
-							<h3><?=$post->post_title?></h3>
+							<h3><a href="<?=$publink?>"><?=$post->post_title?></a></h3>
 							<p><a href="<?=$publink?>"><?=$thumb?></a></p>
 							<p><strong>Found Under</strong> <?=$catlist?></p>
 							<p><strong>Published On</strong> <?=$pubdate?></p>
-							<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
+							<p><a class="btn" target="_blank" href="<?=$issuulink?>">Click to View</a></p>
 						</div>
 								
 						<?php
