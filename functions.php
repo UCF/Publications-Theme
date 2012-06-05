@@ -317,7 +317,7 @@ function get_pubs_list($catid) {
 			case 'alphabetical':
 				$args = array( 'number' => $per_page, 'offset' => $offset );
 				break;
-			case 'newest':
+			case 'newest': //NEED TO FORCE THIS TO SORT BY NEWEST PUBS!!
 				$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'none', 'order' => 'DESC' );
 				break;
 			case 'showall':
@@ -341,7 +341,6 @@ function get_pubs_list($catid) {
 						
 			<?php
 			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'category' => $catid, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
-			
 			?>
 			
 				<?php
@@ -369,24 +368,26 @@ function get_pubs_list($catid) {
 						$publink = get_term_link( $publicationName, 'publications' );
 						$issuulink = get_post_meta($post->ID, 'pubedition_url', TRUE);
 						
-						if (!($_GET['sort'] == "showall")) {
+						if ( ($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "newest") || (!(isset($_GET['sort']))) ) {
 						?>
 						
-						<div class="pub_details">		
-							<h3><a href="<?=$publink?>"><?=$post->post_title?></a></h3>
-							<p><a href="<?=$publink?>"><?=$thumb?></a></p>
-							<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
-							<p><strong>Found Under</strong> <?=$catlist?></p>
-							<p><strong>Published On</strong> <?=$pubdate?></p>
-						</div>
+							<div class="pub_details">		
+								<h3><a href="<?=$publink?>"><?=$post->post_title?></a></h3>
+								<p><a href="<?=$publink?>"><?=$thumb?></a></p>
+								<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
+								<p><strong>Found Under</strong> <?=$catlist?></p>
+								<p><strong>Published On</strong> <?=$pubdate?></p>
+							</div>
 								
-						<?php
-						} else { ?>
+						<?php	
+						} else if ($_GET['sort'] == "showall") { ?>
+						
 							<li>
 								<h3><a href="<?=$publink?>"><?=$post->post_title?></a></h3>
 								<p><strong>Found Under</strong> <?=$catlist?></p>
 								<p><strong>Published On</strong> <?=$pubdate?></p>
 							</li>
+							
 						<?php
 						}
 					} //end foreach

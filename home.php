@@ -7,7 +7,7 @@
 				<strong style="float: left; margin: 9px 20px 0 0;">Sort By:</strong>
 				<div class="tabs-below">
 					<ul class="nav nav-tabs">
-						<li><a href="<?=get_site_url()?>">Category</a></li>
+						<li><a href="<?=get_site_url()?>/categories/">Category</a></li>
 						<li <?php if ($_GET['sort'] == "alphabetical") { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?sort=alphabetical">Alphabetical</a></li>
 						<li <?php if ($_GET['sort'] == "newest") { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?sort=newest">Newest</a></li>
 						<li <?php if ($_GET['sort'] == "showall") { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?sort=showall">List All</a></li>
