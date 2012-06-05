@@ -330,7 +330,7 @@ function get_pubs_list() {
 	$publications = get_terms( 'publications', $args );
 
 	//Need to start unordered list for Show All pg before the publications foreach loop
-	if (isset($_GET['showall'])) { print '<div class="span12"><ul class="showall_pubs">'; }
+	if ($_GET['sort'] == "showall") { print '<div class="span12"><ul class="showall_pubs">'; }
 
 	foreach ($publications as $publication) {
 		$publicationID 		= $publication->term_taxonomy_id;
@@ -382,7 +382,7 @@ function get_pubs_list() {
 						<?php
 						} else { ?>
 							<li>
-								<h3><i class="icon-file"> </i><a href="<?=$publink?>"><?=$post->post_title?></a></h3>
+								<h3><a href="<?=$publink?>"><?=$post->post_title?></a></h3>
 								<p><strong>Found Under</strong> <?=$catlist?></p>
 								<p><strong>Published On</strong> <?=$pubdate?></p>
 							</li>
