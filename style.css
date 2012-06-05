@@ -77,10 +77,9 @@ p.caption {font-family:"Helvetica Neue",Helvetica,sans-serif;font-size:12px;}
 	background-position:center left;
 }
 #pubsort {
-	margin-bottom: 20px;	
+	margin-bottom: 1em;	
 	height: auto;
 }
-
 
 /* Footer */
 #footer {
@@ -177,6 +176,7 @@ input[id="s"] {
 
 ul.showall_pubs {
 	list-style-type: none;	
+	margin-left: 0;
 }
 ul.showall_pubs li {
 	margin-bottom: 1em;	
