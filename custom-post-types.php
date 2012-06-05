@@ -391,7 +391,7 @@ class PubEdition extends CustomPostType{
 		$edit_item      = 'Edit Pub. Edition',
 		$new_item       = 'New Pub. Edition',
 		$public         = True,
-		$use_editor     = False,
+		$use_editor     = True,
 		$use_thumbnails = True,
 		$use_order      = True,
 		$use_title      = True,
