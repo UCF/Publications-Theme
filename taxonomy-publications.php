@@ -23,10 +23,15 @@
 		</div>
 	
 		<div class="row">
-			<div class="span3">
+			<div class="span3" id="single_pub_details">
 				<h2><?=$latestEdition->post_title?></h2>
 				<p><strong>Found Under </strong><?=$catlist?></p>
 				<p><strong>Published On </strong><?=date('M j, Y', strtotime($latestEdition->post_date));?></p>
+				
+				<div class="well" id="pub_link_box">
+					<p><strong>Link to this page:</strong></p>
+					<p><?=get_term_link( $publication, 'publications' )?></p>
+				</div>
 			</div>
 			<div class="span9">
 				<?php if (get_post_meta($post->ID, 'pubedition_url', TRUE) == "") { print "<p id='issuuerror'>The online publication viewer could not be loaded at this time.</p>"; } ?>

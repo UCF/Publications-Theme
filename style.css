@@ -162,6 +162,9 @@ input[id="s"] {
 		width: 90%;
 		margin: 0 0 1em;
 	}
+.pub_details h3 a {
+	color: #000;	
+}
 .pub_details img {
 	text-align: center;
 	margin: 1em 0;	
@@ -192,4 +195,17 @@ input[id="s"] {
 }
 #issuuerror {
 	text-align: center;
+}
+
+#single_pub_details h2 {
+	line-height: 26px;
+	margin-bottom: 6px;	
+}
+#single_pub_details p {
+	margin: 0;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+#pub_link_box {
+	margin-top: 1em;	
 }
