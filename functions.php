@@ -265,12 +265,13 @@ if ($theme_options['bw_verify']){
 				
 /*
  * Returns featured image URL of a specified post ID
+ * In this theme, this function retrieves the generic 'thumbnail' size, rather than 'single-post-thumbnail'.
  */
 function get_featured_image_url($id) {
 	$url = '';
 	if(has_post_thumbnail($id)
 		&& ($thumb_id = get_post_thumbnail_id($id)) !== False
-		&& ($image = wp_get_attachment_image_src($thumb_id, 'single-post-thumbnail')) !== False) {
+		&& ($image = wp_get_attachment_image_src($thumb_id, 'thumbnail')) !== False) {
 		return $image[0];
 	}
 	return $url;
@@ -373,9 +374,9 @@ function get_pubs_list() {
 						<div class="pub_details">		
 							<h3><a href="<?=$publink?>"><?=$post->post_title?></a></h3>
 							<p><a href="<?=$publink?>"><?=$thumb?></a></p>
+							<p><a class="btn" target="_blank" href="<?=$issuulink?>">Click to View</a></p>
 							<p><strong>Found Under</strong> <?=$catlist?></p>
 							<p><strong>Published On</strong> <?=$pubdate?></p>
-							<p><a class="btn" target="_blank" href="<?=$issuulink?>">Click to View</a></p>
 						</div>
 								
 						<?php
