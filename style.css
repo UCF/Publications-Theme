@@ -206,6 +206,10 @@ input[id="s"] {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+.single_pub_content {
+	margin: 1em 0 1.5em 0;
+}
+
 #pub_link_box {
 	margin-top: 1em;	
 }

@@ -28,6 +28,8 @@
 				<p><strong>Found Under </strong><?=$catlist?></p>
 				<p><strong>Published On </strong><?=date('M j, Y', strtotime($latestEdition->post_date));?></p>
 				
+				<?php if (!($latestEdition->post_content) == "") { echo "<div class='single_pub_content'>".apply_filters('the_content', $latestEdition->post_content)."</div>"; } ?>
+				
 				<div class="well" id="pub_link_box">
 					<p><strong>Link to this page:</strong></p>
 					<p><?=get_term_link( $publication, 'publications' )?></p>
