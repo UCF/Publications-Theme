@@ -4,6 +4,17 @@
 	$publication = $wp_query->queried_object;
 	$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publication->name, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
 	$latestEdition = $latestEdition[0];
+	
+	$cats = get_the_category($latestEdition->ID);
+	$catlist =""; 
+	if ($cats[0] =="") { $catlist = "n/a"; } 
+	else { 
+		foreach ($cats as $cat) {
+			$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
+		}
+		$catlist = substr($catlist, 0, -2);
+	}
+	
 	?>
 	<div class="publication-content" id="<?=$latestEdition->post_name?>">
 	
@@ -12,14 +23,14 @@
 		</div>
 	
 		<div class="row">
-			<div class="span4">
+			<div class="span3">
 				<h2><?=$latestEdition->post_title?></h2>
-				<a target="_blank" class="btn btn-primary" href="<?=get_post_meta($latestEdition->ID, 'pubedition_url', TRUE)?>">Launch Online Viewer</a>
+				<p><strong>Found Under </strong><?=$catlist?></p>
+				<p><strong>Published On </strong><?=date('M j, Y', strtotime($latestEdition->post_date));?></p>
 			</div>
-			<div class="span8">
-				<?php
-				echo get_the_post_thumbnail($latestEdition->ID, 'large', array('class' => 'publication-single-image'));
-				?>
+			<div class="span9">
+				<?php if (get_post_meta($post->ID, 'pubedition_url', TRUE) == "") { print "<p id='issuuerror'>The online publication viewer could not be loaded at this time.</p>"; } ?>
+				<iframe class="issuuembed" src="<?=get_post_meta($post->ID, 'pubedition_url', TRUE);?>"></iframe>
 			</div>
 		</div>
 		
