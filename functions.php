@@ -304,18 +304,26 @@ function get_pubs_list() {
 	
 	$per_page = 2; //number of publications shown per page
 	
-	if ( !isset($_GET['pagenum']) ) {
+	//define an offset for pagination based on whether Show All is activated or not
+	if ( !isset($_GET['pagenum']) ) { 
 		$offset = 0;
 	}
 	else { $offset = $per_page*(($_GET['page'])-1); }
-
-	if ( !isset($_GET['showall']) ) { //NEED TO FORCE THIS TO SORT BY NEWEST POSTS
-    	$args = array( 'number' => $per_page, 'offset' => $offset, 'hide_empty' => 0 );
+	
+	//Define get_terms args based on query string params
+	if (!(strpos($url, '='))) { //Default args; no query string params set
+    	$args = array( 'number' => $per_page, 'offset' => $offset );
 	}
-	if ( isset ($_GET['alphabetical']) ) {
-		$args = array( 'number' => $per_page, 'offset' => $offset, 'hide_empty' => 0 );
+	if ( isset($_GET['alphabetical']) ) {
+		$args = array( 'number' => $per_page, 'offset' => $offset );
 	}
-	else { $args = array('hide_empty' => 0); }
+	if ( isset($_GET['newest']) ) { //NEED TO SET TO ORDER BY NEWEST POSTS
+		$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'none', 'order' => 'DESC' );
+	}
+	if ( isset($_GET['showall']) ) { 
+		$args = array('hide_empty' => 0); 
+	}
+	
 	
 	$publications = get_terms( 'publications', $args );
 
@@ -355,8 +363,8 @@ function get_pubs_list() {
 						$pubdate = $post->post_date; 
 						$pubdate = date('M j, Y', strtotime($pubdate));
 						
-						//$publink = get_term_link( $publicationName, 'publications' );
-						$publink = get_post_meta($post->ID, 'pubedition_url', TRUE);
+						$publink = get_term_link( $publicationName, 'publications' );
+						//$publink = get_post_meta($post->ID, 'pubedition_url', TRUE);
 						
 						if (!isset($_GET['showall'])) {
 						?>
@@ -408,7 +416,7 @@ function get_pubs_list() {
 						<li <?php if ($pagecount == 1 || (!isset($_GET['pagenum']))) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>">1</a></li>
 					<?php
 					for ($pagecount = 2; $pagecount <= $pages; $pagecount++) { ?>
-						<li <?php if ($pagecount == $_GET['pagenum']) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?pagenum=<?=$pagecount?>"><?=$pagecount?></a></li>
+						<li <?php if ($pagecount == $_GET['pagenum']) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?pagenum=<?=$pagecount?><?php if (isset($_GET['alphabetical'])) { print "&alphabetical=true"; } else if (isset($_GET['newest'])) { print "&newest=true"; } ?>"><?=$pagecount?></a></li>
 					<?php
 					}
 					?>
