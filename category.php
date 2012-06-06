@@ -8,7 +8,7 @@
 					$catname = $cat->name;
 					$catid	 = $cat->cat_ID;
 					
-					print "<div class='span12'><h2><a href='".get_site_url()."/categories/'>All Categories</a> &raquo; <span style='font-weight: 200;'>".$catname."</span></h2></div>";
+					print "<div class='span12'><h2 style='margin-bottom: 1em;'><a href='".get_site_url()."/categories/'>All Categories</a> &raquo; <span style='font-weight: 200;'>".$catname."</span></h2></div>";
 					
 					get_pubs_list($catid);
 					

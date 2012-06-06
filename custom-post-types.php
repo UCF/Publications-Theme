@@ -405,8 +405,8 @@ class PubEdition extends CustomPostType{
 	public function metabox(){
 		$metabox = parent::metabox();
 		
-		$metabox['title']   = 'Publications on Media Page';
-		$metabox['helptxt'] = 'Publication cover icon will be resized to width 153px, height 198px.';
+		$metabox['title']   = 'Issuu Pub';
+		$metabox['helptxt'] = 'Make sure to use the WordPress embed code provided by Issuu; e.g.: <br/>[issuu width=420 height=273 backgroundColor=%23222222 documentId=110808172738-cfb1264144454a57a1378fa3b4375aaf name=1107adm219_11_12viewbookissuu4 username=universityofcentralflorida tag=ucf unit=px v=2]<br/><br/>This is not the same as the HTML embed code.  On the "Embed Publication" screen in Issuu, click "WordPress" in the left-hand sidebar to get the correct shortcode.<br/><br/>You do not need to edit sizing parameters in the shortcode; this is edited automatically through the site theme.';
 		return $metabox;
 	}
 	
@@ -426,10 +426,10 @@ class PubEdition extends CustomPostType{
 		$prefix = $this->options('name').'_';
 		return array(
 			array(
-				'name'  => 'Publication URL',
-				'desc' => 'Example: <span style="font-family:monospace;font-weight:bold;color:#21759B;">http://publications.smca.ucf.edu/admissions/viewbook.html</span>',
-				'id'   => $prefix.'url',
-				'type' => 'text',
+				'name'  => 'WordPress Embed Code',
+				'desc' => '',
+				'id'   => $prefix.'embed',
+				'type' => 'textarea',
 				'std'  => '',
 			),
 		);

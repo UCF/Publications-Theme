@@ -303,7 +303,7 @@ function get_front_page_story_choices() {
  */
 function get_pubs_list($catid) {
 	
-	$per_page = 16; //number of publications shown per page
+	$per_page = 12; //number of publications shown per page
 	
 	//define an offset for pagination based on whether Show All is activated or not
 	if ( !isset($_GET['pagenum']) ) { 
@@ -337,7 +337,7 @@ function get_pubs_list($catid) {
 		$publicationName 	= $publication->name;
 		?>
 		
-		<?php if (!($_GET['sort'] == "showall")) { print '<div class="span3">'; } ?>
+		<?php if (!($_GET['sort'] == "showall")) { print '<div class="span3 pub">'; } ?>
 						
 			<?php
 			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'category' => $catid, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
@@ -366,7 +366,7 @@ function get_pubs_list($catid) {
 						$pubdate = date('M j, Y', strtotime($pubdate));
 						
 						$publink = get_term_link( $publicationName, 'publications' );
-						$issuulink = get_post_meta($post->ID, 'pubedition_url', TRUE);
+						$issuulink = get_post_meta($post->ID, 'pubedition_embed', TRUE);
 						
 						if ( ($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "newest") || (!(isset($_GET['sort']))) ) {
 						?>
