@@ -1,7 +1,7 @@
 <?php get_header();?>
 	<?php $options = get_option(THEME_OPTIONS_NAME);?>
 	<div class="page-content" id="category" data-template="category">
-		<div class="row">
+		<div class="row" id="cat_pubslist">
 				
 				<?php 
 					$cat 	 = $wp_query->queried_object;

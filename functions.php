@@ -303,6 +303,7 @@ function get_front_page_story_choices() {
  */
 function get_pubs_list($catid) {
 	
+	//Manually define how many pubs will display per page
 	$per_page = 16;
 	
 	//define an offset for pagination based on whether Show All is activated or not
@@ -337,8 +338,6 @@ function get_pubs_list($catid) {
 		$publicationID 		= $publication->term_taxonomy_id;
 		$publicationName 	= $publication->name;
 		?>
-		
-		<?php if (!($_GET['sort'] == "showall")) { print '<div class="span3 pub">'; } ?>
 						
 			<?php
 			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'category' => $catid, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
@@ -346,6 +345,9 @@ function get_pubs_list($catid) {
 			
 				<?php
 					foreach ($latestEdition as $post) {
+						
+						if (!($_GET['sort'] == "showall")) { print '<div class="span3 pub">'; }
+						
 						
 						//Get pubedition's thumbnail from Issuu based on the document ID found in the pub's shortcode:
 						$embedcode_explode = preg_split("/documentId=/", get_post_meta($post->ID, 'pubedition_embed', TRUE)); //split up shortcode at documentid
@@ -391,11 +393,11 @@ function get_pubs_list($catid) {
 							
 						<?php
 						}
+						
+						//Close span3 wrapper for non-Show All pages
+						if (!($_GET['sort'] == "showall")) { print '</div>'; }
+						
 					} //end foreach
-				
-				//Close span3 wrapper for non-Show All pages
-				if (!($_GET['sort'] == "showall")) { print '</div>'; }
-				
 				
 	} // end foreach	
 	

@@ -155,13 +155,23 @@ input[id="s"] {
 /* Publications output */
 
 /* Note that these support up to 16 .pub's on a page at a time */
-.pub:nth-child(5), .pub:nth-child(9), .pub:nth-child(13) {
+#pubslist .pub:nth-child(5), #pubslist .pub:nth-child(9), #pubslist .pub:nth-child(13) {
 	clear: left;	
 }
 /* Stupid IE hack for nth-child support */
 #pubslist>.pub:first-child + .pub + .pub + .pub + .pub, 
 #pubslist>.pub:first-child + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub,
 #pubslist>.pub:first-child + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub {
+	clear: left;
+}
+
+#cat_pubslist .pub:nth-child(6), #cat_pubslist .pub:nth-child(10), #cat_pubslist .pub:nth-child(14) {
+	clear: left;	
+}
+/* Stupid IE hack for nth-child support */
+#cat_pubslist>.pub:first-child + .pub + .pub + .pub + .pub + .pub, 
+#cat_pubslist>.pub:first-child + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub,
+#cat_pubslist>.pub:first-child + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub {
 	clear: left;
 }
 
@@ -230,6 +240,9 @@ ul.showall_pubs li p {
 	height: 450px !important;	
 }
 #issuuembed>div>div { /* Remove Issuu links under embed */
+	display:none;	
+}
+#issuuembed>p { /* Remove stray p tags within embed output */
 	display:none;	
 }
 #issuuerror {
