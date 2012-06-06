@@ -154,11 +154,15 @@ input[id="s"] {
 
 /* Publications output */
 
-.pub:nth-child(5n) {
-	clear: left;
+/* Note that these support up to 16 .pub's on a page at a time */
+.pub:nth-child(5), .pub:nth-child(9), .pub:nth-child(13) {
+	clear: left;	
 }
-.pub:nth-child(4n) {
-	clear: right;
+/* Stupid IE hack for nth-child support */
+#pubslist>.pub:first-child + .pub + .pub + .pub + .pub, 
+#pubslist>.pub:first-child + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub,
+#pubslist>.pub:first-child + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub {
+	clear: left;
 }
 
 .pub_details {

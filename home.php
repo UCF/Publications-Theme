@@ -2,7 +2,7 @@
 	<?php $options = get_option(THEME_OPTIONS_NAME);?>
 	<?php $page    = get_page_by_title('Home');?>
 	<div class="page-content" id="home" data-template="home-description">
-		<div class="row">
+		<div class="row" id="pubslist">
 				
 				<?php get_pubs_list(); ?>
 				
