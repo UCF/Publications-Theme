@@ -326,6 +326,7 @@ function get_pubs_list($catid) {
 				break;
 		}
 	}
+	else if (is_category()) { $args = array('hide_empty' => 0); }
 	else { $args = array( 'number' => $per_page, 'offset' => $offset ); }	
 	
 	//Need to start unordered list for Show All pg before the publications foreach loop
@@ -334,13 +335,30 @@ function get_pubs_list($catid) {
 	
 	$publications = get_terms( 'publications', $args );
 
+	//We need to call a posts query to determine whether those posts belong to a particular Publication; if they don't, we need to unset the publication in $publications:
+	$postsQuery = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'category' => $catid, 'order' => 'DESC', 'post_status' => 'publish'));
+			
+	foreach ($postsQuery as $post) {
+		//If the post's term does not exist in the $publications array, we need to remove that term from $publications:
+		$terms = get_the_terms($post->ID, 'publications');
+		foreach ($terms as $term) {
+			$term = $term->name;
+		}
+	}
+
 	foreach ($publications as $publication) {
 		$publicationID 		= $publication->term_taxonomy_id;
 		$publicationName 	= $publication->name;
+		
+		if (!($publication->name == $term)) {
+			unset($publication);
+		}
+		
 		?>
 						
 			<?php
 			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'category' => $catid, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
+			
 			?>
 			
 				<?php
@@ -397,8 +415,7 @@ function get_pubs_list($catid) {
 						//Close span3 wrapper for non-Show All pages
 						if (!($_GET['sort'] == "showall")) { print '</div>'; }
 						
-					} //end foreach
-				
+		}// end if
 	} // end foreach	
 	
 	//Close unordered list/div for Show All pg
@@ -408,30 +425,43 @@ function get_pubs_list($catid) {
 	</div> <!-- Close containing .row div -->
 	
 	<?php	
-	// If showall isn't set, serve up some pagination
-	if(($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "newest") || (!(isset($_GET['sort'])))) {
-	
-		$total_terms = wp_count_terms( 'publications' );
-		$pages = ceil($total_terms/$per_page);
-	
-		// If there's more than one page...
-		if( $pages > 1 ) {
-		?>
-			<div class="row">
-				<div class="pagination">
-					<ul>
-						
-					<?php
-					for ($pagecount = 1; $pagecount <= $pages; $pagecount++) { ?>
-						<li <?php if ($pagecount == $_GET['pagenum']) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?pagenum=<?=$pagecount?><?php if ($_GET['sort'] == "alphabetical") { print "&sort=alphabetical"; } else if ($_GET['sort'] == "newest") { print "&sort=newest"; } ?>"><?=$pagecount?></a></li>
-					<?php
-					}
-					?>
-	
-					</ul>
+	// If showall isn't set (and this isn't a category listing), serve up some pagination
+	if (!(is_category())) {
+		if(($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "newest") || (!(isset($_GET['sort'])))) {
+		
+			$total_terms = wp_count_terms( 'publications' );
+			$pages = ceil($total_terms/$per_page);
+		
+			// If there's more than one page...
+			if( $pages > 1 ) {
+			?>
+				<div class="row">
+					<div class="pagination">
+						<ul>
+							
+						<?php
+						for ($pagecount = 1; $pagecount <= $pages; $pagecount++) { ?>
+							<li <?php if ($pagecount == $_GET['pagenum']) { print 'class="active"'; } ?>>
+								<a href="<?=get_site_url()?>
+								?pagenum=<?=$pagecount?>
+								<?php if ($_GET['sort'] == "alphabetical") { 
+									print "&sort=alphabetical"; 
+								} 
+								else if ($_GET['sort'] == "newest") { 
+									print "&sort=newest"; 
+								} ?>">
+								<?=$pagecount?>
+								</a>
+							</li>
+						<?php
+						}
+						?>
+		
+						</ul>
+					</div>
 				</div>
-			</div>
-			<?php
+				<?php
+			}
 		}
-	}		
+	}
 }
