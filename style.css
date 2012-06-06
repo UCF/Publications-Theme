@@ -153,6 +153,18 @@ input[id="s"] {
 
 
 /* Publications output */
+
+.pub:nth-child(5n) {
+	clear: left;
+}
+.pub:nth-child(4n) {
+	clear: right;
+}
+
+.pub_details {
+	margin-bottom: 3em;
+}
+
 .pub_details p {
 	margin: 0;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
