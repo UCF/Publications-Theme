@@ -303,13 +303,13 @@ function get_front_page_story_choices() {
  */
 function get_pubs_list($catid) {
 	
-	$per_page = 12; //number of publications shown per page
+	$per_page = 16;
 	
 	//define an offset for pagination based on whether Show All is activated or not
 	if ( !isset($_GET['pagenum']) ) { 
 		$offset = 0;
 	}
-	else { $offset = $per_page*(($_GET['page'])-1); }
+	else { $offset = $per_page*(($_GET['pagenum'])-1); }
 	
 	//Define get_terms args based on query string params
 	if ( isset($_GET['sort']) ) {
@@ -329,6 +329,7 @@ function get_pubs_list($catid) {
 	
 	//Need to start unordered list for Show All pg before the publications foreach loop
 	if ($_GET['sort'] == "showall") { print '<div class="span12"><h2>All Publications</h2><ul class="showall_pubs">'; }
+	
 	
 	$publications = get_terms( 'publications', $args );
 
@@ -372,7 +373,7 @@ function get_pubs_list($catid) {
 						?>
 						
 							<div class="pub_details">		
-								<h3><a href="<?=$publink?>"><?=$post->post_title?></a></h3>
+								<h3><a href="<?=$publink?>"><?=$publicationName?></a></h3>
 								<p class="pubthumb"><a href="<?=$publink?>"><?=$thumb?></a></p>
 								<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
 								<p><strong>Found Under</strong> <?=$catlist?></p>
@@ -406,7 +407,7 @@ function get_pubs_list($catid) {
 	
 	<?php	
 	// If showall isn't set, serve up some pagination
-	if(!($_GET['sort'] == "showall")) {
+	if(($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "newest") || (!(isset($_GET['sort'])))) {
 	
 		$total_terms = wp_count_terms( 'publications' );
 		$pages = ceil($total_terms/$per_page);
