@@ -173,11 +173,16 @@ input[id="s"] {
 		width: 90%;
 		margin: 0 0 1em;
 	}
+.pub_details h3 {
+	line-height: 22px;	
+}
 .pub_details h3 a {
 	color: #000;	
 }
+.pubthumb {
+	text-align: center;	
+}
 .pub_details img {
-	text-align: center;
 	margin: 1em 0;	
 	height: 250px;
 }
@@ -211,10 +216,17 @@ ul.showall_pubs li p {
 	margin: 12px 0 30px;	
 }
 
-.issuuembed {
-	width: 100%;
-	height: 450px;	
+#issuuembed>div>object {
+	width: 100% !important;
+	height: 450px !important;	
 	border: 0;
+}
+#issuuembed>div>object>embed {
+	width: 100% !important;
+	height: 450px !important;	
+}
+#issuuembed>div>div { /* Remove Issuu links under embed */
+	display:none;	
 }
 #issuuerror {
 	text-align: center;
