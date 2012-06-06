@@ -31,7 +31,7 @@
 					<p><?=get_term_link( $publication, 'publications' )?></p>
 				</div>
 			</div>
-			<div class="span9">
+			<div class="span9" id="issuuembed">
 				<?php echo apply_filters('the_content', get_post_meta($latestEdition->ID, 'pubedition_embed', TRUE)); ?>
 			</div>
 		</div>

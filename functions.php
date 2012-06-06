@@ -345,12 +345,12 @@ function get_pubs_list($catid) {
 			
 				<?php
 					foreach ($latestEdition as $post) {
-					
-						$thumb = get_featured_image_url($post->ID);
-						if ($thumb =="") {
-							$thumb = THEME_IMG_URL.'/placeholder.jpg';
-						}
-						$thumb = "<img src='".$thumb."' alt='".$post->post_title."' title='".$post->post_title."' />";
+						
+						//Get pubedition's thumbnail from Issuu based on the document ID found in the pub's shortcode:
+						$embedcode_explode = preg_split("/documentId=/", get_post_meta($post->ID, 'pubedition_embed', TRUE)); //split up shortcode at documentid
+						$embedcode_explode = preg_split("/ name=/", $embedcode_explode[1]); //remove the rest of the embed code, leaving the document id
+						$docID 			   = $embedcode_explode[0];
+						$thumb = "<img src='http://image.issuu.com/".$docID."/jpg/page_1_thumb_large.jpg' alt='".$post->post_title."' title='".$post->post_title."' />";
 						
 						$cats = get_the_category($post->ID);
 						$catlist =""; 
@@ -373,7 +373,7 @@ function get_pubs_list($catid) {
 						
 							<div class="pub_details">		
 								<h3><a href="<?=$publink?>"><?=$post->post_title?></a></h3>
-								<p><a href="<?=$publink?>"><?=$thumb?></a></p>
+								<p class="pubthumb"><a href="<?=$publink?>"><?=$thumb?></a></p>
 								<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
 								<p><strong>Found Under</strong> <?=$catlist?></p>
 								<p><strong>Published On</strong> <?=$pubdate?></p>
