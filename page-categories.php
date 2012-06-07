@@ -4,8 +4,8 @@
 		<div class="row">
 				
 				<?php 					
-					print "<div class='span12'><h2>All Categories</h2>";
-					wp_list_categories(array('title_li' => '', 'style' => 'none'));
+					print "<div class='span12' id='allcats_list'><h2>All Categories</h2>";
+					wp_list_categories(array('title_li' => '', 'style' => 'none', 'show_count' => 1));
 					print "</div>";
 				?>
 				

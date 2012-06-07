@@ -277,6 +277,15 @@ ul.showall_pubs li p {
 	}
 
 
+/* Categories page styles */
+
+#allcats_list a {
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 27px;	
+}
+
+
 /* Forms: */
 .gform_wrapper .gfield_description {
     margin: -10px 0 10px 0;
