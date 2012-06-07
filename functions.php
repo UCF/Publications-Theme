@@ -339,7 +339,7 @@ function trim_pub_title($input) {
 /*
  * Get all publications and output them with their latest pub editions
  */
-function get_pubs_list($catid) {
+function get_pubs_list($catid = null) {
 	
 	//INITIAL PAGINATION PARAMETERS
 	
