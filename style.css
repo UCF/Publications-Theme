@@ -75,6 +75,11 @@ p.caption {font-family:"Helvetica Neue",Helvetica,sans-serif;font-size:12px;}
 	background-image: url(static/img/publications-logo.png);
 	background-position:center left;
 }
+	#header .title a {
+		display: block;
+		height: 69px;
+		width: 100%;	
+	}
 	#header .title h1 {
 		margin-top: 20px;	
 	}
