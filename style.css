@@ -168,24 +168,13 @@ input[id="s"] {
 /* Publications output */
 
 /* Note that these support up to 16 .pub's on a page at a time */
+
 #pubslist .pub:nth-child(5), #pubslist .pub:nth-child(9), #pubslist .pub:nth-child(13) {
 	clear: left;	
-}
-/* Stupid IE hack for nth-child support */
-#pubslist>.pub:first-child + .pub + .pub + .pub + .pub, 
-#pubslist>.pub:first-child + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub,
-#pubslist>.pub:first-child + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub {
-	clear: left;
 }
 
 #cat_pubslist .pub:nth-child(6), #cat_pubslist .pub:nth-child(10), #cat_pubslist .pub:nth-child(14) {
 	clear: left;	
-}
-/* Stupid IE hack for nth-child support */
-#cat_pubslist>.pub:first-child + .pub + .pub + .pub + .pub + .pub, 
-#cat_pubslist>.pub:first-child + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub,
-#cat_pubslist>.pub:first-child + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub + .pub {
-	clear: left;
 }
 
 .pub_details {

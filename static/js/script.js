@@ -19,5 +19,7 @@ if (typeof jQuery != 'undefined'){
 		
 		$(".puburl").live("click", function(){ $(this).select(); });
 
+		$("#pubslist .pub:nth-child(5), #pubslist .pub:nth-child(9), #pubslist .pub:nth-child(13), #cat_pubslist .pub:nth-child(6), #cat_pubslist .pub:nth-child(10), #cat_pubslist .pub:nth-child(14)").css('clear','left');
+
 	});
 }else{console.log('jQuery dependancy failed to load');}
