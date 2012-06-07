@@ -422,7 +422,7 @@ function get_pubs_list($catid) {
 					} else if ($_GET['sort'] == "showall") { ?>
 					
 						<li>
-							<h3><a href="<?=$publink?>"><?=$post->post_title?></a></h3>
+							<h3><a href="<?=$publink?>"><?=$publicationName?></a></h3>
 							<p><strong>Found Under</strong> <?=$catlist?></p>
 							<p><strong>Published On</strong> <?=$pubdate?></p>
 						</li>
