@@ -319,6 +319,24 @@ add_filter('terms_clauses', 'filter_term_sort_by_latest_post_clauses', 10, 3);
 
 
 /*
+ * Trim a string at the end of the last word before the character limit 
+ */
+
+function trim_pub_title($input) {
+	$length = 35;										
+	if (strlen($input) <= $length) {
+		return $input;
+	}
+	else {				  
+		//find last space within length
+		$last_space = strrpos(substr($input, 0, $length), ' ');
+		$trimmed_text = substr($input, 0, $last_space).'&#133;';
+		return $trimmed_text;
+	}
+}
+
+
+/*
  * Get all publications and output them with their latest pub editions
  */
 function get_pubs_list($catid) {
@@ -411,7 +429,7 @@ function get_pubs_list($catid) {
 					?>
 					
 						<div class="pub_details">		
-							<h3><a href="<?=$publink?>"><?=$publicationName?></a></h3>
+							<h3><a href="<?=$publink?>"><?=trim_pub_title($publicationName)?></a></h3>
 							<p class="pubthumb"><a href="<?=$publink?>"><?=$thumb?></a></p>
 							<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
 							<p><strong>Found Under</strong> <?=$catlist?></p>

@@ -195,15 +195,19 @@ input[id="s"] {
 	}
 .pub_details h3 {
 	line-height: 22px;	
+	display: table-cell;
+	height: 45px;
+	vertical-align: bottom;
 }
 .pub_details h3 a {
 	color: #000;	
 }
 .pubthumb {
 	text-align: center;	
+	height: 250px;
+	margin: 1em 0 !important;	
 }
 .pub_details img {
-	margin: 1em 0;	
 	height: 250px;
 }
 
