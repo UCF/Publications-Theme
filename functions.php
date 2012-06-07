@@ -299,9 +299,31 @@ function get_front_page_story_choices() {
 }
 
 /*
+ * Sort publications by latest post filter - via http://jeffri.net/2012/01/sort-by-latest-post-for-wp_list_categories/
+ */
+
+function filter_term_sort_by_latest_post_clauses( $pieces, $taxonomies, $args )
+{
+    global $wpdb;
+    if ( in_array('publications', $taxonomies) && $args['orderby'] == 'latest_post' )
+    {
+        $pieces['fields'] .= ", MAX(p.post_date) AS last_date";
+        $pieces['join'] .= " JOIN $wpdb->term_relationships AS tr JOIN $wpdb->posts AS p ON p.ID=tr.object_id AND tr.term_taxonomy_id=tt.term_taxonomy_id";
+        $pieces['where'] .= " GROUP BY t.term_id";
+        $pieces['orderby'] = "ORDER BY last_date";
+        $pieces['order'] = "DESC"; // DESC or ASC
+    }
+    return $pieces;
+}
+add_filter('terms_clauses', 'filter_term_sort_by_latest_post_clauses', 10, 3);
+
+
+/*
  * Get all publications and output them with their latest pub editions
  */
 function get_pubs_list($catid) {
+	
+	//INITIAL PAGINATION PARAMETERS
 	
 	//Manually define how many pubs will display per page
 	$per_page = 16;
@@ -312,39 +334,34 @@ function get_pubs_list($catid) {
 	}
 	else { $offset = $per_page*(($_GET['pagenum'])-1); }
 	
-	//Define get_terms args based on query string params
+	//DEFINE ARGUMENTS FOR RETRIEVING TERMS (PUBLICATIONS) BASED ON QUERY PARAMS	
+	
 	if ( isset($_GET['sort']) ) {
 		switch ($_GET['sort']) {
 			case 'alphabetical':
 				$args = array( 'number' => $per_page, 'offset' => $offset );
 				break;
 			case 'newest': //NEED TO FORCE THIS TO SORT BY NEWEST PUBS!!
-				$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'none', 'order' => 'DESC' );
+				$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'latest_post' );
 				break;
 			case 'showall':
 				$args = array('hide_empty' => 0);
 				break;
 		}
 	}
-	else if (is_category()) { $args = array('hide_empty' => 0); }
-	else { $args = array( 'number' => $per_page, 'offset' => $offset ); }	
+	else if (is_category()) { 
+		$args = array('hide_empty' => 0); 
+	}
+	else {
+		$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'latest_post' );	
+	}
 	
 	//Need to start unordered list for Show All pg before the publications foreach loop
 	if ($_GET['sort'] == "showall") { print '<div class="span12"><h2>All Publications</h2><ul class="showall_pubs">'; }
 	
+	//GET THE LIST OF TERMS (PUBLICATIONS)
 	
-	$publications = get_terms( 'publications', $args );
-
-	//We need to call a posts query to determine whether those posts belong to a particular Publication; if they don't, we need to unset the publication in $publications:
-	$postsQuery = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'category' => $catid, 'order' => 'DESC', 'post_status' => 'publish'));
-			
-	foreach ($postsQuery as $post) {
-		//If the post's term does not exist in the $publications array, we need to remove that term from $publications:
-		$terms = get_the_terms($post->ID, 'publications');
-		foreach ($terms as $term) {
-			$term = $term->name;
-		}
-	}
+	$publications = get_terms( 'publications', $args );	
 
 	foreach ($publications as $publication) {
 		$publicationID 		= $publication->term_taxonomy_id;
@@ -357,6 +374,9 @@ function get_pubs_list($catid) {
 		?>
 						
 			<?php
+			
+			//GET THE FIRST POST FOR EACH PUBLICATION
+			
 			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'category' => $catid, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
 			
 			?>
@@ -425,7 +445,10 @@ function get_pubs_list($catid) {
 	</div> <!-- Close containing .row div -->
 	
 	<?php	
-	// If showall isn't set (and this isn't a category listing), serve up some pagination
+	
+	//OUTPUT PAGINATION:
+	
+	// If showall isn't set (and this isn't a category listing)...
 	if (!(is_category())) {
 		if(($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "newest") || (!(isset($_GET['sort'])))) {
 		
