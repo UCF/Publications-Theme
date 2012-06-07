@@ -20,7 +20,7 @@
 	
 		<div class="row">
 			<div class="span3" id="single_pub_details">
-				<h2><?=$latestEdition->post_title?></h2>
+				<h2><?=$publication->name?></h2>
 				<p><strong>Found Under </strong><?=$catlist?></p>
 				<p><strong>Published On </strong><?=date('M j, Y', strtotime($latestEdition->post_date));?></p>
 				<div class="well" id="pub_link_box">
