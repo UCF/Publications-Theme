@@ -69,13 +69,15 @@ p.caption {font-family:"Helvetica Neue",Helvetica,sans-serif;font-size:12px;}
 }
 #header .title {
 	width:319px;
-	height:29px;
-	margin: 20px 0;
+	height:69px;
 	text-indent:-500em;
 	background-repeat:no-repeat;
 	background-image: url(static/img/publications-logo.png);
 	background-position:center left;
 }
+	#header .title h1 {
+		margin-top: 20px;	
+	}
 #pubsort {
 	margin-bottom: 1em;	
 	height: auto;
