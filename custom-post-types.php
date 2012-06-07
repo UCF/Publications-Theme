@@ -416,7 +416,6 @@ class PubEdition extends CustomPostType{
 			
 		global $wp_meta_boxes;
 		remove_meta_box('postimagediv', $metabox['page'], 'side');
-		add_meta_box('postimagediv', __('Edition Thumbnail'), 'post_thumbnail_meta_box', $metabox['page'], 'normal', 'high');
 			
 		parent::register_metaboxes();
 	}
