@@ -350,7 +350,7 @@ function get_pubs_list($catid) {
 		}
 	}
 	else if (is_category()) { 
-		$args = array('hide_empty' => 0); 
+		$args = array('hide_empty' => 0, 'orderby' => 'latest_post'); 
 	}
 	else {
 		$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'latest_post' ); //default to sort by latest pubedition
