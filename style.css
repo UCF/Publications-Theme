@@ -80,6 +80,12 @@ p.caption {font-family:"Helvetica Neue",Helvetica,sans-serif;font-size:12px;}
 	margin-bottom: 1em;	
 	height: auto;
 }
+#pubsort .tabs-below > .nav-tabs {
+	border-top: 0;	
+}
+#pubsort .tabs-below > .nav-tabs > li > a {
+	border-radius: 0 0 10px 10px;	
+}
 
 /* Footer */
 #footer {
