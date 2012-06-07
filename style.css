@@ -232,12 +232,12 @@ ul.showall_pubs li p {
 
 #issuuembed>div>object {
 	width: 100% !important;
-	height: 450px !important;	
+	height: 560px !important;	
 	border: 0;
 }
 #issuuembed>div>object>embed {
 	width: 100% !important;
-	height: 450px !important;	
+	height: 560px !important;	
 }
 #issuuembed>div>div { /* Remove Issuu links under embed */
 	display:none;	
@@ -251,7 +251,7 @@ ul.showall_pubs li p {
 
 #single_pub_details h2 {
 	line-height: 26px;
-	margin-bottom: 6px;	
+	margin-bottom: 0.8em;	
 }
 #single_pub_details p {
 	margin: 0;
@@ -261,6 +261,11 @@ ul.showall_pubs li p {
 .single_pub_content {
 	margin: 1em 0 1.5em 0;
 }
+	.single_pub_content p {
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+		font-size: 20px;
+		color: #888;
+	}
 
 #pub_link_box {
 	margin-top: 1em;	
