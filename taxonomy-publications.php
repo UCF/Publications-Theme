@@ -25,7 +25,7 @@
 				<p><strong>Published On </strong><?=date('M j, Y', strtotime($latestEdition->post_date));?></p>
 				<div class="well" id="pub_link_box">
 					<p><strong>Link to this page:</strong></p>
-					<p><?=get_term_link( $publication, 'publications' )?></p>
+					<input type="text" value="<?=get_term_link( $publication, 'publications' )?>" name="puburl" class="puburl" /></input>
 					<br/>
 					<p><strong>Embed Code:</strong></p>
 					<p>To copy the HTML embed code, right-click on the publication and select "Copy embed code".  Paste it into an HTML editor wherever you'd like to display the publication.</p>

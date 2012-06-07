@@ -222,11 +222,6 @@ ul.showall_pubs li p {
 	margin: 0;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
-	
-/* Forms: */
-.gform_wrapper .gfield_description {
-    margin: -10px 0 10px 0;
-}
 
 
 /* Single Publications */
@@ -274,5 +269,15 @@ ul.showall_pubs li p {
 	}
 
 #pub_link_box {
-	margin-top: 1em;	
+	margin-top: 1em;
+}
+	#pub_link_box input.puburl {
+		width: 170px;
+		margin-top: 5px;
+	}
+
+
+/* Forms: */
+.gform_wrapper .gfield_description {
+    margin: -10px 0 10px 0;
 }
