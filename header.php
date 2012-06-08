@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US" <?php if (is_single()) { print "style='height: 100%;'"; } ?>>
+<html lang="en-US" <?php if ((is_single()) || ($wp_query->queried_object = "publication")) { print "style='height: 100%;'"; } ?>>
 	<head>
 		<meta name="viewport" content="width=1024">
 		<?="\n".header_()."\n"?>
