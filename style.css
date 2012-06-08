@@ -206,12 +206,13 @@ input[id="s"] {
 	}
 .pub_details h3 {
 	line-height: 22px;	
-	display: table-cell;
 	height: 45px;
-	vertical-align: bottom;
+	position: relative;
 }
 .pub_details h3 a {
 	color: #000;	
+	position: absolute;
+	bottom: 0;
 }
 .pubthumb {
 	text-align: center;	
