@@ -132,7 +132,7 @@ h2#footer_logo {
 		text-align: left;
 	}
 	#footer_navigation .search {
-		margin-top: 10px;	
+		margin-top: -5px;	
 	}
 
 #footer_navigation ul {
@@ -160,7 +160,7 @@ button.search-submit {
 label[for="s"] {
 	color: #888;
 }
-input[id="s"] {
+input#s {
 	background: #fff url('static/img/mag-glass.png') center left no-repeat;
 	text-indent: 28px;
 }
