@@ -71,7 +71,7 @@
 					<p><strong><a href="<?php the_permalink(); ?>" class="url sans"><?php the_permalink(); ?></a></strong></p>
 					<p><strong>An Edition Of </strong><a href="<?=$publink?>"><?=$pubname?></a></p>
 					<p><strong>Found Under</strong> <?php the_category(', '); ?></p>
-					<p><strong>Published On</strong> <?php the_date(); ?></p>
+					<p><strong>Published On</strong> <?php print get_the_date('M d, Y'); ?></p>
     				
     			</li>
 			    <?php endwhile;?>
