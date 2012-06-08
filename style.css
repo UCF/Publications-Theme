@@ -84,8 +84,9 @@ p.caption {font-family:"Helvetica Neue",Helvetica,sans-serif;font-size:12px;}
 		margin-top: 20px;	
 	}
 #pubsort {
-	margin-bottom: 1em;	
+	margin: 0 auto 1em auto;	
 	height: auto;
+	width: 940px;
 }
 #pubsort .tabs-below > .nav-tabs {
 	border-top: 0;	
@@ -277,6 +278,24 @@ ul.showall_pubs li p {
 		width: 170px;
 		margin-top: 5px;
 	}
+
+
+/* Single Pubeditions styles */
+
+body.pubedition, body.pubedition .container, .pubedition_wrap {
+	width: 100%;
+	height: 100%;
+}
+.pubedition #header, .pubedition #pubsort, .pubedition #footer {
+	display: none;
+}
+.pubedition_wrap p, .pubedition_wrap>div>div {
+	display: none;	
+}
+.pubedition_wrap>div, .pubedition_wrap>div>object, .pubedition_wrap>div>object>embed {
+	width: 100% !important;
+	height: 100% !important;
+}
 
 
 /* Categories page styles */
