@@ -4,7 +4,7 @@
 				
 				<div class="row" id="footer_navigation">
 					<div class="span3">
-						<a href="<?=site_url()?>"><h2 id="footer_logo">UCF</h2></a>
+						<a href="http://www.ucf.edu/"><h2 id="footer_logo">UCF</h2></a>
 						<?php if(!function_exists('dynamic_sidebar') or !dynamic_sidebar('Footer - Column One')):?><?php endif;?>
 					</div>
 					<div class="span2">
