@@ -297,6 +297,10 @@ ul.result-list {
 	ul.result-list li {
 		margin-bottom: 1em;	
 	}
+	ul.result-list li p {
+		margin: 0;
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;	
+	}
 
 /* Forms: */
 .gform_wrapper .gfield_description {
