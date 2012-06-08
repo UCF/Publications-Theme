@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US" <?php if (('pubedition' == get_post_type()) || ($wp_query->queried_object == "publication")) { print "style='height: 100%;'"; } ?>>
+<html lang="en-US" <?php if ((('pubedition' == get_post_type() && (!(is_search()))) || ($wp_query->queried_object == "publication"))) { print "style='height: 100%;'"; } ?>>
 	<head>
 		<meta name="viewport" content="width=1024">
 		<?="\n".header_()."\n"?>
@@ -31,7 +31,7 @@
 		<? } ?>
 	</head>
 	
-	<body class="<?php if ('pubedition' == get_post_type()) { print get_post_type($post->ID); } ?>">
+	<body class="<?php if ('pubedition' == get_post_type() && (!(is_search()))) { print get_post_type($post->ID); } ?>">
 	
 		<div class="container wide" id="header">
 			<div class="row">
