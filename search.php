@@ -7,9 +7,9 @@
 	$results = get_search_results($_GET['s'], $start, $limit, $domain);
 ?>
 <?php get_header();?>
-	<div class="page-content" id="search-results">
+	<div class="page-content row" id="search-results">
 		
-		<div class="results span-17 last">
+		<div class="results span12">
 			<h2>Search results for "<?=htmlentities($_GET['s'])?>"</h2>
 			<?php get_search_form()?>
 			
@@ -50,9 +50,9 @@
 <?php get_footer();?>
 <?php else:?>
 	<?php get_header();?>
-	<div class="page-content" id="search-results">
+	<div class="page-content row" id="search-results">
 		
-		<div class="results span-17 last">
+		<div class="results span12">
 			<h2>Search results for "<?=htmlentities($_GET['s'])?>"</h2>
 			<?php get_search_form()?>
 			
@@ -60,8 +60,15 @@
 			<ul class="result-list">
     			<?php while(have_posts()): the_post();?>
     			<li class="item">
-    				<h3><a class="sans title" href="<?php the_permalink();?>"><?php the_title();?></a></h3>
-    				<a href="<?php the_permalink();?>" class="url sans"><?php the_permalink();?></a>
+					<?php
+					$pubs 	 = get_the_terms($post->ID, 'publications'); 
+					foreach ($pubs as $pub) {
+						$publink = get_term_link($pub->slug, 'publications');
+						$pubname = $pub->name;
+					}
+					?>
+    				<h3><a class="sans title" href="<?=$publink?>"><?=$pubname?></a></h3>
+    				<a href="<?=$publink?>" class="url sans"><?=$publink?></a>
     				<div class="snippet sans">
     					<?php the_excerpt();?>
     				</div>
