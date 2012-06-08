@@ -431,7 +431,8 @@ function get_pubs_list($catid = null) {
 						<div class="pub_details">		
 							<h3><a href="<?=$publink?>"><?=trim_pub_title($publicationName)?></a></h3>
 							<p class="pubthumb"><a href="<?=$publink?>"><?=$thumb?></a></p>
-							<p><a class="btn" href="<?=$publink?>">Click to View</a></p>
+							<p><strong>Link to Publication:</strong></p>
+							<input type="text" value="<?=get_term_link( $publicationName, 'publications' )?>" name="puburl" class="puburl" /></input>
 							<p><strong>Found Under</strong> <?=$catlist?></p>
 							<p><strong>Published On</strong> <?=$pubdate?></p>
 						</div>
