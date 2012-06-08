@@ -157,7 +157,7 @@ form.search-form {
 button.search-submit {
 	display: none;	
 }
-label[for="s"] {
+label#searchlabel {
 	color: #888;
 }
 input#s {
