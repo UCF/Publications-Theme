@@ -31,7 +31,7 @@
 		<? } ?>
 	</head>
 	
-	<body class="<?php if (is_single()) { print get_post_type($post->ID); } if ($wp_query->queried_object = "publication") { print "class='publication'"; } ?>">
+	<body class="<?php if (is_single()) { print get_post_type($post->ID); } if ($wp_query->queried_object = "publication") { print "publication"; } ?>">
 	
 		<div class="container wide" id="header">
 			<div class="row">
