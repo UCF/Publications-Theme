@@ -261,6 +261,10 @@ body.pubedition, body.pubedition .container, body.publication, body.publication 
 	width: 100% !important;
 	height: 100% !important;
 }
+.alert {
+	margin-bottom: 0;
+	text-align: center;	
+}
 
 
 /* Categories page styles */
