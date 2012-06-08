@@ -6,7 +6,7 @@ foreach ($terms as $term) {
 	$termid   = $term->term_id; 
 	$termlink = get_term_link( $term->name, 'publications' );
 }
-$latestEditions = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'post_status' => 'publish', 'numberposts' => 1));
+$latestEditions = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $term->name, 'post_status' => 'publish', 'numberposts' => 1));
 foreach ($latestEditions as $latestEdition) {
 	if ($latestEdition->post_date > $post->post_date) {
 		print '<div class="alert in fade">
