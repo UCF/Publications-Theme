@@ -16,28 +16,9 @@
 	}
 	
 	?>
-	<div class="publication-content" id="<?=$latestEdition->post_name?>">
 	
-		<div class="row">
-			<div class="span3" id="single_pub_details">
-				<h2><?=$publication->name?></h2>
-				<p><strong>Found Under </strong><?=$catlist?></p>
-				<p><strong>Published On </strong><?=date('M j, Y', strtotime($latestEdition->post_date));?></p>
-				<div class="well" id="pub_link_box">
-					<p><strong>Link to this page:</strong></p>
-					<input type="text" value="<?=get_term_link( $publication, 'publications' )?>" name="puburl" class="puburl" /></input>
-					<br/>
-					<p><strong>Embed Code:</strong></p>
-					<p>To copy the HTML embed code, right-click on the publication and select "Copy embed code".  Paste it into an HTML editor wherever you'd like to display the publication.</p>
-				</div>
-			</div>
-			<div class="span9" id="issuuembed">
-				<?php echo apply_filters('the_content', get_post_meta($latestEdition->ID, 'pubedition_embed', TRUE)); ?>
-				
-				<?php if (!($latestEdition->post_content) == "") { echo "<div class='single_pub_content'>".apply_filters('the_content', $latestEdition->post_content)."</div>"; } ?>
-			</div>
-		</div>
-		
-	</div>	
+	<div class="publication_wrap">
+		<?php echo apply_filters('the_content', get_post_meta($latestEdition->ID, 'pubedition_embed', TRUE)); ?>
+	</div>
 	
 <?php get_footer(); ?>
