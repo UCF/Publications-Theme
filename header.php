@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en-US" <?php if (is_single()) { print "style='height: 100%;'"; } ?>>
 	<head>
 		<meta name="viewport" content="width=1024">
 		<?="\n".header_()."\n"?>
@@ -31,7 +31,7 @@
 		<? } ?>
 	</head>
 	
-	<body class="<?=body_classes()?>">
+	<body class="<?php if (is_single()) { print get_post_type($post->ID); } ?>">
 	
 		<div class="container wide" id="header">
 			<div class="row">
