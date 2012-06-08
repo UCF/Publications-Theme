@@ -172,6 +172,18 @@ input[id="s"] {
 
 /* Note that these support up to 16 .pub's on a page at a time */
 
+#pubslist .pub {
+        min-height: 445px;
+        display: -moz-inline-stack;
+        display: inline-block;
+        vertical-align: top;
+        zoom: 1;
+        *display: inline;
+        _height: 445px;
+		float: none;
+		width: 217px;
+}
+/*
 #pubslist .pub:nth-child(5), #pubslist .pub:nth-child(9), #pubslist .pub:nth-child(13) {
 	clear: left;	
 }
@@ -179,7 +191,7 @@ input[id="s"] {
 #cat_pubslist .pub:nth-child(6), #cat_pubslist .pub:nth-child(10), #cat_pubslist .pub:nth-child(14) {
 	clear: left;	
 }
-
+*/
 .pub_details {
 	margin-bottom: 3em;
 }

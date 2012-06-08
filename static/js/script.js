@@ -18,17 +18,6 @@ if (typeof jQuery != 'undefined'){
 		Webcom.loadMoreSearchResults($);
 		
 		$(".puburl").live("click", function(){ $(this).select(); });
-		
-		if ( $.browser.msie ) {
-			if ( $.browser.version <9  ) {
-				$("#pubslist .pub:nth-child(1), #pubslist .pub:nth-child(5), #pubslist .pub:nth-child(9), #pubslist .pub:nth-child(13), #pubslist .pub:nth-child(2), #pubslist .pub:nth-child(6), #pubslist .pub:nth-child(10), #pubslist .pub:nth-child(14)").parent().prepend("<div class='row' style='margin-left: 0;'>");
-				$("#pubslist .pub:nth-child(5), #pubslist .pub:nth-child(9), #pubslist .pub:nth-child(13), #pubslist .pub:nth-child(16), #pubslist .pub:nth-child(5), #pubslist .pub:nth-child(9), #pubslist .pub:nth-child(13), #pubslist .pub:nth-child(17)").parent().prepend("</div>");
-			}
-		}
-		else {
-			$("#pubslist .pub:nth-child(5), #pubslist .pub:nth-child(9), #pubslist .pub:nth-child(13), #cat_pubslist .pub:nth-child(6), #cat_pubslist .pub:nth-child(10), #cat_pubslist .pub:nth-child(14)").css('clear','left');	
-		}
-		
 
 	});
 }else{console.log('jQuery dependancy failed to load');}
