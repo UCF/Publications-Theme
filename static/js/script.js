@@ -22,7 +22,7 @@ if (typeof jQuery != 'undefined'){
 		if ( $.browser.msie ) {
 			if ( $.browser.version <9  ) {
 				$("#pubslist .pub:nth-child(1), #pubslist .pub:nth-child(5), #pubslist .pub:nth-child(9), #pubslist .pub:nth-child(13), #pubslist .pub:nth-child(2), #pubslist .pub:nth-child(6), #pubslist .pub:nth-child(10), #pubslist .pub:nth-child(14)").parent().prepend("<div class='row' style='margin-left: 0;'>");
-				$("#pubslist .pub:nth-child(4), #pubslist .pub:nth-child(8), #pubslist .pub:nth-child(12), #pubslist .pub:nth-child(16), #pubslist .pub:nth-child(5), #pubslist .pub:nth-child(9), #pubslist .pub:nth-child(13), #pubslist .pub:nth-child(17)").parent().append("</div>");
+				$("#pubslist .pub:nth-child(5), #pubslist .pub:nth-child(9), #pubslist .pub:nth-child(13), #pubslist .pub:nth-child(16), #pubslist .pub:nth-child(5), #pubslist .pub:nth-child(9), #pubslist .pub:nth-child(13), #pubslist .pub:nth-child(17)").parent().prepend("</div>");
 			}
 		}
 		else {
