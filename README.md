@@ -12,6 +12,7 @@ This theme requires the following plugins:
 -Relevanssi
 
 Upon installation:
+-In Settings > Reading, set 'Blog pages show at most' to '1' (pagination may not work correctly otherwise).  'Front page displays' should be set to 'Your latest posts.'
 -Add links to Footer Widgets 2, 3, and 4: Today (today.ucf.edu), Marketing (umark.ucf.edu), and Contact (link to Contact page).
 -Update Relevanssi settings and build index:
 	-What to include in the index:  Custom, set below
