@@ -22,9 +22,11 @@
 						
 						foreach ($posts as $post) {
 							$post_publications = get_the_terms( $post->ID, 'publications' );
-							foreach ($post_publications as $post_publication) {
-								$post_publication_name = $post_publication->name;
-								$postpubs[] = array('pubname' => $post_publication_name, 'cat' => $cat->name);
+							if (is_array($post_publications)) {
+								foreach ($post_publications as $post_publication) {
+									$post_publication_name = $post_publication->name;
+									$postpubs[] = array('pubname' => $post_publication_name, 'cat' => $cat->name);
+								}
 							}
 						}
 					}
