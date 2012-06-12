@@ -27,11 +27,6 @@ require_once('custom-post-types.php');  # Where per theme post types are defined
 require_once('shortcodes.php');         # Per theme shortcodes
 require_once('functions-admin.php');    # Admin/login functions
 
-/* 
- * Slug of the current Pegasus Magazein edition term in the 
- * editions taxonomy
- */ 
-define('CURRENT_EDITION_TERM_SLUG', '2012-summer');
 
 /**
  * Set config values including meta tags, registered custom post types, styles,
@@ -199,15 +194,6 @@ Config::$theme_settings = array(
 			),
 		)),
 	),
-	'Devices' => array(
-		new TextField(array(
-			'name'        => 'iTunes Store iPad App URL',
-			'id'          => THEME_OPTIONS_NAME.'[ipad_app_url]',
-			'description' => 'URL of the Pegasus Magazine iPad app in the iTunes store. Used for the iPad modal. The modal and footer link will not be displayed if this field is blank.',
-			'default'     => '',
-			'value'       => $theme_options['ipad_app_url'],
-		))
-	),
 );
 
 Config::$links = array(
@@ -230,15 +216,6 @@ Config::$scripts = array(
 	THEME_STATIC_URL.'/js/jquery.cookie.js',
 	array('name' => 'base-script',  'src' => THEME_JS_URL.'/webcom-base.js',),
 	array('name' => 'theme-script', 'src' => THEME_JS_URL.'/script.js',),
-	/* TODO: Write this functionality into a shortcode, only call these libraries when necessary: */
-	array('name' => 'rgraph-effects', 'src' => THEME_JS_URL.'/rgraph/RGraph.common.effects.js',),
-	array('name' => 'rgraph-core', 'src' => THEME_JS_URL.'/rgraph/RGraph.common.core.js',),
-	array('name' => 'rgraph-tooltips', 'src' => THEME_JS_URL.'/rgraph/RGraph.common.tooltips.js',),
-	array('name' => 'rgraph-key', 'src' => THEME_JS_URL.'/rgraph/RGraph.common.key.js',),
-	array('name' => 'rgraph-dynamic', 'src' => THEME_JS_URL.'/rgraph/RGraph.common.dynamic.js',),
-	array('name' => 'rgraph-line', 'src' => THEME_JS_URL.'/rgraph/RGraph.line.js',),
-	array('name' => 'inview', 'src' => THEME_JS_URL.'/inview.js',),
-	/*array('name' => 'bigger-better-js', 'src' => THEME_DIR.'/dev/bigger-better/bigger-better.js',)*/
 );
 
 Config::$metas = array(
@@ -375,7 +352,13 @@ function get_pubs_list($catid = null) {
 	}
 	
 	//Need to start <ul> for Show All pg before the publications foreach loop
-	if ($_GET['sort'] == "showall") { print '<div class="span12"><h2>All Publications</h2><ul class="showall_pubs">'; }
+	switch ($_GET['sort']) {
+		case 'showall':
+			print '<div class="span12"><h2>All Publications</h2><ul class="showall_pubs">';
+			break;
+		default:
+			break;
+	}
 	
 	
 	//GET THE LIST OF TERMS (PUBLICATIONS)
@@ -399,8 +382,14 @@ function get_pubs_list($catid = null) {
 			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'category' => $catid, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
 			
 				foreach ($latestEdition as $post) {
-						
-					if (!($_GET['sort'] == "showall")) { print '<div class="span3 pub">'; }
+					
+					switch ($_GET['sort']) {
+						case 'showall':
+							break;
+						default:
+							print '<div class="span3 pub">'; 
+							break;
+					}
 						
 						
 					//Get pubedition's thumbnail from Issuu based on the document ID found in the pub's shortcode:
