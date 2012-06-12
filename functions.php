@@ -369,79 +369,76 @@ function get_pubs_list($catid = null) {
 		$publicationID 		= $publication->term_taxonomy_id;
 		$publicationName 	= $publication->name;
 		
-		if (!($publication->name == $term)) {
+		/*if (!($publication->name == $term)) {
 			unset($publication);
-		}
-		
-		?>
+		}*/
+			
+		//GET THE FIRST POST FOR EACH PUBLICATION AND DISPLAY IT
+			
+		$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'category' => $catid, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
+			
+		foreach ($latestEdition as $post) {
+					
+			switch ($_GET['sort']) {
+				case 'showall':
+					break;
+				default:
+					print '<div class="span3 pub">'; 
+					break;
+			}
+						
+						
+			//Get pubedition's thumbnail from Issuu based on the document ID found in the pub's shortcode:
+			$embedcode_explode = preg_split("/documentId=/", get_post_meta($post->ID, 'pubedition_embed', TRUE)); //split up shortcode at documentid
+			$embedcode_explode = preg_split("/ name=/", $embedcode_explode[1]); //remove the rest of the embed code, leaving the document id
+			$docID 			   = $embedcode_explode[0];
+			$thumb = "<img src='http://image.issuu.com/".$docID."/jpg/page_1_thumb_large.jpg' alt='".$post->post_title."' title='".$post->post_title."' />";
+					
+			$cats = get_the_category($post->ID);
+			$catlist =""; 
+			if ($cats[0] =="") { $catlist = "n/a"; } 
+			else { 
+				foreach ($cats as $cat) {
+					$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
+				}
+				$catlist = substr($catlist, 0, -2); //remove last stray comma and space
+			} 
+					
+			$pubdate = $post->post_date; 
+			$pubdate = date('M j, Y', strtotime($pubdate));
+			
+			$publink = get_term_link( $publicationName, 'publications' );
+			$issuulink = get_post_meta($post->ID, 'pubedition_embed', TRUE);
+			
+			
+			if ( ($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "newest") || (!(isset($_GET['sort']))) ) {
+			?>
+					
+				<div class="pub_details">		
+					<h3><a target="_blank" href="<?=$publink?>"><?=trim_pub_title($publicationName)?></a></h3>
+					<p class="pubthumb"><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>
+					<p><strong>Link to Publication:</strong></p>
+					<input type="text" value="<?=get_term_link( $publicationName, 'publications' )?>" name="puburl" class="puburl" /></input>
+					<p><strong>Found Under</strong> <?=$catlist?></p>
+					<p><strong>Published On</strong> <?=$pubdate?></p>
+				</div>
+							
+			<?php	
+			} else if ($_GET['sort'] == "showall") { ?>
+					
+				<li>
+					<h3><a target="_blank" href="<?=$publink?>"><?=$publicationName?></a></h3>
+					<p><strong>Found Under</strong> <?=$catlist?></p>
+					<p><strong>Published On</strong> <?=$pubdate?></p>
+				</li>
 						
 			<?php
-			
-			//GET THE FIRST POST FOR EACH PUBLICATION AND DISPLAY IT
-			
-			$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'category' => $catid, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
-			
-				foreach ($latestEdition as $post) {
+			}
 					
-					switch ($_GET['sort']) {
-						case 'showall':
-							break;
-						default:
-							print '<div class="span3 pub">'; 
-							break;
-					}
-						
-						
-					//Get pubedition's thumbnail from Issuu based on the document ID found in the pub's shortcode:
-					$embedcode_explode = preg_split("/documentId=/", get_post_meta($post->ID, 'pubedition_embed', TRUE)); //split up shortcode at documentid
-					$embedcode_explode = preg_split("/ name=/", $embedcode_explode[1]); //remove the rest of the embed code, leaving the document id
-					$docID 			   = $embedcode_explode[0];
-					$thumb = "<img src='http://image.issuu.com/".$docID."/jpg/page_1_thumb_large.jpg' alt='".$post->post_title."' title='".$post->post_title."' />";
+			//Close span3 wrapper for non-Show All pages
+			if (!($_GET['sort'] == "showall")) { print '</div>'; }
 					
-					$cats = get_the_category($post->ID);
-					$catlist =""; 
-					if ($cats[0] =="") { $catlist = "n/a"; } 
-					else { 
-						foreach ($cats as $cat) {
-							$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
-						}
-						$catlist = substr($catlist, 0, -2);
-					} 
-					
-					$pubdate = $post->post_date; 
-					$pubdate = date('M j, Y', strtotime($pubdate));
-					
-					$publink = get_term_link( $publicationName, 'publications' );
-					$issuulink = get_post_meta($post->ID, 'pubedition_embed', TRUE);
-					
-					if ( ($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "newest") || (!(isset($_GET['sort']))) ) {
-					?>
-					
-						<div class="pub_details">		
-							<h3><a target="_blank" href="<?=$publink?>"><?=trim_pub_title($publicationName)?></a></h3>
-							<p class="pubthumb"><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>
-							<p><strong>Link to Publication:</strong></p>
-							<input type="text" value="<?=get_term_link( $publicationName, 'publications' )?>" name="puburl" class="puburl" /></input>
-							<p><strong>Found Under</strong> <?=$catlist?></p>
-							<p><strong>Published On</strong> <?=$pubdate?></p>
-						</div>
-							
-					<?php	
-					} else if ($_GET['sort'] == "showall") { ?>
-					
-						<li>
-							<h3><a target="_blank" href="<?=$publink?>"><?=$publicationName?></a></h3>
-							<p><strong>Found Under</strong> <?=$catlist?></p>
-							<p><strong>Published On</strong> <?=$pubdate?></p>
-						</li>
-						
-					<?php
-					}
-					
-					//Close span3 wrapper for non-Show All pages
-					if (!($_GET['sort'] == "showall")) { print '</div>'; }
-					
-				}// end latestedition foreach
+		}// end latestedition foreach
 	} // end publications foreach	
 	
 	//Close unordered list/div for Show All pg
