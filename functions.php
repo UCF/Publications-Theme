@@ -360,6 +360,9 @@ function get_pubs_list($catid = null) {
 			break;
 	}
 	
+	//We're also going to set up a variable for grouping the Show All sort later
+	$currentletter = '';
+	
 	
 	//GET THE LIST OF TERMS (PUBLICATIONS)
 	
@@ -424,7 +427,16 @@ function get_pubs_list($catid = null) {
 				</div>
 							
 			<?php	
-			} else if ($_GET['sort'] == "showall") { ?>
+			} else if ($_GET['sort'] == "showall") { 
+				$firstletter = strtoupper(substr($publicationName, 0, 1));
+				if ($firstletter != $currentletter) { ?>
+				
+				 	<h2 class="sortall_letter"><?=$firstletter?></h2>
+				
+				<?php	
+				 	$currentletter = $firstletter;
+			  	}
+			?>
 					
 				<li>
 					<h3><a target="_blank" href="<?=$publink?>"><?=$publicationName?></a></h3>
@@ -442,8 +454,7 @@ function get_pubs_list($catid = null) {
 	} // end publications foreach	
 	
 	//Close unordered list/div for Show All pg
-	if ($_GET['sort'] == "showall") { print '</ul></div>'; }
-	?>
+	if ($_GET['sort'] == "showall") { print '</ul></div>'; } ?>
 	
 	</div> <!-- Close containing .row div -->
 	

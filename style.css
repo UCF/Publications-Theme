@@ -59,6 +59,10 @@ p.caption {font-family:"Helvetica Neue",Helvetica,sans-serif;font-size:12px;}
 
 .tooltip-inner {border:1px solid #666;}
 
+h2 {
+	margin-bottom: 1em;	
+}
+
 
 /* Header */
 #header {
@@ -90,7 +94,7 @@ p.caption {font-family:"Helvetica Neue",Helvetica,sans-serif;font-size:12px;}
 }
 #navtitle {
 	float: left; 
-	margin: 8px 10px 0 -20px;	
+	margin: 8px 15px 0 -20px;	
 }
 #pubsort .tabs-below > .nav-tabs {
 	border-top: 0;	
@@ -98,6 +102,13 @@ p.caption {font-family:"Helvetica Neue",Helvetica,sans-serif;font-size:12px;}
 #pubsort .tabs-below > .nav-tabs > li > a {
 	border-radius: 0 0 10px 10px;	
 }
+.tabs-below > .nav-tabs > .active > a, .tabs-below > .nav-tabs > .active > a:hover {
+	background: #000;
+	border: 0px;
+	color: #fff;
+	font-weight: 600;
+}
+
 
 /* Footer */
 #footer {
@@ -226,12 +237,25 @@ input.puburl {
 	text-align: center;
 }
 
+h2.sortall_letter {
+	display: block;
+    float: left;
+    font-size: 55px;
+    font-weight: 100;
+    height: 55px;
+    margin-bottom: 0;
+    margin-top: 0.17em;
+    text-align: center;
+    width: 55px;
+}
+
 ul.showall_pubs {
 	list-style-type: none;	
 	margin-left: 0;
 }
 ul.showall_pubs li {
 	margin-bottom: 1em;	
+	margin-left: 80px;
 }
 ul.showall_pubs li p {
 	margin: 0;
