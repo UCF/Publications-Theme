@@ -88,6 +88,10 @@ p.caption {font-family:"Helvetica Neue",Helvetica,sans-serif;font-size:12px;}
 	height: auto;
 	width: 940px;
 }
+#navtitle {
+	float: left; 
+	margin: 8px 10px 0 -20px;	
+}
 #pubsort .tabs-below > .nav-tabs {
 	border-top: 0;	
 }

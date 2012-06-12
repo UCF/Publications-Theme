@@ -45,7 +45,7 @@
 		<div class="container">
 			<div class="row" id="pubsort">
 				<div class="span9">
-					<strong style="float: left; margin: 8px 20px 0 0;">View Publications By:</strong>
+					<strong id="navtitle">View Publications By:</strong>
 					<div class="tabs-below">
 						<ul class="nav nav-tabs">
 							<li <?php if ((is_page('categories') || is_category())) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>/categories/">Category</a></li>
