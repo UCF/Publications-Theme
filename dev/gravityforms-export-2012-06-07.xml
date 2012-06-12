@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<forms version="1.6.4.5">
+	<form labelPlacement="top_label" useCurrentUserAsAuthor="1">
+		<title><![CDATA[Contact]]></title>
+		<description><![CDATA[Please use the form below for any questions or comments.]]></description>
+		<confirmation type="message">
+			<message><![CDATA[Thanks for contacting us! We will get in touch with you shortly.]]></message>
+		</confirmation>
+		<button type="text">
+			<text><![CDATA[Submit]]></text>
+		</button>
+		<fields>
+			<field id="1" isRequired="1" size="medium" type="name">
+				<label><![CDATA[Name]]></label>
+				<inputs>
+					<input id="1.3">
+						<label><![CDATA[First]]></label>
+					</input>
+					<input id="1.6">
+						<label><![CDATA[Last]]></label>
+					</input>
+				</inputs>
+			</field>
+			<field id="2" size="medium" type="phone" phoneFormat="standard">
+				<label><![CDATA[Phone]]></label>
+			</field>
+			<field id="3" isRequired="1" size="medium" type="email">
+				<label><![CDATA[Email]]></label>
+			</field>
+			<field id="4" isRequired="1" size="medium" type="textarea">
+				<label><![CDATA[Questions/Comments]]></label>
+			</field>
+		</fields>
+		<descriptionPlacement><![CDATA[below]]></descriptionPlacement>
+		<notification>
+			<to><![CDATA[{admin_email}]]></to>
+			<subject><![CDATA[New submission from {form_title}]]></subject>
+			<message><![CDATA[{all_fields}]]></message>
+		</notification>
+	</form>
+</forms>
