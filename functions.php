@@ -334,13 +334,10 @@ function get_pubs_list($catid = null) {
 	if ( isset($_GET['sort']) ) {
 		switch ($_GET['sort']) {
 			case 'alphabetical':
-				$args = array( 'number' => $per_page, 'offset' => $offset );
+				$args = array('hide_empty' => 0);
 				break;
 			case 'latest':
 				$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'latest_post' );
-				break;
-			case 'showall':
-				$args = array('hide_empty' => 0);
 				break;
 		}
 	}
@@ -351,10 +348,10 @@ function get_pubs_list($catid = null) {
 		$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'latest_post' ); //default to sort by latest pubedition
 	}
 	
-	//Need to start <ul> for Show All pg before the publications foreach loop
+	//Need to start <ul> for Alphabetical pg before the publications foreach loop
 	switch ($_GET['sort']) {
-		case 'showall':
-			print '<div class="span12"><h2>All Publications</h2><ul class="showall_pubs">';
+		case 'alphabetical':
+			print '<div class="span12"><ul class="alphabetical_pubs">';
 			break;
 		default:
 			break;
@@ -383,7 +380,7 @@ function get_pubs_list($catid = null) {
 		foreach ($latestEdition as $post) {
 					
 			switch ($_GET['sort']) {
-				case 'showall':
+				case 'alphabetical':
 					break;
 				default:
 					print '<div class="span3 pub">'; 
@@ -414,7 +411,7 @@ function get_pubs_list($catid = null) {
 			$issuulink = get_post_meta($post->ID, 'pubedition_embed', TRUE);
 			
 			
-			if ( ($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "latest") || (!(isset($_GET['sort']))) ) {
+			if ( ($_GET['sort'] == "latest") || (!(isset($_GET['sort']))) ) {
 			?>
 					
 				<div class="pub_details">		
@@ -427,7 +424,7 @@ function get_pubs_list($catid = null) {
 				</div>
 							
 			<?php	
-			} else if ($_GET['sort'] == "showall") { 
+			} else if ($_GET['sort'] == "alphabetical") { 
 				$firstletter = strtoupper(substr($publicationName, 0, 1));
 				if ($firstletter != $currentletter) { ?>
 				
@@ -447,14 +444,14 @@ function get_pubs_list($catid = null) {
 			<?php
 			}
 					
-			//Close span3 wrapper for non-Show All pages
-			if (!($_GET['sort'] == "showall")) { print '</div>'; }
+			//Close span3 wrapper for non-Alphabetical pages
+			if (!($_GET['sort'] == "alphabetical")) { print '</div>'; }
 					
 		}// end latestedition foreach
 	} // end publications foreach	
 	
-	//Close unordered list/div for Show All pg
-	if ($_GET['sort'] == "showall") { print '</ul></div>'; } ?>
+	//Close unordered list/div for Alphabetical pg
+	if ($_GET['sort'] == "alphabetical") { print '</ul></div>'; } ?>
 	
 	</div> <!-- Close containing .row div -->
 	
@@ -462,9 +459,9 @@ function get_pubs_list($catid = null) {
 	
 	//OUTPUT PAGINATION:
 	
-	// If showall isn't set (and this isn't a category listing)...
+	// If Alphabetical isn't set (and this isn't a category listing)...
 	if (!(is_category())) {
-		if(($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "latest") || (!(isset($_GET['sort'])))) {
+		if( ($_GET['sort'] == "latest") || (!(isset($_GET['sort']))) ) {
 		
 			$total_terms = wp_count_terms( 'publications' );
 			$pages = ceil($total_terms/$per_page);
@@ -477,10 +474,7 @@ function get_pubs_list($catid = null) {
 						<ul>
 							<li <?php if (!($_GET['pagenum'])) { print 'class="active"'; } ?>>
 								<a href="<?=get_site_url()?>
-								<?php if ($_GET['sort'] == "alphabetical") { 
-									print "?sort=alphabetical"; 
-								} 
-								else if ($_GET['sort'] == "latest") { 
+								<?php if ($_GET['sort'] == "latest") { 
 									print "?sort=latest"; 
 								} ?>">
 									1
@@ -491,10 +485,7 @@ function get_pubs_list($catid = null) {
 							<li <?php if ($pagecount == $_GET['pagenum']) { print 'class="active"'; } ?>>
 								<a href="<?=get_site_url()?>
 								?pagenum=<?=$pagecount?>
-								<?php if ($_GET['sort'] == "alphabetical") { 
-									print "&sort=alphabetical"; 
-								} 
-								else if ($_GET['sort'] == "latest") { 
+								<?php if ($_GET['sort'] == "latest") { 
 									print "&sort=latest"; 
 								} ?>">
 								<?=$pagecount?>

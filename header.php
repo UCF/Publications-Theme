@@ -51,7 +51,6 @@
 							<li <?php if ((is_page('categories') || is_category())) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>/categories/">Category</a></li>
 							<li <?php if ((is_home()) && $_GET['sort'] == "alphabetical") { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?sort=alphabetical">Alphabetical</a></li>
 							<li <?php if ((is_home()) && ($_GET['sort'] == "latest" || (!isset($_GET['sort'])))) { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?sort=latest">Latest</a></li>
-							<li <?php if ((is_home()) && $_GET['sort'] == "showall") { print 'class="active"'; } ?>><a href="<?=get_site_url()?>?sort=showall">List All</a></li>
 						</ul>
 					</div>
 				</div>

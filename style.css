@@ -249,15 +249,15 @@ h2.sortall_letter {
     width: 55px;
 }
 
-ul.showall_pubs {
+ul.alphabetical_pubs {
 	list-style-type: none;	
 	margin-left: 0;
 }
-ul.showall_pubs li {
+ul.alphabetical_pubs li {
 	margin-bottom: 1em;	
 	margin-left: 80px;
 }
-ul.showall_pubs li p {
+ul.alphabetical_pubs li p {
 	margin: 0;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
