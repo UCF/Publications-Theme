@@ -278,6 +278,7 @@ input.puburl {
 
 h2.sortall_letter {
 	display: block;
+    float: left;
     font-size: 55px;
     font-weight: 100;
     height: 55px;
@@ -292,14 +293,17 @@ ul.alphabetical_pubs {
 	margin-left: 0;
 }
 ul.alphabetical_pubs li {
-	margin-bottom: 1em;	
-	margin-left: 80px;
-	display: block;
+	margin-bottom: 1em;
+	display: inline;
 }
 ul.alphabetical_pubs li p {
 	margin: 0;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+	ul.alphabetical_pubs li h3, ul.alphabetical_pubs li p {
+		margin-left: 80px;
+	}
+
 
 
 /* Single Publication, Pubeditions styles */
