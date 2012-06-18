@@ -103,17 +103,19 @@ h2 {
 	border-radius: 0 0 10px 10px;	
 }
 
+.nav-tabs > li > a {
+	border: 0;	
+}
+
 .nav-tabs > li > a:hover {
-	background: #444;	
-	border: 0px;
-	margin-right: 4px;
+	background: #444;
 	color: #fff;
 }
 .tabs-below > .nav-tabs > .active > a, .tabs-below > .nav-tabs > .active > a:hover {
 	background: #ffc907; /* Should match #header background-color */
-	border: 0px;
 	color: #fff;
 	font-weight: 600;
+	border: 0;
 }
 
 
@@ -235,10 +237,39 @@ input#s {
 	height: 250px;
 }
 
+h3.pubmodal_title {
+	position: static;
+	height: auto;	
+}
+
+.puburl_link {
+	margin-right: 2.74px;	
+}
+.puburl_link, .pubembed_link {
+	margin-bottom: 10px;	
+}
+
+.pubmodal_thumb img {
+	max-width: 140px;
+	height: auto;	
+}
+.modal .span4 {
+	width: 370px;	
+}
+.modal .span4 .well {
+	padding: 12px;	
+	margin: 10px 0;
+	text-align: center;
+}
+
 input.puburl {
 	width: 210px;
 	margin-top: 2px;
 }
+	.modal input.puburl, .modal textarea {
+		width: 330px;
+		margin-bottom: 0;
+	}
 
 .pagination {
 	text-align: center;

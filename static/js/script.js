@@ -18,6 +18,7 @@ if (typeof jQuery != 'undefined'){
 		Webcom.loadMoreSearchResults($);
 		
 		$(".puburl").live("click", function(){ $(this).select(); });
+		$(".modal textarea").live("click", function(){ $(this).select(); });
 
 	});
 }else{console.log('jQuery dependancy failed to load');}

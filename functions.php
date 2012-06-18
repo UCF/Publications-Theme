@@ -410,6 +410,8 @@ function get_pubs_list($catid = null) {
 			$publink = get_term_link( $publicationName, 'publications' );
 			$issuulink = get_post_meta($post->ID, 'pubedition_embed', TRUE);
 			
+			$pubslug = $post->post_name;
+			
 			
 			if ( ($_GET['sort'] == "latest") || (!(isset($_GET['sort']))) ) {
 			?>
@@ -417,8 +419,61 @@ function get_pubs_list($catid = null) {
 				<div class="pub_details">		
 					<h3><a target="_blank" href="<?=$publink?>"><?=trim_pub_title($publicationName)?></a></h3>
 					<p class="pubthumb"><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>
-					<p><strong>Link to Publication:</strong></p>
-					<input type="text" value="<?=get_term_link( $publicationName, 'publications' )?>" name="puburl" class="puburl" /></input>
+					<!--<p><strong>Link to Publication:</strong></p>-->
+					
+					<a data-toggle="modal" class="btn btn-small puburl_link" href="#linkmodal_<?=$pubslug?>">Link To Publication</a><a data-toggle="modal" class="btn btn-small pubembed_link" href="#embedmodal_<?=$pubslug?>"><i class="icon-share"></i> Embed Code</a>
+					<div class="modal fade hide" id="linkmodal_<?=$pubslug?>">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">×</button>
+							<h3 class="pubmodal_title">Link to <?=$publicationName?></h3>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="span2">
+									<p class="pubmodal_thumb"><?=$thumb?></p>
+								</div>
+								<div class="span4">
+									<p><strong>Instructions:</strong></p>
+									<p>Copy and paste the URL below wherever you'd like to link to this publication.</p>
+									<div class="well">
+										<input type="text" value="<?=get_term_link( $publicationName, 'publications' )?>" name="puburl" class="puburl" /></input>
+									</div>
+									<p><small>This link will always point to the latest edition/print of the publication.</small></p>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<a href="#" class="btn" data-dismiss="modal">Close</a>
+						</div>
+					</div>
+					
+					<div class="modal fade hide" id="embedmodal_<?=$pubslug?>">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">×</button>
+							<h3 class="pubmodal_title">Embed <?=$publicationName?> on your site</h3>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="span2">
+									<p class="pubmodal_thumb"><?=$thumb?></p>
+								</div>
+								<div class="span4">
+									<p><strong>Instructions:</strong></p>
+									<p>Copy the code below and paste it into an HTML text editor, similar to a YouTube video embed.</p>
+									<div class="well">
+									<?php if ($docID) { ?>
+										<textarea name="pubembed" class="pubembed"><div><object style="width:420px;height:273px"><param name="movie" value="http://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf?mode=mini&amp;backgroundColor=%23222222&amp;documentId=<?=$docID?>" /><param name="allowfullscreen" value="true"/><param name="menu" value="false"/><param name="wmode" value="transparent"/><embed src="http://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf" type="application/x-shockwave-flash" allowfullscreen="true" menu="false" wmode="transparent" style="width:420px;height:273px" flashvars="mode=mini&amp;backgroundColor=%23222222&amp;documentId=<?=$docID?>" /></object></div></textarea>
+									<?php } else { print "Embed code not available."; } ?>
+									</div>
+									<p><small>This embed code will display the current edition/print of this publication.  If a newer version of this publication is released, you'll need to get a new embed code to display the latest version.</small></p>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<a href="#" class="btn" data-dismiss="modal">Close</a>
+						</div>
+					</div>
+					
 					<p><strong>Found in:</strong> <?=$catlist?></p>
 					<p><strong>Published:</strong> <?=$pubdate?></p>
 				</div>
