@@ -148,7 +148,7 @@ h2#footer_logo {
 }
 
 #footer_navigation .span2 {
-	padding-top: 23px;	
+	padding-top: 35px;	
 	text-align: center;
 }
 	#footer_navigation .span2:first-child {
@@ -156,7 +156,7 @@ h2#footer_logo {
 		text-align: left;
 	}
 	#footer_navigation .search {
-		margin-top: -5px;	
+		margin-top: 4px;	
 	}
 
 #footer_navigation ul {
@@ -187,6 +187,7 @@ label#searchlabel {
 input#s {
 	background: #fff url('static/img/mag-glass.png') center left no-repeat;
 	text-indent: 28px;
+	width: 180px;
 }
 
 
