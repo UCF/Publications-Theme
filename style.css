@@ -66,7 +66,7 @@ h2 {
 
 /* Header */
 #header {
-	background-color:#302f50;
+	background-color:#ffc907;
 	height:auto;
 	color:#FFF;
 	position:relative;
@@ -102,8 +102,15 @@ h2 {
 #pubsort .tabs-below > .nav-tabs > li > a {
 	border-radius: 0 0 10px 10px;	
 }
+
+.nav-tabs > li > a:hover {
+	background: #444;	
+	border: 0px;
+	margin-right: 4px;
+	color: #fff;
+}
 .tabs-below > .nav-tabs > .active > a, .tabs-below > .nav-tabs > .active > a:hover {
-	background: #302f50; /* Should match #header background-color */
+	background: #ffc907; /* Should match #header background-color */
 	border: 0px;
 	color: #fff;
 	font-weight: 600;
