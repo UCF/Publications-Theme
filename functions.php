@@ -422,8 +422,8 @@ function get_pubs_list($catid = null) {
 					<p class="pubthumb"><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>
 					<p><strong>Link to Publication:</strong></p>
 					<input type="text" value="<?=get_term_link( $publicationName, 'publications' )?>" name="puburl" class="puburl" /></input>
-					<p><strong>Found Under</strong> <?=$catlist?></p>
-					<p><strong>Published On</strong> <?=$pubdate?></p>
+					<p><strong>Found in:</strong> <?=$catlist?></p>
+					<p><strong>Published:</strong> <?=$pubdate?></p>
 				</div>
 							
 			<?php	
@@ -440,8 +440,8 @@ function get_pubs_list($catid = null) {
 					
 				<li>
 					<h3><a target="_blank" href="<?=$publink?>"><?=$publicationName?></a></h3>
-					<p><strong>Found Under</strong> <?=$catlist?></p>
-					<p><strong>Published On</strong> <?=$pubdate?></p>
+					<p><strong>Found in:</strong> <?=$catlist?></p>
+					<p><strong>Published:</strong> <?=$pubdate?></p>
 				</li>
 						
 			<?php
