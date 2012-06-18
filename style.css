@@ -280,6 +280,7 @@ h2.sortall_letter {
 	display: block;
     float: left;
     font-size: 55px;
+	*font-size: 48px; /* IE7 */
     font-weight: 100;
     height: 62px;
     margin-bottom: 0;
