@@ -474,8 +474,8 @@ function get_pubs_list($catid = null) {
 						</div>
 					</div>
 					
-					<p><strong>Found in:</strong> <?=$catlist?></p>
 					<p><strong>Published:</strong> <?=$pubdate?></p>
+					<p><strong>Found in:</strong> <?=$catlist?></p>
 				</div>
 							
 			<?php	
@@ -491,8 +491,8 @@ function get_pubs_list($catid = null) {
 					
 				<li>
 					<h3><a target="_blank" href="<?=$publink?>"><?=$publicationName?></a></h3>
-					<p><strong>Found in:</strong> <?=$catlist?></p>
 					<p><strong>Published:</strong> <?=$pubdate?></p>
+					<p><strong>Found in:</strong> <?=$catlist?></p>
 					<br/>
 				</li>
 						
