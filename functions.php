@@ -482,7 +482,7 @@ function get_pubs_list($catid = null) {
 			} else if ($_GET['sort'] == "alphabetical") { 
 				$firstletter = strtoupper(substr($publicationName, 0, 1));
 				if ($firstletter != $currentletter) { ?>
-				
+					<div style="height: 1px; width: 100%; clear:both;"> </div>
 				 	<h2 class="sortall_letter"><?=$firstletter?></h2>
 				
 				<?php	
