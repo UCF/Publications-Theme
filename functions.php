@@ -336,7 +336,7 @@ function get_pubs_list($catid = null) {
 			case 'alphabetical':
 				$args = array( 'number' => $per_page, 'offset' => $offset );
 				break;
-			case 'newest':
+			case 'latest':
 				$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'latest_post' );
 				break;
 			case 'showall':
@@ -414,7 +414,7 @@ function get_pubs_list($catid = null) {
 			$issuulink = get_post_meta($post->ID, 'pubedition_embed', TRUE);
 			
 			
-			if ( ($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "newest") || (!(isset($_GET['sort']))) ) {
+			if ( ($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "latest") || (!(isset($_GET['sort']))) ) {
 			?>
 					
 				<div class="pub_details">		
@@ -464,7 +464,7 @@ function get_pubs_list($catid = null) {
 	
 	// If showall isn't set (and this isn't a category listing)...
 	if (!(is_category())) {
-		if(($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "newest") || (!(isset($_GET['sort'])))) {
+		if(($_GET['sort'] == "alphabetical") || ($_GET['sort'] == "latest") || (!(isset($_GET['sort'])))) {
 		
 			$total_terms = wp_count_terms( 'publications' );
 			$pages = ceil($total_terms/$per_page);
@@ -480,8 +480,8 @@ function get_pubs_list($catid = null) {
 								<?php if ($_GET['sort'] == "alphabetical") { 
 									print "?sort=alphabetical"; 
 								} 
-								else if ($_GET['sort'] == "newest") { 
-									print "?sort=newest"; 
+								else if ($_GET['sort'] == "latest") { 
+									print "?sort=latest"; 
 								} ?>">
 									1
 								</a>
@@ -494,8 +494,8 @@ function get_pubs_list($catid = null) {
 								<?php if ($_GET['sort'] == "alphabetical") { 
 									print "&sort=alphabetical"; 
 								} 
-								else if ($_GET['sort'] == "newest") { 
-									print "&sort=newest"; 
+								else if ($_GET['sort'] == "latest") { 
+									print "&sort=latest"; 
 								} ?>">
 								<?=$pagecount?>
 								</a>
