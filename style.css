@@ -286,6 +286,7 @@ h2.sortall_letter {
     margin-top: 0.17em;
     text-align: center;
     width: 55px;
+	float: left;
 }
 
 ul.alphabetical_pubs {
