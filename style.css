@@ -66,7 +66,7 @@ h2 {
 
 /* Header */
 #header {
-	background-color:#000;
+	background-color:#302f50;
 	height:auto;
 	color:#FFF;
 	position:relative;
@@ -103,7 +103,7 @@ h2 {
 	border-radius: 0 0 10px 10px;	
 }
 .tabs-below > .nav-tabs > .active > a, .tabs-below > .nav-tabs > .active > a:hover {
-	background: #000;
+	background: #302f50; /* Should match #header background-color */
 	border: 0px;
 	color: #fff;
 	font-weight: 600;
@@ -113,7 +113,7 @@ h2 {
 /* Footer */
 #footer {
 	width: 100%;
-	background-color: #888;
+	background-color: #444;
 	padding: 0 0 55px;
 	font-size: 16px;
 	margin-top: 30px;
@@ -123,7 +123,7 @@ h2#footer_logo {
 	width: 150px;
 	height: 55px;
 	text-indent: -9999px;
-	background: url('static/img/UCFLogo_no_tag-W.png') center center no-repeat;	
+	background: url('static/img/ucf_logo.png') center center no-repeat;	
 	margin: 0;
 }
 
@@ -173,7 +173,7 @@ button.search-submit {
 	display: none;	
 }
 label#searchlabel {
-	color: #888;
+	color: #444;
 }
 input#s {
 	background: #fff url('static/img/mag-glass.png') center left no-repeat;
