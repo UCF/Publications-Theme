@@ -278,7 +278,6 @@ input.puburl {
 
 h2.sortall_letter {
 	display: block;
-    float: left;
     font-size: 55px;
     font-weight: 100;
     height: 55px;
@@ -291,7 +290,6 @@ h2.sortall_letter {
 ul.alphabetical_pubs {
 	list-style-type: none;	
 	margin-left: 0;
-	min-width: 775px;
 }
 ul.alphabetical_pubs li {
 	margin-bottom: 1em;	
