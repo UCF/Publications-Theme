@@ -291,10 +291,12 @@ h2.sortall_letter {
 ul.alphabetical_pubs {
 	list-style-type: none;	
 	margin-left: 0;
+	min-width: 775px;
 }
 ul.alphabetical_pubs li {
 	margin-bottom: 1em;	
 	margin-left: 80px;
+	display: block;
 }
 ul.alphabetical_pubs li p {
 	margin: 0;
