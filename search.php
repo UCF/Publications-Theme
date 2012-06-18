@@ -68,9 +68,9 @@
 					}
 					?>
     				<h3><a target="_blank" class="sans title" href="<?php the_permalink();?>"><?php the_title(); ?></a></h3>
-					<p><strong>An Edition Of </strong><a target="_blank" href="<?=$publink?>"><?=$pubname?></a></p>
-					<p><strong>Found Under</strong> <?php the_category(', '); ?></p>
-					<p><strong>Published On</strong> <?php print get_the_date('M d, Y'); ?></p>
+					<p><strong>An edition of:</strong> <a target="_blank" href="<?=$publink?>"><?=$pubname?></a></p>
+					<p><strong>Found in:</strong> <?php the_category(', '); ?></p>
+					<p><strong>Published:</strong> <?php print get_the_date('M d, Y'); ?></p>
     				
     			</li>
 			    <?php endwhile;?>
