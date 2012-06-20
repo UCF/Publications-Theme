@@ -5,20 +5,34 @@
 	$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publication->name, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
 	$latestEdition = $latestEdition[0];
 	
-	$cats = get_the_category($latestEdition->ID);
-	$catlist =""; 
-	if ($cats[0] =="") { $catlist = "n/a"; } 
-	else { 
-		foreach ($cats as $cat) {
-			$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
-		}
-		$catlist = substr($catlist, 0, -2);
-	}
 	
+	$shortcode 		   	  	= get_post_meta($post->ID, 'pubedition_embed', TRUE);
+	$embedcode_explode_id 	= preg_split("/documentId=/", $shortcode); //split up shortcode at documentid
+	$embedcode_explode_id 	= preg_split("/ name=/", $embedcode_explode[1]); //remove the rest of the embed code, leaving the document id
+	$docID 			   	  	= $embedcode_explode_id[0];
+	
+	$embedcode_explode_name = preg_split("/name=/", $shortcode); //split up shortcode at name
+	$embedcode_explode_name	= preg_split("/ username=/", $embedcode_explode[1]); //remove the rest of the embed code, leaving the name
+	$docname = $embedcode_explode_name[0];
+	
+	if( (strstr($_SERVER['HTTP_USER_AGENT'],"iPad")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPhone")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPod")) ) {
 	?>
 	
-	<div class="publication_wrap">
-		<?php echo apply_filters('the_content', get_post_meta($latestEdition->ID, 'pubedition_embed', TRUE)); ?>
+	<div class="row">
+		<div class="span5">
+			<img src='http://image.issuu.com/<?=$docID?>/jpg/page_1_thumb_large.jpg' alt='<?=$post->post_title?>' title='<?=$post->post_title?>' />
+		</div>
+		<div class="span7">
+			<h2><?=$post->post_title?></h2>
+			<p>Hello, <?=$_SERVER['HTTP_USER_AGENT']?> user!</p>
+			<p><a href="http://issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile">Click here</a> to access this publication on your device.</p>
+		</div>
 	</div>
+	
+	<?php 
+	} else {
+		echo apply_filters('the_content', $shortcode); 
+	}
+	?>
 	
 <?php get_footer(); ?>
