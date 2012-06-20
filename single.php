@@ -20,7 +20,7 @@ foreach ($latestEditions as $latestEdition) {
 <div class="publication_wrap">
 
 	<?php 
-	$shortcode = apply_filters('the_content', get_post_meta($post->ID, 'pubedition_embed', TRUE));
+	$shortcode = get_post_meta($post->ID, 'pubedition_embed', TRUE);
 	embed_issuu($shortcode); 
 	?>
 	

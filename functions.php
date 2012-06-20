@@ -567,17 +567,17 @@ function embed_issuu($shortcode = null) {
 
 	//$shortcode 		   	  	= get_post_meta($post->ID, 'pubedition_embed', TRUE);
 	$embedcode_explode_id 	= preg_split("/documentId=/", $shortcode); //split up shortcode at documentid
-	$embedcode_explode_id 	= preg_split("/ name=/", $embedcode_explode[1]); //remove the rest of the embed code, leaving the document id
+	$embedcode_explode_id 	= preg_split("/ name=/", $embedcode_explode_id[1]); //remove the rest of the embed code, leaving the document id
 	$docID 			   	  	= $embedcode_explode_id[0];
 	
 	$embedcode_explode_name = preg_split("/name=/", $shortcode); //split up shortcode at name
-	$embedcode_explode_name	= preg_split("/ username=/", $embedcode_explode[1]); //remove the rest of the embed code, leaving the name
-	$docname = $embedcode_explode_name[0];
+	$embedcode_explode_name = preg_split("/ user/", $embedcode_explode_name[1]); //remove the rest of the embed code, leaving the name
+	$docname 				= $embedcode_explode_name[0];
 	
 	if( (strstr($_SERVER['HTTP_USER_AGENT'],"iPad")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPhone")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPod")) ) {
 	?>
 	
-	<div class="row">
+	<div class="row" id="device_fallback_wrap">
 		<div class="span5">
 			<img src='http://image.issuu.com/<?=$docID?>/jpg/page_1_thumb_large.jpg' alt='<?=$post->post_title?>' title='<?=$post->post_title?>' />
 		</div>
