@@ -4,8 +4,11 @@
 	$publication = $wp_query->queried_object;
 	$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publication->name, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
 	$latestEdition = $latestEdition[0];
+	?>
 	
+	<div class="publication_wrap">
 	
+	<?php
 	$shortcode 		   	  	= get_post_meta($post->ID, 'pubedition_embed', TRUE);
 	$embedcode_explode_id 	= preg_split("/documentId=/", $shortcode); //split up shortcode at documentid
 	$embedcode_explode_id 	= preg_split("/ name=/", $embedcode_explode[1]); //remove the rest of the embed code, leaving the document id
@@ -34,5 +37,7 @@
 		echo apply_filters('the_content', $shortcode); 
 	}
 	?>
+	
+	</div>
 	
 <?php get_footer(); ?>
