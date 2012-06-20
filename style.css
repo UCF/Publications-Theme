@@ -233,12 +233,11 @@ input#s {
 .pubthumb {
 	text-align: center;	
 	height: 250px;
-	margin: 1em 0 !important;	
+	margin: 1em 0 !important;
 }
 .pub_details img {
 	height: 250px;
 }
-
 h3.pubmodal_title {
 	position: static;
 	height: auto;	
