@@ -316,6 +316,7 @@ body.pubedition, body.pubedition .container, body.publication, body.publication 
 .pubedition #header, .pubedition #pubsort, .pubedition #footer, .publication #header, .publication #pubsort, .publication #footer {
 	display: none;
 }
+
 .publication_wrap p, .publication_wrap>div>div {
 	display: none;	
 }
@@ -328,6 +329,16 @@ body.pubedition, body.pubedition .container, body.publication, body.publication 
 	text-align: center;	
 }
 
+#device_fallback_row {
+	display: visible !important;
+}
+#device_fallback_wrap {
+	margin-top: 20px;
+	text-align: center;
+}
+#device_fallback_wrap p {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
 
 /* Categories page styles */
 

@@ -17,12 +17,10 @@ foreach ($latestEditions as $latestEdition) {
 }
 
 ?>
-<div class="publication_wrap">
 
 	<?php 
 	$shortcode = get_post_meta($post->ID, 'pubedition_embed', TRUE);
-	embed_issuu($shortcode); 
+	embed_issuu($shortcode, $post->post_title); 
 	?>
 	
-</div>
 <?php get_footer(); ?>

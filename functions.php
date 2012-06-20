@@ -563,7 +563,7 @@ function get_pubs_list($catid = null) {
 /*
  * Output an issuu pub or a link for ipad/iphone users
  */
-function embed_issuu($shortcode = null) { 
+function embed_issuu($shortcode = null, $pubtitle = null) { 
 
 	//$shortcode 		   	  	= get_post_meta($post->ID, 'pubedition_embed', TRUE);
 	$embedcode_explode_id 	= preg_split("/documentId=/", $shortcode); //split up shortcode at documentid
@@ -577,20 +577,26 @@ function embed_issuu($shortcode = null) {
 	if( (strstr($_SERVER['HTTP_USER_AGENT'],"iPad")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPhone")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPod")) ) {
 	?>
 	
-	<div class="row" id="device_fallback_wrap">
-		<div class="span5">
-			<img src='http://image.issuu.com/<?=$docID?>/jpg/page_1_thumb_large.jpg' alt='<?=$post->post_title?>' title='<?=$post->post_title?>' />
+		<div class="container-fluid" id="device_fallback_wrap">
+			<div class="row-fluid" id="device_fallback_row">
+				<div class="span12">
+					<h3><?=$pubtitle?></h3>
+					<br/>
+					<a href="http://issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile"><img src='http://image.issuu.com/<?=$docID?>/jpg/page_1_thumb_large.jpg' alt='<?=$post->post_title?>' title='<?=$post->post_title?>' /></a>
+					<p><a class="btn btn-primary btn-large" href="http://issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile">View Publication</a></p>
+				</div>
+			</div>
 		</div>
-		<div class="span7">
-			<h2><?=$post->post_title?></h2>
-			<p>Hello, <?=$_SERVER['HTTP_USER_AGENT']?> user!</p>
-			<p><a href="http://issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile">Click here</a> to access this publication on your device.</p>
-		</div>
-	</div>
 	
 	<?php 
 	} else {
-		echo apply_filters('the_content', $shortcode); 
+	?>
+	
+		<div class="publication_wrap">
+			<?=apply_filters('the_content', $shortcode)?>
+		</div>
+	
+	<?php
 	}
 
 }
