@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" <?php if ((('pubedition' == get_post_type() && (!(is_search()))) || ($wp_query->queried_object == "publication"))) { print "style='height: 100%;'"; } ?>>
 	<head>
-		<meta name="viewport" content="width=device-width">
+		<meta name="viewport" content="width=1024">
 		<?="\n".header_()."\n"?>
 		<?php if(GA_ACCOUNT or CB_UID):?>
 
