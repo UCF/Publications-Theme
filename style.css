@@ -342,6 +342,9 @@ body.pubedition, body.pubedition .container, body.publication, body.publication 
 #device_fallback_wrap p {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+#device_fallback_wrap .btn-large {
+	font-size: 36px;
+}
 
 /* Categories page styles */
 

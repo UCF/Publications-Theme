@@ -582,7 +582,7 @@ function embed_issuu($shortcode = null, $pubtitle = null) {
 		<div class="container-fluid" id="device_fallback_wrap">
 			<div class="row-fluid" id="device_fallback_row">
 				<div class="span12">
-					<h3><?=$pubtitle?></h3>
+					<h1><?=$pubtitle?></h1>
 					<br/>
 					<a href="http://issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile"><img src='http://image.issuu.com/<?=$docID?>/jpg/page_1_thumb_large.jpg' alt='<?=$post->post_title?>' title='<?=$post->post_title?>' /></a>
 					<p><a class="btn btn-primary btn-large" href="http://issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile">View Publication</a></p>
