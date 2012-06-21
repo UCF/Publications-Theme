@@ -421,7 +421,9 @@ function get_pubs_list($catid = null) {
 					<p class="pubthumb"><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>
 					<!--<p><strong>Link to Publication:</strong></p>-->
 					
-					<a data-toggle="modal" class="btn btn-small puburl_link" href="#linkmodal_<?=$pubslug?>">Link To Publication</a><a data-toggle="modal" class="btn btn-small pubembed_link" href="#embedmodal_<?=$pubslug?>"><i class="icon-share"></i> Embed Code</a>
+					<div>
+						<a data-toggle="modal" class="btn btn-small puburl_link" href="#linkmodal_<?=$pubslug?>">Link To Publication</a><a data-toggle="modal" class="btn btn-small pubembed_link" href="#embedmodal_<?=$pubslug?>"><i class="icon-share"></i> Embed Code</a>
+					</div>
 					<div class="modal fade hide" id="linkmodal_<?=$pubslug?>">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">×</button>
