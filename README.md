@@ -20,6 +20,7 @@ Upon installation:
 	* Index and search your posts' tags:  checked
 	* Index and search your posts' categories:  checked
 	* Custom taxonomies to index:  publications
+* In Theme Options > Search, TURN OFF Google Search.
 
 This theme automatically pulls publication thumbnails from Issuu based on the documentId found in the Issuu pub WordPress shortcode; PubEdition thumbnails are therefore disabled.
 
