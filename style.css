@@ -344,6 +344,7 @@ body.pubedition, body.pubedition .container, body.publication, body.publication 
 }
 #device_fallback_wrap .btn-large, #device_fallback_wrap h1 {
 	font-size: 48px;
+	margin: 20px 0;
 }
 	#device_fallback_wrap .btn-large {
 		padding: 20px 40px;	
