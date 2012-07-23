@@ -17,7 +17,23 @@
 				
 				<li class="section" id="posting">
 					<h3>Posting</h3>
-					<p>Posting is fun, do it.</p>
+					<p>General instructions for using the publications.ucf.edu WordPress site</p>
+					<p><strong>Get the embed code:</strong>
+					<ol>
+						<li>Upload the publication to Issuu. After uploading, go to the UCF Issuu Library (after logging into Issuu, in the top-right-hand corner, hover over our username and select 'My Library') and locate the publication you uploaded. Hover over the publication's thumbnail and click 'Open'.</li>
+						<li>On this page, you'll see a small embed code with the publication's description and various sharing options. Directly under the publication embed, look for the icon with the brackets "< >" that says 'Get Embed Code.' Click it; a modal window will appear. To the left, click the 'WordPress' link. Right-click + copy the code in the text area directly underneath 'Get the embed code.'</li></ol>
+<br>
+					<p><strong>Add the publication to WordPress:</strong></p>					
+						<ol>
+						<li>Log into the new publications.ucf.edu WordPress site. Once logged in, locate 'Pub Editions' in the left-hand menu, and click 'Add New'.
+						<li>First, in the 'Issuu Pub' box underneath the text editor, paste the code from Issuu that you just copied.</li>
+						<li>In the box to the bottom-right labeled 'Publications', scroll and locate the name of the publication you'd like to add the new pub edition to.  Click the checkbox next to it. You should only check one publication name here. If this is a new piece that does not yet exist on the site, you can create a new one by clicking '+Add New Publication', typing a name, and clicking the 'Add New Publication' button below.</li>
+						<li>In the 'Categories' box, select the categor(ies) relevant to the pub edition. Assuming this isn't a new type of publication, you should use the same categories that the previous pub edition is tagged with.  Not doing so can mess up the list of publications by category on the front end. You can check for these categories easily by locating the publication on the front end and noting where the publication is 'Found in.'</li>
+						<li>Add a title for the pub edition. The naming convention here should be the name of the publication and what year/season/month it was released; i.e. "2011-2012 Transfer Viewbook"</li>
+						<li>If you want to designate a specific publication date, locate the 'Publish immediately' label in the 'Publish' box. Click the 'Edit' link next to it, and pick the date that the publication was originally published. Not setting a specific date here will default to the current day/time.</li>
+						<li>When you're finished, click the blue 'Publish' button.</li>
+					</ol>
+					</p>
 				</li>
 				
 				<li class="section" id="shortcodes">
