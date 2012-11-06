@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html style="width:100%; height:100%;">
+<html style="width:100%; height:100%; margin-top:0 !important;">
 	<head>
 		<?="\n".header_()."\n"?>
 		<?php if(GA_ACCOUNT or CB_UID):?>
