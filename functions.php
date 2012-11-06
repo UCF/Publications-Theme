@@ -561,7 +561,6 @@ function get_pubs_list($catid = null) {
 	}
 }
 
-
 /*
  * Output an issuu pub or a link for ipad/iphone users
  */
@@ -602,3 +601,17 @@ function embed_issuu($shortcode = null, $pubtitle = null) {
 	}
 
 }
+
+
+/**
+ * Get the pubedition's Issuu ID based on the Wordpress embed code provided by Issuu
+ * @return string
+ **/
+function get_pubedition_docid($post_id) {
+	$embedcode_explode 	= preg_split("/documentId=/", get_post_meta($post_id, 'pubedition_embed', TRUE)); //split up shortcode at documentid
+	$embedcode_explode 	= preg_split("/ name=/", $embedcode_explode[1]); //remove the rest of the embed code, leaving the document id
+	$docID 		= $embedcode_explode[0];
+	return $docID;
+}
+
+?>

@@ -24,21 +24,19 @@
 		<?php endif;?>
 	</head>
 	
-	<body class="<?=get_post_type($post->ID)?>">
+	<?php
+	$publication = $wp_query->queried_object;
+	$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publication->name, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
+	$latestEdition = $latestEdition[0];
+	?>
 	
-		<?php
-		$publication = $wp_query->queried_object;
-		$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publication->name, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
-		$latestEdition = $latestEdition[0];
-		?>
-	
+	<body class="<?=get_post_type($post->ID)?>" data-issuu-id="<?=get_pubedition_docid($latestEdition->ID)?>">
+		
 		<?php 
 		$shortcode = get_post_meta($latestEdition->ID, 'pubedition_embed', TRUE);
 		embed_issuu($shortcode, $publication->name); 
 		?>
 	
 	</body>
-	<!--[if IE]>
-	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
+	<?="\n".footer_()."\n"?>
 </html>

@@ -34,6 +34,8 @@ select#UCFHBHeaderLinks {
 	padding: 0;
 }
 
+body.pubedition #UCFHBHeader { display:none; }
+
 /* Universal Theme Styles */
 
 .overhang {width:1000px;position:relative;left:-30px;}
