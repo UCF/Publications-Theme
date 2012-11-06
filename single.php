@@ -1,3 +1,10 @@
+<?php if ($_GET['issuu-data'] == 'docID') {
+	$issuudata = array();
+	$issuudata['docID'] = get_pubedition_docid($latestEdition->ID);
+	print json_encode($issuudata);
+}
+else {
+?>
 <!DOCTYPE html>
 <html style="width:100%; height:100%; margin-top:0 !important;">
 	<head>
@@ -24,7 +31,7 @@
 		<?php endif;?>
 	</head>
 	
-	<body class="<?=get_post_type($post->ID)?>" data-issuu-id="<?=get_pubedition_docid($post->ID)?>">
+	<body class="<?=get_post_type($post->ID)?>">
 	
 		<?php 
 		//Display message stating a newer issue is available, with link to new issue, if this is not the newest post under its taxonomy term
@@ -53,3 +60,4 @@
 	</body>
 	<?="\n".footer_()."\n"?>
 </html>
+<?php } ?>

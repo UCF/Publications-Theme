@@ -1,3 +1,16 @@
+<?php
+	$publication = $wp_query->queried_object;
+	$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publication->name, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
+	$latestEdition = $latestEdition[0];
+?>
+	
+<?php if ($_GET['issuu-data'] == 'docID') {
+	$issuudata = array();
+	$issuudata['docID'] = get_pubedition_docid($latestEdition->ID);
+	print json_encode($issuudata);
+}
+else {
+?>
 <!DOCTYPE html>
 <html style="width:100%; height:100%; margin-top:0 !important;">
 	<head>
@@ -24,13 +37,9 @@
 		<?php endif;?>
 	</head>
 	
-	<?php
-	$publication = $wp_query->queried_object;
-	$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publication->name, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
-	$latestEdition = $latestEdition[0];
-	?>
 	
-	<body class="<?=get_post_type($post->ID)?>" data-issuu-id="<?=get_pubedition_docid($latestEdition->ID)?>">
+	
+	<body class="<?=get_post_type($post->ID)?>">
 		
 		<?php 
 		$shortcode = get_post_meta($latestEdition->ID, 'pubedition_embed', TRUE);
@@ -40,3 +49,4 @@
 	</body>
 	<?="\n".footer_()."\n"?>
 </html>
+<?php } ?>
