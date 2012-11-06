@@ -531,20 +531,15 @@ function get_pubs_list($catid = null) {
 						<ul>
 							<li <?php if (!($_GET['pagenum'])) { print 'class="active"'; } ?>>
 								<a href="<?=get_site_url()?>
-								<?php if ($_GET['sort'] == "latest") { 
-									print "?sort=latest"; 
-								} ?>">
+								<?php if ($_GET['sort'] == "latest") { print "?sort=latest"; } ?>">
 									1
 								</a>
 							</li>
 						<?php 
 						for ($pagecount = 2; $pagecount <= $pages; $pagecount++) { ?>
 							<li <?php if ($pagecount == $_GET['pagenum']) { print 'class="active"'; } ?>>
-								<a href="<?=get_site_url()?>
-								?pagenum=<?=$pagecount?>
-								<?php if ($_GET['sort'] == "latest") { 
-									print "&sort=latest"; 
-								} ?>">
+								<a href="<?=get_site_url()?>?pagenum=<?=$pagecount?>
+								<?php if ($_GET['sort'] == "latest") { print "&sort=latest"; } ?>">
 								<?=$pagecount?>
 								</a>
 							</li>
