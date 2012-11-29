@@ -338,18 +338,23 @@ body.pubedition, body.pubedition .container, body.publication, body.publication 
 	display: visible !important;
 }
 #device_fallback_wrap {
-	margin-top: 20px;
+	margin-top: 10px;
 	text-align: center;
 }
 #device_fallback_wrap p {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 #device_fallback_wrap .btn-large, #device_fallback_wrap h1 {
-	font-size: 48px;
-	margin: 20px 0;
+	font-size: 20px;
+	margin: 20px 0 10px 0;
+	line-height: 24px;
 }
 	#device_fallback_wrap .btn-large {
-		padding: 20px 40px;	
+		padding: 10px 20px;	
+	}
+	#device_fallback_wrap img { 
+		max-width: 100px;
+		text-align: center;
 	}
 
 /* Categories page styles */

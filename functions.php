@@ -239,6 +239,7 @@ if ($theme_options['bw_verify']){
 		'content' => htmlentities($theme_options['bw_verify']),
 	);
 }
+
 				
 /*
  * Returns featured image URL of a specified post ID
@@ -570,7 +571,7 @@ function embed_issuu($shortcode = null, $pubtitle = null) {
 	$embedcode_explode_name = preg_split("/ user/", $embedcode_explode_name[1]); //remove the rest of the embed code, leaving the name
 	$docname 				= $embedcode_explode_name[0];
 	
-	if( (strstr($_SERVER['HTTP_USER_AGENT'],"iPad")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPhone")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPod")) ) {
+	if( (strstr($_SERVER['HTTP_USER_AGENT'],"iPad")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPhone")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPod")) || (strstr($_SERVER['HTTP_USER_AGENT'],"Android")) ) {
 	?>
 	
 		<div class="container-fluid" id="device_fallback_wrap">
