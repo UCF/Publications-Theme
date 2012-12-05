@@ -1,6 +1,6 @@
 <?php if ($_GET['issuu-data'] == 'docID') {
 	$issuudata = array();
-	$issuudata['docID'] = get_pubedition_docid($latestEdition->ID);
+	$issuudata['docID'] = get_pubedition_docid($post->ID);
 	print json_encode($issuudata);
 }
 else {
