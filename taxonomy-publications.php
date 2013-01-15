@@ -43,10 +43,7 @@ else {
 	
 	<body class="<?=get_post_type($post->ID)?>">
 		
-		<?php 
-		$shortcode = get_post_meta($latestEdition->ID, 'pubedition_embed', TRUE);
-		embed_issuu($shortcode, $publication->name); 
-		?>
+		<?php embed_issuu($latestEdition->ID); ?>
 	
 	</body>
 	<?="\n".footer_()."\n"?>

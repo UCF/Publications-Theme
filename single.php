@@ -54,10 +54,7 @@ else {
 		
 		?>
 
-	<?php 
-	$shortcode = get_post_meta($post->ID, 'pubedition_embed', TRUE);
-	embed_issuu($shortcode, $post->post_title); 
-	?>
+	<?php embed_issuu($post->ID); ?>
 	
 	</body>
 	<?="\n".footer_()."\n"?>
