@@ -314,6 +314,30 @@ function trim_pub_title($input) {
 }
 
 
+/**
+ * Get the pubedition's Issuu ID based on the Wordpress embed code provided by Issuu
+ * @return string
+ **/
+function get_pubedition_docid($post_id) {
+	$embedcode  = get_post_meta($post_id, 'pubedition_embed', TRUE);
+	preg_match('/(?i)(documentid=)(?P<id>[A-Za-z0-9\-]+)/', $embedcode, $matches);
+	$docID		= $matches['id'];
+	return $docID;
+}
+
+
+/**
+ * Get the pubedition's Issuu docname based on the Wordpress embed code provided by Issuu
+ * @return string
+ **/
+function get_pubedition_docname($post_id) {
+	$embedcode  = get_post_meta($post_id, 'pubedition_embed', TRUE);
+	preg_match('/(?i)(doc)?(name=)(?P<name>[A-Za-z0-9\-\_]+)/', $embedcode, $matches);
+	$docname	= $matches['name'];
+	return $docname;
+}
+
+
 /*
  * Get all publications and output them with their latest pub editions
  */
@@ -390,9 +414,7 @@ function get_pubs_list($catid = null) {
 						
 						
 			//Get pubedition's thumbnail from Issuu based on the document ID found in the pub's shortcode:
-			$embedcode_explode = preg_split("/documentId=/", get_post_meta($post->ID, 'pubedition_embed', TRUE)); //split up shortcode at documentid
-			$embedcode_explode = preg_split("/ name=/", $embedcode_explode[1]); //remove the rest of the embed code, leaving the document id
-			$docID 			   = $embedcode_explode[0];
+			$docID = get_pubedition_docid($post->ID);
 			$thumb = "<img src='http://image.issuu.com/".$docID."/jpg/page_1_thumb_large.jpg' alt='".$post->post_title."' title='".$post->post_title."' />";
 					
 			$cats = get_the_category($post->ID);
@@ -560,16 +582,14 @@ function get_pubs_list($catid = null) {
 /*
  * Output an issuu pub or a link for ipad/iphone users
  */
-function embed_issuu($shortcode = null, $pubtitle = null) { 
-
-	//$shortcode 		   	  	= get_post_meta($post->ID, 'pubedition_embed', TRUE);
-	$embedcode_explode_id 	= preg_split("/documentId=/", $shortcode); //split up shortcode at documentid
-	$embedcode_explode_id 	= preg_split("/ name=/", $embedcode_explode_id[1]); //remove the rest of the embed code, leaving the document id
-	$docID 			   	  	= $embedcode_explode_id[0];
+function embed_issuu($post_id) { 
 	
-	$embedcode_explode_name = preg_split("/name=/", $shortcode); //split up shortcode at name
-	$embedcode_explode_name = preg_split("/ user/", $embedcode_explode_name[1]); //remove the rest of the embed code, leaving the name
-	$docname 				= $embedcode_explode_name[0];
+	$pub 		= get_post($post_id);
+	$pubtitle 	= $pub->post_title;
+	$shortcode 	= get_post_meta($post_id, 'pubedition_embed', TRUE);
+	
+	$docID 		= get_pubedition_docid($post_id);
+	$docname	= get_pubedition_docname($post_id);
 	
 	if( (strstr($_SERVER['HTTP_USER_AGENT'],"iPad")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPhone")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPod")) || (strstr($_SERVER['HTTP_USER_AGENT'],"Android")) ) {
 	?>
@@ -579,7 +599,7 @@ function embed_issuu($shortcode = null, $pubtitle = null) {
 				<div class="span12">
 					<h1><?=$pubtitle?></h1>
 					<br/>
-					<a href="http://issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile"><img src='http://image.issuu.com/<?=$docID?>/jpg/page_1_thumb_large.jpg' alt='<?=$post->post_title?>' title='<?=$post->post_title?>' /></a>
+					<a href="http://issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile"><img src='http://image.issuu.com/<?=$docID?>/jpg/page_1_thumb_large.jpg' alt='<?=$pubtitle?>' title='<?=$pubtitle?>' /></a>
 					<p><a class="btn btn-primary btn-large" href="http://issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile">View Publication</a></p>
 				</div>
 			</div>
@@ -596,18 +616,6 @@ function embed_issuu($shortcode = null, $pubtitle = null) {
 	<?php
 	}
 
-}
-
-
-/**
- * Get the pubedition's Issuu ID based on the Wordpress embed code provided by Issuu
- * @return string
- **/
-function get_pubedition_docid($post_id) {
-	$embedcode_explode 	= preg_split("/documentId=/", get_post_meta($post_id, 'pubedition_embed', TRUE)); //split up shortcode at documentid
-	$embedcode_explode 	= preg_split("/ name=/", $embedcode_explode[1]); //remove the rest of the embed code, leaving the document id
-	$docID 		= $embedcode_explode[0];
-	return $docID;
 }
 
 ?>
