@@ -332,7 +332,7 @@ function get_pubedition_docid($post_id) {
  **/
 function get_pubedition_docname($post_id) {
 	$embedcode  = get_post_meta($post_id, 'pubedition_embed', TRUE);
-	preg_match('/(?i)(doc)?(name=)(?P<name>[A-Za-z0-9\-\_]+)/', $embedcode, $matches);
+	preg_match('/(?i)(docname=| name=)(?P<name>[A-Za-z0-9\-\_]+)/', $embedcode, $matches);
 	$docname	= $matches['name'];
 	return $docname;
 }
