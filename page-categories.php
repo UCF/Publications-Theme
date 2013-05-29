@@ -2,10 +2,10 @@
 	<?php $options = get_option(THEME_OPTIONS_NAME);?>
 	<div class="page-content" id="categories" data-template="category">
 		<div class="row">
+			<div class="span12" id="allcats_list">
+				<h2>All Categories</h2>
 				
-				<?php 					
-					print "<div class='span12' id='allcats_list'><h2>All Categories</h2>";
-					
+				<?php 	
 					/*
 					 * Print all categories and the number of unique publications (taxonomy terms) per category:
 					 */ 
@@ -31,7 +31,7 @@
 						}
 					}
 					
-					//Finally, get the count and spit it out:
+					//Finally, get the count for each category and display it:
 					foreach ($all_cats as $cat) {
 						$count = 0;
 						foreach ($publication_cats as $publication=>$publication_catname) {
@@ -45,11 +45,8 @@
 							print "'>".$cat->name." (".$count.")</a><br/>";
 						}
 					}
-					
-					
-					print "</div>";
-					
 				?>
+			</div>
 				
 		</div>
 	</div>

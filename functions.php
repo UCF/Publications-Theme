@@ -339,6 +339,62 @@ function get_pubedition_docname($post_id) {
 
 
 /*
+ * Retrieve publications and return them by their latest pub editions.
+ * Allows for filtering by category or by publication name, as well as
+ * sorting by name and by latest pub edition.
+ * Returns an array of post (pubedition) objects, or false on an empty result.
+ *
+ * @arg $catid -    Category ID to filter publications by.
+ * @arg $pubid -    Publication ID to filter by (will return a list of 
+ * 				    pubeditions with this publication ID).
+ * @arg $per_page - Number of results per page.  If returned results 
+ *                  exceed this number, pagination will be displayed.
+ * @arg $sort - 	How to sort returned publications. 'latest' will 
+ * 					return publications from newest tagged pubedition to
+ * 					oldest; 'alpha' will return publications in A-Z order.	
+ * @arg $pagenum -  Offset for pagination.
+ * @return array				
+ */
+function get_pubs($catid=null, $pubid=null, $per_page=16, $sort='latest', $pagenum=0) {
+	
+	// Cannot return results by catid and pubid; return false if both are set
+	if ($catid !== null && $pubid !== null) { return false; }
+	
+	// Define an offset for pagination based on whether a pagenum is set or not
+	if ( $pagenum !== 0 ) { 
+		$offset = 0;
+	}
+	else { $offset = $per_page*($pagenum-1); }
+	
+	// Define arguments for get_terms()
+	if ($catid !== null) {
+		$args = array('hide_empty' => 0, 'orderby' => 'latest_post'); 
+	}
+	elseif ($pubid !== null) {
+		$args = array();
+	}
+	else {
+		switch ($sort) {
+			case 'alpha':
+				$args = array('hide_empty' => 0);
+				break;
+			case 'latest':
+			default:
+				$args = array('number' => $per_page, 'offset' => $offset, 'orderby' => 'latest_post');
+				break;
+		}
+	}
+}
+
+/*
+ * Display publications.  Requires an array of post objects (get_pubs() results)
+ * @return string
+ */
+function display_pubs($pubs) {
+	if (empty($pubs)) { return null; }
+}
+
+/*
  * Get all publications and output them with their latest pub editions
  */
 function get_pubs_list($catid = null) {
