@@ -362,7 +362,7 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 	$pubeditions  = null;
 	
 	// Default args
-	$args = array('post_type' => 'pubedition');
+	$args = array('post_type' => 'pubedition', 'numberposts' => -1);
 	// By publication id args
 	if ($pubid !== null) {
 		$args = array_merge($args, array(
@@ -410,6 +410,9 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 					$sortable_pubedition_list[$publication]->publication = $publication;
 				}
 			}
+			
+			
+			
 		}
 		// Realphabetize results by publication name if necessary
 		if ($sort == 'alpha') {
@@ -426,253 +429,214 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 	
 }
 
-/*
- * Display publications.  Requires an array of post objects (get_pubs() results)
- * @return string
+/* 
+ * Return a subset of publications for use in a paginated display.
  */
-function display_pubs($pubs) {
-	if (empty($pubs)) { return null; }
+function paginate_pubs($pubs, $per_page=16, $pagenum=0) {
+	if (empty($pubs)) { return false; }
+	
+	// Define an offset
+	if ($pagenum == 0) { 
+		$offset = 0;
+	}
+	else { $offset = $per_page*($pagenum-1); }
+	
+	$paginated_pubs = array();
+	for ($i=$offset; $i<($offset + $per_page); $i++) {
+		if (isset($pubs[$i])) {
+			$paginated_pubs[] = $pubs[$i];
+		}
+	}
+	
+	return $paginated_pubs;
 }
 
 /*
- * Get all publications and output them with their latest pub editions
+ * Display publications.  Requires an array of post objects (get_pubs() results)
+ * If $styling is set to 'alphalist', an alphabetized index of publication names
+ * will be returned.
+ *
+ * @return string
  */
-function get_pubs_list($catid = null) {
+function display_pubs($pubs, $styling='default') {
+	if (empty($pubs)) { return null; }
 	
-	//INITIAL PAGINATION PARAMETERS
-	
-	//Manually define how many pubs will display per page
-	$per_page = 16;
-	
-	//define an offset for pagination based on whether Show All is activated or not
-	if ( !isset($_GET['pagenum']) ) { 
-		$offset = 0;
-	}
-	else { $offset = $per_page*(($_GET['pagenum'])-1); }
-	
-	//DEFINE ARGUMENTS FOR RETRIEVING TERMS (PUBLICATIONS) BASED ON QUERY PARAMS	
-	
-	if ( isset($_GET['sort']) ) {
-		switch ($_GET['sort']) {
-			case 'alphabetical':
-				$args = array('hide_empty' => 0);
-				break;
-			case 'latest':
-				$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'latest_post' );
-				break;
-		}
-	}
-	else if (is_category()) { 
-		$args = array('hide_empty' => 0, 'orderby' => 'latest_post'); 
-	}
-	else {
-		$args = array( 'number' => $per_page, 'offset' => $offset, 'orderby' => 'latest_post' ); //default to sort by latest pubedition
-	}
-	
-	//Need to start <ul> for Alphabetical pg before the publications foreach loop
-	switch ($_GET['sort']) {
-		case 'alphabetical':
-			print '<div class="span12"><ul class="alphabetical_pubs">';
+	switch ($styling) {
+		case 'alphalist':
+			ob_start(); ?>
+			
+			<div class="span12">
+				<ul class="alphabetical_pubs">
+					<?php
+					$currentletter = '';
+					foreach ($pubs as $post) {
+						$cats    = get_the_category($post->ID);
+						$catlist = ''; 
+						if ($cats[0] == '') { $catlist = "n/a"; } 
+						else { 
+							foreach ($cats as $cat) {
+								$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
+							}
+							$catlist = substr($catlist, 0, -2); //remove last stray comma and space
+						} 
+						$publication_name = $post->publication;		
+						$pubdate 		  = date('M j, Y', strtotime($post->post_date));
+						$publink 		  = get_term_link($publication_name, 'publications');
+			
+						$firstletter = strtoupper(substr($publication_name, 0, 1));
+						if ($firstletter != $currentletter) { ?>
+							<h2 class="sortall_letter"><?=$firstletter?></h2>
+						<?php	
+							$currentletter = $firstletter;
+						} ?>
+						<li>
+							<h3><a target="_blank" href="<?=$publink?>"><?=$publication_name?></a></h3>
+							<p><strong>Published:</strong> <?=$pubdate?></p>
+							<p><strong>Found in:</strong> <?=$catlist?></p>
+							<br/>
+						</li>
+					<?php
+					} ?>
+				</ul>
+			</div>
+			
+			<?php
+			print ob_get_clean();
 			break;
+			
+		case 'default':
 		default:
-			break;
-	}
-	
-	//We're also going to set up a variable for grouping the Show All sort later
-	$currentletter = '';
-	
-	
-	//GET THE LIST OF TERMS (PUBLICATIONS)
-	
-	$publications = get_terms( 'publications', $args );	
-
-	foreach ($publications as $publication) {
-		$publicationID 		= $publication->term_taxonomy_id;
-		$publicationName 	= $publication->name;
-		
-		/*if (!($publication->name == $term)) {
-			unset($publication);
-		}*/
+			ob_start();
 			
-		//GET THE FIRST POST FOR EACH PUBLICATION AND DISPLAY IT
+			foreach ($pubs as $post) {
+				//Get pubedition's thumbnail from Issuu based on the document ID found in the pub's shortcode:
+				$docID 			  = get_pubedition_docid($post->ID);
+				$thumb 			  = "<img src='http://image.issuu.com/".$docID."/jpg/page_1_thumb_large.jpg' alt='".$post->post_title."' title='".$post->post_title."' />";
+				$cats  			  = get_the_category($post->ID);
+				$catlist = ''; 
+				if ($cats[0] == '') { $catlist = "n/a"; } 
+				else { 
+					foreach ($cats as $cat) {
+						$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
+					}
+					$catlist = substr($catlist, 0, -2); //remove last stray comma and space
+				} 
+				$publication_name = $post->publication;		
+				$pubdate 		  = date('M j, Y', strtotime($post->post_date));
+				$publink 		  = get_term_link($publication_name, 'publications');
+				$issuulink 		  = get_post_meta($post->ID, 'pubedition_embed', TRUE);
 			
-		$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $publicationName, 'category' => $catid, 'order' => 'DESC', 'post_status' => 'publish', 'numberposts' => 1));
-			
-		foreach ($latestEdition as $post) {
-					
-			switch ($_GET['sort']) {
-				case 'alphabetical':
-					break;
-				default:
-					print '<div class="span3 pub">'; 
-					break;
-			}
-						
-						
-			//Get pubedition's thumbnail from Issuu based on the document ID found in the pub's shortcode:
-			$docID = get_pubedition_docid($post->ID);
-			$thumb = "<img src='http://image.issuu.com/".$docID."/jpg/page_1_thumb_large.jpg' alt='".$post->post_title."' title='".$post->post_title."' />";
-					
-			$cats = get_the_category($post->ID);
-			$catlist =""; 
-			if ($cats[0] =="") { $catlist = "n/a"; } 
-			else { 
-				foreach ($cats as $cat) {
-					$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
-				}
-				$catlist = substr($catlist, 0, -2); //remove last stray comma and space
-			} 
-					
-			$pubdate = $post->post_date; 
-			$pubdate = date('M j, Y', strtotime($pubdate));
-			
-			$publink = get_term_link( $publicationName, 'publications' );
-			$issuulink = get_post_meta($post->ID, 'pubedition_embed', TRUE);
-			
-			$pubslug = $post->post_name;
-			
-			
-			if ( ($_GET['sort'] == "latest") || (!(isset($_GET['sort']))) ) {
 			?>
-					
-				<div class="pub_details">		
-					<h3><a target="_blank" href="<?=$publink?>"><?=trim_pub_title($publicationName)?></a></h3>
-					<p class="pubthumb"><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>
-					<!--<p><strong>Link to Publication:</strong></p>-->
-					
-					<div>
-						<a data-toggle="modal" class="btn btn-small puburl_link" href="#linkmodal_<?=$pubslug?>">Link To Publication</a><a data-toggle="modal" class="btn btn-small pubembed_link" href="#embedmodal_<?=$pubslug?>"><i class="icon-share"></i> Embed Code</a>
-					</div>
-					<div class="modal fade hide" id="linkmodal_<?=$pubslug?>">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">×</button>
-							<h3 class="pubmodal_title">Link to <?=$publicationName?></h3>
+			
+				<div class="span3 pub">
+					<div class="pub_details">		
+						<h3><a target="_blank" href="<?=$publink?>"><?=trim_pub_title($publication_name)?></a></h3>
+						<p class="pubthumb"><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>						
+						<div>
+							<a data-toggle="modal" class="btn btn-small puburl_link" href="#linkmodal_<?=$post->post_name?>">Link To Publication</a>
+							<a data-toggle="modal" class="btn btn-small pubembed_link" href="#embedmodal_<?=$post->post_name?>"><i class="icon-share"></i> Embed Code</a>
 						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="span2">
-									<p class="pubmodal_thumb"><?=$thumb?></p>
-								</div>
-								<div class="span4">
-									<p><strong>Instructions:</strong></p>
-									<p>Copy/paste the URL below to link to this publication.</p>
-									<div class="well">
-										<input type="text" value="<?=get_term_link( $publicationName, 'publications' )?>" name="puburl" class="puburl" /></input>
+						<div class="modal fade hide" id="linkmodal_<?=$post->post_name?>">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">×</button>
+								<h3 class="pubmodal_title">Link to <?=$publication_name?></h3>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<div class="span2">
+										<p class="pubmodal_thumb"><?=$thumb?></p>
 									</div>
-									<p><small>This address will always refer to the latest edition of the publication.</small></p>
+									<div class="span4">
+										<p><strong>Instructions:</strong></p>
+										<p>Copy/paste the URL below to link to this publication.</p>
+										<div class="well">
+											<input type="text" value="<?=get_term_link( $publication_name, 'publications' )?>" name="puburl" class="puburl" /></input>
+										</div>
+										<p><small>This address will always refer to the latest edition of the publication.</small></p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="modal-footer">
-							<a href="#" class="btn" data-dismiss="modal">Close</a>
-						</div>
-					</div>
-					
-					<div class="modal fade hide" id="embedmodal_<?=$pubslug?>">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">×</button>
-							<h3 class="pubmodal_title">Embed <?=$publicationName?> on your site</h3>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="span2">
-									<p class="pubmodal_thumb"><?=$thumb?></p>
-								</div>
-								<div class="span4">
-									<p><strong>Instructions:</strong></p>
-									<p>Copy/paste the code below wherever you want the publication* to display on your site.</p>
-									<div class="well">
-									<?php if ($docID) { ?>
-										<textarea name="pubembed" class="pubembed"><div><object style="width:420px;height:273px"><param name="movie" value="http://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf?mode=mini&amp;backgroundColor=%23222222&amp;documentId=<?=$docID?>" /><param name="allowfullscreen" value="true"/><param name="menu" value="false"/><param name="wmode" value="transparent"/><embed src="http://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf" type="application/x-shockwave-flash" allowfullscreen="true" menu="false" wmode="transparent" style="width:420px;height:273px" flashvars="mode=mini&amp;backgroundColor=%23222222&amp;documentId=<?=$docID?>" /></object></div></textarea>
-									<?php } else { print "Embed code not available."; } ?>
-									</div>
-									<p><small>*If a new edition of this publication is released, you'll need to update your embed code to display the latest version.</small></p>
-								</div>
+							<div class="modal-footer">
+								<a href="#" class="btn" data-dismiss="modal">Close</a>
 							</div>
 						</div>
-						<div class="modal-footer">
-							<a href="#" class="btn" data-dismiss="modal">Close</a>
-						</div>
-					</div>
-					
-					<p><strong>Published:</strong> <?=$pubdate?></p>
-					<p><strong>Found in:</strong> <?=$catlist?></p>
-				</div>
-							
-			<?php	
-			} else if ($_GET['sort'] == "alphabetical") { 
-				$firstletter = strtoupper(substr($publicationName, 0, 1));
-				if ($firstletter != $currentletter) { ?>
-				 	<h2 class="sortall_letter"><?=$firstletter?></h2>
-				
-				<?php	
-				 	$currentletter = $firstletter;
-			  	}
-			?>
-					
-				<li>
-					<h3><a target="_blank" href="<?=$publink?>"><?=$publicationName?></a></h3>
-					<p><strong>Published:</strong> <?=$pubdate?></p>
-					<p><strong>Found in:</strong> <?=$catlist?></p>
-					<br/>
-				</li>
 						
+						<div class="modal fade hide" id="embedmodal_<?=$post->post_name?>">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">×</button>
+								<h3 class="pubmodal_title">Embed <?=$publication_name?> on your site</h3>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<div class="span2">
+										<p class="pubmodal_thumb"><?=$thumb?></p>
+									</div>
+									<div class="span4">
+										<p><strong>Instructions:</strong></p>
+										<p>Copy/paste the code below wherever you want the publication* to display on your site.</p>
+										<div class="well">
+										<?php if ($docID) { ?>
+											<textarea name="pubembed" class="pubembed"><div><object style="width:420px;height:273px"><param name="movie" value="http://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf?mode=mini&amp;backgroundColor=%23222222&amp;documentId=<?=$docID?>" /><param name="allowfullscreen" value="true"/><param name="menu" value="false"/><param name="wmode" value="transparent"/><embed src="http://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf" type="application/x-shockwave-flash" allowfullscreen="true" menu="false" wmode="transparent" style="width:420px;height:273px" flashvars="mode=mini&amp;backgroundColor=%23222222&amp;documentId=<?=$docID?>" /></object></div></textarea>
+										<?php } else { ?>Embed code not available.<?php } ?>
+										</div>
+										<p><small>*If a new edition of this publication is released, you'll need to update your embed code to display the latest version.</small></p>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<a href="#" class="btn" data-dismiss="modal">Close</a>
+							</div>
+						</div>
+						
+						<p><strong>Published:</strong> <?=$pubdate?></p>
+						<p><strong>Found in:</strong> <?=$catlist?></p>
+					</div>
+				</div>			
+			
 			<?php
 			}
-					
-			//Close span3 wrapper for non-Alphabetical pages
-			if (!($_GET['sort'] == "alphabetical")) { print '</div>'; }
-					
-		}// end latestedition foreach
-	} // end publications foreach	
-	
-	//Close unordered list/div for Alphabetical pg
-	if ($_GET['sort'] == "alphabetical") { print '</ul></div>'; } ?>
-	
-	</div> <!-- Close containing .row div -->
-	
-	<?php	
-	
-	//OUTPUT PAGINATION:
-	
-	// If Alphabetical isn't set (and this isn't a category listing)...
-	if (!(is_category())) {
-		if( ($_GET['sort'] == "latest") || (!(isset($_GET['sort']))) ) {
-		
-			$total_terms = wp_count_terms( 'publications' );
-			$pages = ceil($total_terms/$per_page);
-		
-			// If there's more than one page...
-			if( $pages > 1 ) {
-			?>
-				<div class="row">
-					<div class="pagination">
-						<ul>
-							<li <?php if (!($_GET['pagenum'])) { print 'class="active"'; } ?>>
-								<a href="<?=get_site_url()?>
-								<?php if ($_GET['sort'] == "latest") { print "?sort=latest"; } ?>">
-									1
-								</a>
-							</li>
-						<?php 
-						for ($pagecount = 2; $pagecount <= $pages; $pagecount++) { ?>
-							<li <?php if ($pagecount == $_GET['pagenum']) { print 'class="active"'; } ?>>
-								<a href="<?=get_site_url()?>?pagenum=<?=$pagecount?>
-								<?php if ($_GET['sort'] == "latest") { print "&sort=latest"; } ?>">
-								<?=$pagecount?>
-								</a>
-							</li>
-						<?php
-						}
-						?>
-		
-						</ul>
-					</div>
-				</div>
-				<?php
-			}
-		}
+			print ob_get_clean();
+			break;
 	}
+}
+
+/*
+ * Display pagination links for lists of publications.
+ * Note that the $pubs arg here requires the total count
+ * of all pubs, not the count of pubs already filtered with 
+ * paginate_pubs().
+ */
+function display_pagination($pubcount, $per_page, $pagenum) {
+	if (!$pubcount || !$per_page || !$pagenum) { return false; }
+	
+	$pages = ceil($pubcount/$per_page);
+	if ($pubcount > $per_page) {
+		ob_start(); ?>
+		<div class="row">
+			<div class="pagination">
+				<ul>
+					<li <?php if ($pagenum == 1) { print 'class="active"'; } ?>>
+						<a href="<?=get_site_url()?>">
+							1
+						</a>
+					</li>
+				<?php 
+				for ($pagecount = 2; $pagecount <= $pages; $pagecount++) { ?>
+					<li <?php if ($pagecount == $pagenum) { print 'class="active"'; } ?>>
+						<a href="<?=get_site_url()?>?pagenum=<?=$pagecount?>">
+						<?=$pagecount?>
+						</a>
+					</li>
+				<?php
+				}
+				?>
+		
+				</ul>
+			</div>
+		</div>
+		<?php
+	}
+	return ob_get_clean();
 }
 
 /*
