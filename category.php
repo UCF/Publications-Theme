@@ -19,9 +19,7 @@
 					}
 				?>
 			</div>
-			
-			<?=display_pagination(count($pubs), $per_page, $pagenum)?>				
-				
 		</div>
+		<?=display_pagination(count($pubs), $per_page, $pagenum)?>
 	</div>
 <?php get_footer();?>

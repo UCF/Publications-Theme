@@ -365,12 +365,10 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 	$args = array('post_type' => 'pubedition', 'numberposts' => -1);
 	// By publication id args
 	if ($pubid !== null) {
+		$pub = get_term_by('id', $pubid, 'publications');
 		$args = array_merge($args, array(
-			'tax_query' 	=> array(
-				'taxonomy' 		=> 'publication',
-				'field'	  		=> 'id',
-				'terms'	  		=> $pubid,
-			),
+			'taxonomy' => 'publications',
+			'term'     => $pub->name,
 		));
 	}
 	// By category id args
@@ -389,11 +387,20 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 			$args = array_merge($args, array('orderby' => 'date'));
 			break;
 	}
+	
 	$pubeditions = get_posts($args);
 	
-	// If we're grabbing by pubid, we have what we need now.
-	// Else, continue filtering:
-	if ($pubid !== null) { return $pubeditions; }
+	
+	if ($pubid !== null) { 
+		foreach ($pubeditions as $pubedition) {
+			$pubedition->publication = array();
+			$pubedition_publications = wp_get_post_terms($pubedition->ID, 'publications', array('fields' => 'names'));
+			foreach ($pubedition_publications as $publication) {
+				$pubedition->publication[] = $publication;
+			}
+		}	
+		return $pubeditions; 
+	}
 	else {
 		$sortable_pubedition_list = array();
 		foreach ($pubeditions as $pubedition) {
@@ -410,9 +417,6 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 					$sortable_pubedition_list[$publication]->publication = $publication;
 				}
 			}
-			
-			
-			
 		}
 		// Realphabetize results by publication name if necessary
 		if ($sort == 'alpha') {
@@ -521,7 +525,7 @@ function display_pubs($pubs, $styling='default') {
 					}
 					$catlist = substr($catlist, 0, -2); //remove last stray comma and space
 				} 
-				$publication_name = $post->publication;		
+				$publication_name = is_array($post->publication) ? $post->publication[0] : $post->publication; // if there are more than one publications assigned for whatever reason, only use the 1st
 				$pubdate 		  = date('M j, Y', strtotime($post->post_date));
 				$publink 		  = get_term_link($publication_name, 'publications');
 				$issuulink 		  = get_post_meta($post->ID, 'pubedition_embed', TRUE);
@@ -636,7 +640,7 @@ function display_pagination($pubcount, $per_page, $pagenum) {
 		</div>
 		<?php
 	}
-	return ob_get_clean();
+	print ob_get_clean();
 }
 
 /*
