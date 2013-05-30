@@ -347,43 +347,83 @@ function get_pubedition_docname($post_id) {
  * @arg $catid -    Category ID to filter publications by.
  * @arg $pubid -    Publication ID to filter by (will return a list of 
  * 				    pubeditions with this publication ID).
- * @arg $per_page - Number of results per page.  If returned results 
- *                  exceed this number, pagination will be displayed.
  * @arg $sort - 	How to sort returned publications. 'latest' will 
  * 					return publications from newest tagged pubedition to
  * 					oldest; 'alpha' will return publications in A-Z order.	
- * @arg $pagenum -  Offset for pagination.
  * @return array				
  */
-function get_pubs($catid=null, $pubid=null, $per_page=16, $sort='latest', $pagenum=0) {
+function get_pubs($catid=null, $pubid=null, $sort='latest') {
 	
 	// Cannot return results by catid and pubid; return false if both are set
 	if ($catid !== null && $pubid !== null) { return false; }
 	
-	// Define an offset for pagination based on whether a pagenum is set or not
-	if ( $pagenum !== 0 ) { 
-		$offset = 0;
-	}
-	else { $offset = $per_page*($pagenum-1); }
+	// Get terms or posts, depending on whether a pubid/catid is provided or not.
+	$publications = null;
+	$pubeditions  = null;
 	
-	// Define arguments for get_terms()
-	if ($catid !== null) {
-		$args = array('hide_empty' => 0, 'orderby' => 'latest_post'); 
+	// Default args
+	$args = array('post_type' => 'pubedition');
+	// By publication id args
+	if ($pubid !== null) {
+		$args = array_merge($args, array(
+			'tax_query' 	=> array(
+				'taxonomy' 		=> 'publication',
+				'field'	  		=> 'id',
+				'terms'	  		=> $pubid,
+			),
+		));
 	}
-	elseif ($pubid !== null) {
-		$args = array();
+	// By category id args
+	elseif ($catid !== null) {
+		$args = array_merge($args, array(
+			'cat' => $catid,
+		));
 	}
+	// Sorting args
+	switch ($sort) {
+		case 'alpha':
+			$args = array_merge($args, array('orderby' => 'name'));
+			break;
+		case 'latest':
+		default:
+			$args = array_merge($args, array('orderby' => 'date'));
+			break;
+	}
+	$pubeditions = get_posts($args);
+	
+	// If we're grabbing by pubid, we have what we need now.
+	// Else, continue filtering:
+	if ($pubid !== null) { return $pubeditions; }
 	else {
-		switch ($sort) {
-			case 'alpha':
-				$args = array('hide_empty' => 0);
-				break;
-			case 'latest':
-			default:
-				$args = array('number' => $per_page, 'offset' => $offset, 'orderby' => 'latest_post');
-				break;
+		$sortable_pubedition_list = array();
+		foreach ($pubeditions as $pubedition) {
+			$pubedition_publications = wp_get_post_terms($pubedition->ID, 'publications', array('fields' => 'names'));
+			foreach ($pubedition_publications as $publication) {
+				// Store the latest pubedition in relation to its publication in
+				// $sortable_pubedition_list.  Replace any newer pubeditions for
+				// a publication if they're found.
+				if (
+					!isset($sortable_pubedition_list[$publication]) || 
+						date('YmdHis', strtotime($sortable_pubedition_list[$publication]->post_date)) < date('YmdHis', strtotime($pubedition->post_date))
+					) {
+					$sortable_pubedition_list[$publication] = $pubedition;
+					$sortable_pubedition_list[$publication]->publication = $publication;
+				}
+			}
 		}
+		// Realphabetize results by publication name if necessary
+		if ($sort == 'alpha') {
+			ksort($sortable_pubedition_list);
+		}
+		// Remove key association
+		$pubeditions_numeric = array();
+		foreach ($sortable_pubedition_list as $pubedition) {
+			$pubeditions_numeric[] = $pubedition;
+		}
+		
+		return $pubeditions_numeric;
 	}
+	
 }
 
 /*
