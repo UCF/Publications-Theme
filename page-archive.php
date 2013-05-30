@@ -22,10 +22,10 @@
 					$pagenum  = $_GET['pagenum'] ? (int)$_GET['pagenum'] : 1;
 					if (count($pubs) > $per_page) {
 						$paginated_pubs = paginate_pubs($pubs, $per_page, $pagenum);
-						display_pubs($paginated_pubs);	
+						display_pubs($paginated_pubs, true);	
 					}
 					else {
-						display_pubs($pubs);
+						display_pubs($pubs, true);
 					}
 				}
 			}

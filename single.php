@@ -42,14 +42,13 @@ else {
 			$termid   = $term->term_id; 
 			$termlink = get_term_link( $term->name, 'publications' );
 		}
-		$latestEditions = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $term->name, 'post_status' => 'publish', 'numberposts' => 1));
-		foreach ($latestEditions as $latestEdition) {
-			if ($latestEdition->post_date > $post->post_date) {
-				print '<div class="alert in fade">
-							<a class="close" data-dismiss="alert" href="#">×</a>
-							<strong>Note: </strong> A newer version of this publication is available!  <a class="btn btn-small" href="'.$termlink.'" style="margin-left: 6px;">View Updated Publication</a>
-						</div>';
-			}
+		$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $terms[0]->name, 'post_status' => 'publish', 'numberposts' => 1));
+		$latestEdition = $latestEdition[0];
+		if ($post->ID !== $latestEdition->ID) {
+			print '<div class="alert in fade">
+						<a class="close" data-dismiss="alert" href="#">×</a>
+						<strong>Note: </strong> A newer version of this publication is available!  <a class="btn btn-small" href="'.$termlink.'" style="margin-left: 6px;">View Updated Publication</a>
+					</div>';
 		}
 		
 		?>

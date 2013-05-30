@@ -459,10 +459,13 @@ function paginate_pubs($pubs, $per_page=16, $pagenum=0) {
  * Display publications.  Requires an array of post objects (get_pubs() results)
  * If $styling is set to 'alphalist', an alphabetized index of publication names
  * will be returned.
+ * If $reference_pubeditions is set to 'true', the function will assume you are
+ * displaying an archive of pubeditions and will link to their respective posts
+ * instead of their publication.
  *
  * @return string
  */
-function display_pubs($pubs, $styling='default') {
+function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 	if (empty($pubs)) { return null; }
 	
 	switch ($styling) {
@@ -525,9 +528,19 @@ function display_pubs($pubs, $styling='default') {
 					}
 					$catlist = substr($catlist, 0, -2); //remove last stray comma and space
 				} 
-				$publication_name = is_array($post->publication) ? $post->publication[0] : $post->publication; // if there are more than one publications assigned for whatever reason, only use the 1st
+				$pubedition_link  = get_permalink($post->ID);
+				if ($reference_pubeditions == false) {
+					$publication_name = is_array($post->publication) ? $post->publication[0] : $post->publication; // if there are more than one publications assigned for whatever reason, only use the 1st
+					$publication_link = get_term_link($publication_name, 'publications');
+					$publink = $publication_link;
+				}
+				else {
+					$publication_name = $post->post_title;
+					$publication_term_name = is_array($post->publication) ? $post->publication[0] : $post->publication;
+					$publication_link = get_term_link($publication_term_name, 'publications');
+					$publink = $pubedition_link;
+				}
 				$pubdate 		  = date('M j, Y', strtotime($post->post_date));
-				$publink 		  = get_term_link($publication_name, 'publications');
 				$issuulink 		  = get_post_meta($post->ID, 'pubedition_embed', TRUE);
 			
 			?>
@@ -554,7 +567,7 @@ function display_pubs($pubs, $styling='default') {
 										<p><strong>Instructions:</strong></p>
 										<p>Copy/paste the URL below to link to this publication.</p>
 										<div class="well">
-											<input type="text" value="<?=get_term_link( $publication_name, 'publications' )?>" name="puburl" class="puburl" /></input>
+											<input type="text" value="<?=$publication_link?>" name="puburl" class="puburl" /></input>
 										</div>
 										<p><small>This address will always refer to the latest edition of the publication.</small></p>
 									</div>
