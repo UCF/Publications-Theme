@@ -360,6 +360,16 @@ function is_only_edition($pubedition_id) {
 	return false;
 } 
 
+/*
+ * Return the number of pubeditions associated with a publication.
+ * @return int
+ */
+function get_pubedition_count_by_publication($publication_id) {
+	if (!$publication_id) { return false; }
+	$pubs = get_pubs(null, $publication_id);
+	if (count($pubs)) { return count($pubs); }
+	else { return 0; }
+}
 
 /*
  * Retrieve publications and return them by their latest pub editions.
@@ -416,30 +426,34 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 	
 	if ($pubid !== null) { 
 		foreach ($pubeditions as $pubedition) {
-			$pubedition->publication = array();
-			$pubedition_publications = wp_get_post_terms($pubedition->ID, 'publications', array('fields' => 'names'));
-			foreach ($pubedition_publications as $publication) {
-				$pubedition->publication[] = $publication;
-			}
+			$publication = wp_get_post_terms($pubedition->ID, 'publications', array('fields' => 'all'));
+			$pubedition->publication = $publication[0]->slug;
 		}	
 		return $pubeditions; 
 	}
 	else {
 		$sortable_pubedition_list = array();
 		foreach ($pubeditions as $pubedition) {
-			$pubedition_publications = wp_get_post_terms($pubedition->ID, 'publications', array('fields' => 'names'));
-			foreach ($pubedition_publications as $publication) {
-				// Store the latest pubedition in relation to its publication in
-				// $sortable_pubedition_list.  Replace any newer pubeditions for
-				// a publication if they're found.
-				if (
-					!isset($sortable_pubedition_list[$publication]) || 
-						date('YmdHis', strtotime($sortable_pubedition_list[$publication]->post_date)) < date('YmdHis', strtotime($pubedition->post_date))
-					) {
+			$publication = wp_get_post_terms($pubedition->ID, 'publications', array('fields' => 'all'));
+			$publication = is_array($publication) ? $publication[0]->slug : $publication->slug;
+			$pubedition->publication = $publication;
+	
+			// Store the latest pubedition in relation to its publication in
+			// $sortable_pubedition_list.  Replace any newer pubeditions for
+			// a publication if they're found.
+			// Note: Pubeditions must have a publication associated with them, or
+			// else bad things happen.					
+			if (
+				$pubedition->publication !== null &&
+				!isset($sortable_pubedition_list[$publication]) || 
+				(
+					isset($sortable_pubedition_list[$publication]) && 
+					date('YmdHis', strtotime($sortable_pubedition_list[$publication]->post_date)) < date('YmdHis', strtotime($pubedition->post_date))
+				)
+				) {
 					$sortable_pubedition_list[strtolower($publication)] = $pubedition;
-					$sortable_pubedition_list[strtolower($publication)]->publication = $publication;
-				}
 			}
+				
 		}
 		// Realphabetize results by publication name if necessary
 		if ($sort == 'alpha') {
@@ -450,7 +464,7 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 		foreach ($sortable_pubedition_list as $pubedition) {
 			$pubeditions_numeric[] = $pubedition;
 		}
-		
+				
 		return $pubeditions_numeric;
 	}
 	
@@ -508,10 +522,10 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 								$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
 							}
 							$catlist = substr($catlist, 0, -2); //remove last stray comma and space
-						} 
-						$publication = is_array($post->publication) ? $post->publication[0] : $post->publication;
-						$publication = get_term_by('name', $publication, 'publications');
-						$publication_name = $post->publication;		
+						}
+						$publication = $post->publication;
+						$publication = get_term_by('slug', $publication, 'publications');
+						$publication_name = $publication->name;
 						$pubdate 		  = date('M j, Y', strtotime($post->post_date));
 						$publink 		  = get_term_link($publication_name, 'publications');
 			
@@ -529,7 +543,7 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 							if (is_only_edition($post->ID) == false) { 
 								$archive_link = get_permalink(get_page_by_title('Archive')->ID).'?publication='.$publication->slug;
 							?>
-								<p><strong>Previous editions:</strong> <a href="<?=$archive_link?>">View All</a></p>
+								<p><strong>Previous editions:</strong> <a href="<?=$archive_link?>">View All (<?=get_pubedition_count_by_publication($publication->term_id)?>)</a></p>
 							<?php
 							} ?>
 							<br/>
@@ -560,17 +574,17 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 					}
 					$catlist = substr($catlist, 0, -2); //remove last stray comma and space
 				} 
-				$publication = is_array($post->publication) ? $post->publication[0] : $post->publication;
-				$publication = get_term_by('name', $publication, 'publications');
+				$publication = $post->publication;
+				$publication = get_term_by('slug', $publication, 'publications');
 				$pubedition_link  = get_permalink($post->ID);
 				if ($reference_pubeditions == false) {
-					$publication_name = is_array($post->publication) ? $post->publication[0] : $post->publication; // if there are more than one publications assigned for whatever reason, only use the 1st
+					$publication_name = $publication->name;
 					$publication_link = get_term_link($publication_name, 'publications');
 					$publink = $publication_link;
 				}
 				else {
 					$publication_name = $post->post_title;
-					$publication_term_name = is_array($post->publication) ? $post->publication[0] : $post->publication;
+					$publication_term_name = $publication->name;
 					$publication_link = get_term_link($publication_term_name, 'publications');
 					$publink = $pubedition_link;
 				}
@@ -645,7 +659,7 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 						if (is_only_edition($post->ID) == false && $reference_pubeditions == false) { 
 							$archive_link = get_permalink(get_page_by_title('Archive')->ID).'?publication='.$publication->slug;
 						?>
-							<p><strong>Previous editions:</strong> <a href="<?=$archive_link?>">View All</a></p>
+							<p><strong>Previous editions:</strong> <a href="<?=$archive_link?>">View All (<?=get_pubedition_count_by_publication($publication->term_id)?>)</a></p>
 						<?php
 						} ?>
 					</div>

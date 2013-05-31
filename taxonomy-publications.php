@@ -49,7 +49,8 @@ else {
 		?>
 		<div class="alert in fade">
 			<a class="close" data-dismiss="alert" href="#">×</a>
-			You're viewing the newest edition of this publication.  <a class="btn btn-small" href="<?=$archivelink?>" style="margin-left: 6px;">View Archives</a>
+			You're viewing the newest edition of this publication.  
+			<a class="btn btn-small" href="<?=$archivelink?>" style="margin-left: 6px;">View Archives (<?=get_pubedition_count_by_publication($terms[0]->term_id)?>)</a>
 		</div>		
 		<?php } ?>
 		

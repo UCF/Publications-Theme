@@ -17,7 +17,7 @@
 				}
 				else { 
 					$pageurl = get_permalink($post->ID).'?publication='.$publication->slug;
-					print '<div class="span12"><h2>Archives for '.$publication->name.'</h2></div>';
+					print '<div class="span12"><h2>Archives for '.$publication->name.' ('.get_pubedition_count_by_publication($publication->term_id).' results)</h2></div>';
 					$pubs = get_pubs(null, $publication->term_id);
 					$per_page = 16; 
 					$pagenum  = $_GET['pagenum'] ? (int)$_GET['pagenum'] : 1;
