@@ -21,6 +21,7 @@ Upon installation:
 	* Index and search your posts' categories:  checked
 	* Custom taxonomies to index:  publications
 * In Theme Options > Search, TURN OFF Google Search.
+* Create pages named 'Categories' and 'Archive'.
 
 Notes
 =============
