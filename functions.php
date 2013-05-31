@@ -426,8 +426,8 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 	
 	if ($pubid !== null) { 
 		foreach ($pubeditions as $pubedition) {
-			$publication = wp_get_post_terms($pubedition->ID, 'publications', array('fields' => 'all'));
-			$pubedition->publication = $publication[0]->slug;
+			$publication = get_term($pubid, 'publications');
+			$pubedition->publication = $publication->slug;
 		}	
 		return $pubeditions; 
 	}
