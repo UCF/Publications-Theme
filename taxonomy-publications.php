@@ -43,13 +43,15 @@ else {
 	
 	<body class="<?=get_post_type($post->ID)?>">
 		<?php
-		$terms		 = wp_get_post_terms($post->ID, 'publications'); 
-		$archivelink = get_permalink(get_page_by_title('Archive')->ID).'?publication='.$terms[0]->slug; 
+		if (is_only_edition($post->ID) == false) {
+			$terms		 = wp_get_post_terms($post->ID, 'publications'); 
+			$archivelink = get_permalink(get_page_by_title('Archive')->ID).'?publication='.$terms[0]->slug; 
 		?>
 		<div class="alert in fade">
 			<a class="close" data-dismiss="alert" href="#">×</a>
 			You're viewing the newest edition of this publication.  <a class="btn btn-small" href="<?=$archivelink?>" style="margin-left: 6px;">View Archives</a>
-		</div>
+		</div>		
+		<?php } ?>
 		
 		<?php embed_issuu($latestEdition->ID); ?>
 	

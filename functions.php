@@ -337,6 +337,29 @@ function get_pubedition_docname($post_id) {
 	return $docname;
 }
 
+/*
+ * Determine whether or not a pubedition is the only post under its publication.
+ * @return bool
+ */
+function is_only_edition($pubedition_id) {
+	$publication = wp_get_post_terms($pubedition_id, 'publications');
+	// This should never be an array, but we have to check in case of user error:
+	$publication = is_array($publication) ? $publication[0] : $publication;
+	
+	$args = array(
+		'post_type' 	=> 'pubedition',
+		'numberposts' 	=> -1,
+		'taxonomy' 		=> 'publications',
+		'term' 			=> $publication->name
+	);
+	$publication_pubs = get_posts($args);
+	
+	if (count($publication_pubs) == 1) {
+		return true;
+	}
+	return false;
+} 
+
 
 /*
  * Retrieve publications and return them by their latest pub editions.
@@ -486,6 +509,8 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 							}
 							$catlist = substr($catlist, 0, -2); //remove last stray comma and space
 						} 
+						$publication = is_array($post->publication) ? $post->publication[0] : $post->publication;
+						$publication = get_term_by('name', $publication, 'publications');
 						$publication_name = $post->publication;		
 						$pubdate 		  = date('M j, Y', strtotime($post->post_date));
 						$publink 		  = get_term_link($publication_name, 'publications');
@@ -500,6 +525,13 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 							<h3><a target="_blank" href="<?=$publink?>"><?=$publication_name?></a></h3>
 							<p><strong>Published:</strong> <?=$pubdate?></p>
 							<p><strong>Found in:</strong> <?=$catlist?></p>
+							<?php
+							if (is_only_edition($post->ID) == false) { 
+								$archive_link = get_permalink(get_page_by_title('Archive')->ID).'?publication='.$publication->slug;
+							?>
+								<p><strong>Previous editions:</strong> <a href="<?=$archive_link?>">View All</a></p>
+							<?php
+							} ?>
 							<br/>
 						</li>
 					<?php
@@ -528,6 +560,8 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 					}
 					$catlist = substr($catlist, 0, -2); //remove last stray comma and space
 				} 
+				$publication = is_array($post->publication) ? $post->publication[0] : $post->publication;
+				$publication = get_term_by('name', $publication, 'publications');
 				$pubedition_link  = get_permalink($post->ID);
 				if ($reference_pubeditions == false) {
 					$publication_name = is_array($post->publication) ? $post->publication[0] : $post->publication; // if there are more than one publications assigned for whatever reason, only use the 1st
@@ -607,6 +641,13 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 						
 						<p><strong>Published:</strong> <?=$pubdate?></p>
 						<p><strong>Found in:</strong> <?=$catlist?></p>
+						<?php
+						if (is_only_edition($post->ID) == false && $reference_pubeditions == false) { 
+							$archive_link = get_permalink(get_page_by_title('Archive')->ID).'?publication='.$publication->slug;
+						?>
+							<p><strong>Previous editions:</strong> <a href="<?=$archive_link?>">View All</a></p>
+						<?php
+						} ?>
 					</div>
 				</div>			
 			
