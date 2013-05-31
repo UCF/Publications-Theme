@@ -20,6 +20,6 @@
 				?>
 			</div>
 		</div>
-		<?=display_pagination(count($pubs), $per_page, $pagenum)?>
+		<?=display_pagination(count($pubs), $per_page, $pagenum, get_category_link($cat->cat_ID))?>
 	</div>
 <?php get_footer();?>

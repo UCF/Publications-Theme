@@ -20,13 +20,13 @@
 				}
 				elseif ($sort == 'alphabetical') {
 					$pubs = get_pubs(null,null,'alpha');
-					display_pubs($pubs, 'alphalist');
+					display_pubs($pubs, false, 'alphalist');
 				}
 			?>	
 		</div>
 		
 		<?php if($sort == 'latest') {
-			display_pagination(count($pubs), $per_page, $pagenum);
+			display_pagination(count($pubs), $per_page, $pagenum, get_site_url());
 		} ?>
 		
 		<div class="row">

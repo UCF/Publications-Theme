@@ -16,6 +16,7 @@
 					print '<div class="span12"><h2>Archives</h2><p>Invalid publication.</p></div>';
 				}
 				else { 
+					$pageurl = get_permalink($post->ID).'?publication='.$publication->slug;
 					print '<div class="span12"><h2>Archives for '.$publication->name.'</h2></div>';
 					$pubs = get_pubs(null, $publication->term_id);
 					$per_page = 16; 
@@ -31,6 +32,6 @@
 			}
 			?>
 		</div>
-		<?=display_pagination(count($pubs), $per_page, $pagenum)?>
+		<?=display_pagination(count($pubs), $per_page, $pagenum, $pageurl)?>
 	</div>
 <?php get_footer();?>

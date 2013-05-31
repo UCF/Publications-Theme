@@ -413,8 +413,8 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 					!isset($sortable_pubedition_list[$publication]) || 
 						date('YmdHis', strtotime($sortable_pubedition_list[$publication]->post_date)) < date('YmdHis', strtotime($pubedition->post_date))
 					) {
-					$sortable_pubedition_list[$publication] = $pubedition;
-					$sortable_pubedition_list[$publication]->publication = $publication;
+					$sortable_pubedition_list[strtolower($publication)] = $pubedition;
+					$sortable_pubedition_list[strtolower($publication)]->publication = $publication;
 				}
 			}
 		}
@@ -623,9 +623,10 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
  * of all pubs, not the count of pubs already filtered with 
  * paginate_pubs().
  */
-function display_pagination($pubcount, $per_page, $pagenum) {
-	if (!$pubcount || !$per_page || !$pagenum) { return false; }
+function display_pagination($pubcount, $per_page, $pagenum, $pageurl) {
+	if (!$pubcount || !$per_page || !$pagenum || !$pageurl) { return false; }
 	
+	$queryseparator = strpos($pageurl, '?') !== false ? '&' : '?';
 	$pages = ceil($pubcount/$per_page);
 	if ($pubcount > $per_page) {
 		ob_start(); ?>
@@ -633,14 +634,14 @@ function display_pagination($pubcount, $per_page, $pagenum) {
 			<div class="pagination">
 				<ul>
 					<li <?php if ($pagenum == 1) { print 'class="active"'; } ?>>
-						<a href="<?=get_site_url()?>">
+						<a href="<?=$pageurl?>">
 							1
 						</a>
 					</li>
 				<?php 
 				for ($pagecount = 2; $pagecount <= $pages; $pagecount++) { ?>
 					<li <?php if ($pagecount == $pagenum) { print 'class="active"'; } ?>>
-						<a href="<?=get_site_url()?>?pagenum=<?=$pagecount?>">
+						<a href="<?=$pageurl?><?=$queryseparator?>pagenum=<?=$pagecount?>">
 						<?=$pagecount?>
 						</a>
 					</li>
