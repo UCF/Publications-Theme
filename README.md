@@ -7,7 +7,6 @@ Installation
 =============
 This theme requires the following plugins:
 
-* WP Issuu by Issuu
 * Gravity Forms
 * Relevanssi
 
@@ -25,6 +24,8 @@ Upon installation:
 
 Notes
 =============
+The WP Issuu plugin required to execute the Issuu-provided shortcode is included in this theme as of v1.0.6.
+
 This theme automatically pulls publication thumbnails from Issuu based on the documentId found in the Issuu pub WordPress shortcode; PubEdition thumbnails are therefore disabled.
 
 Note that, unlike other Generic Theme variations, Publications in this theme are a taxonomy, NOT a custom post type!  The Publications taxonomy groups together PubEditions, which are the individual editions of a given Publication.

@@ -26,6 +26,7 @@ require_once('custom-taxonomies.php');  # Where per theme taxonomies are defined
 require_once('custom-post-types.php');  # Where per theme post types are defined
 require_once('shortcodes.php');         # Per theme shortcodes
 require_once('functions-admin.php');    # Admin/login functions
+require_once('third-party/wp-issuu.php'); # Includes WP Issuu plugin (does not register plugin in WP!)
 
 
 /**
