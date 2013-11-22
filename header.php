@@ -3,6 +3,11 @@
 	<head>
 		<meta name="viewport" content="width=1024">
 		<?="\n".header_()."\n"?>
+
+		<!--[if IE]>
+		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
 		<?php if(GA_ACCOUNT or CB_UID):?>
 
 		<script type="text/javascript">

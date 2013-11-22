@@ -210,13 +210,20 @@ Config::$styles = array(
 
 Config::$scripts = array(
 	array('admin' => True, 'src' => THEME_JS_URL.'/admin.js',),
-	'http://universityheader.ucf.edu/bar/js/university-header.js',
-	array('name' => 'jquery', 'src' => 'http://code.jquery.com/jquery-1.7.1.min.js',),
+	'//universityheader.ucf.edu/bar/js/university-header.js',
 	THEME_STATIC_URL.'/bootstrap/js/bootstrap.js',
 	THEME_STATIC_URL.'/js/jquery.cookie.js',
 	array('name' => 'base-script',  'src' => THEME_JS_URL.'/webcom-base.js',),
 	array('name' => 'theme-script', 'src' => THEME_JS_URL.'/script.js',),
 );
+
+function jquery_in_header() {
+    wp_deregister_script( 'jquery' );
+    wp_register_script( 'jquery', '//code.jquery.com/jquery-1.7.1.min.js');
+    wp_enqueue_script( 'jquery' );
+}
+add_action('wp_enqueue_scripts', 'jquery_in_header');
+
 
 Config::$metas = array(
 	array('charset' => 'utf-8',),
@@ -564,7 +571,7 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 			foreach ($pubs as $post) {
 				//Get pubedition's thumbnail from Issuu based on the document ID found in the pub's shortcode:
 				$docID 			  = get_pubedition_docid($post->ID);
-				$thumb 			  = "<img src='http://image.issuu.com/".$docID."/jpg/page_1_thumb_large.jpg' alt='".$post->post_title."' title='".$post->post_title."' />";
+				$thumb 			  = "<img src='//image.issuu.com/".$docID."/jpg/page_1_thumb_large.jpg' alt='".$post->post_title."' title='".$post->post_title."' />";
 				$cats  			  = get_the_category($post->ID);
 				$catlist = ''; 
 				if ($cats[0] == '') { $catlist = "n/a"; } 
@@ -641,7 +648,7 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 										<p>Copy/paste the code below wherever you want the publication* to display on your site.</p>
 										<div class="well">
 										<?php if ($docID) { ?>
-											<textarea name="pubembed" class="pubembed"><div><object style="width:420px;height:273px"><param name="movie" value="http://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf?mode=mini&amp;backgroundColor=%23222222&amp;documentId=<?=$docID?>" /><param name="allowfullscreen" value="true"/><param name="menu" value="false"/><param name="wmode" value="transparent"/><embed src="http://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf" type="application/x-shockwave-flash" allowfullscreen="true" menu="false" wmode="transparent" style="width:420px;height:273px" flashvars="mode=mini&amp;backgroundColor=%23222222&amp;documentId=<?=$docID?>" /></object></div></textarea>
+											<textarea name="pubembed" class="pubembed"><div><object style="width:420px;height:273px"><param name="movie" value="//static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf?mode=mini&amp;backgroundColor=%23222222&amp;documentId=<?=$docID?>" /><param name="allowfullscreen" value="true"/><param name="menu" value="false"/><param name="wmode" value="transparent"/><embed src="//static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf" type="application/x-shockwave-flash" allowfullscreen="true" menu="false" wmode="transparent" style="width:420px;height:273px" flashvars="mode=mini&amp;backgroundColor=%23222222&amp;documentId=<?=$docID?>" /></object></div></textarea>
 										<?php } else { ?>Embed code not available.<?php } ?>
 										</div>
 										<p><small>*If a new edition of this publication is released, you'll need to update your embed code to display the latest version.</small></p>
@@ -732,8 +739,8 @@ function embed_issuu($post_id) {
 				<div class="span12">
 					<h1><?=$pubtitle?></h1>
 					<br/>
-					<a href="http://issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile"><img src='http://image.issuu.com/<?=$docID?>/jpg/page_1_thumb_large.jpg' alt='<?=$pubtitle?>' title='<?=$pubtitle?>' /></a>
-					<p><a class="btn btn-primary btn-large" href="http://issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile">View Publication</a></p>
+					<a href="//issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile"><img src='//image.issuu.com/<?=$docID?>/jpg/page_1_thumb_large.jpg' alt='<?=$pubtitle?>' title='<?=$pubtitle?>' /></a>
+					<p><a class="btn btn-primary btn-large" href="//issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile">View Publication</a></p>
 				</div>
 			</div>
 		</div>
