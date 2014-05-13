@@ -2,7 +2,7 @@
 Theme Name: Publications Theme
 Author: UCF Web Communications
 Github Theme URI: https://github.com/UCF/Pegasus-Theme
-Version: v1.0.6
+Version: v1.0.7
 */
 
 /* UCF Header Styles */
@@ -129,6 +129,15 @@ h2 {
 	padding: 0 0 55px;
 	font-size: 16px;
 	margin-top: 30px;
+}
+
+p#footer_accessibility{
+	font-size:12px; 
+	text-align:center; 
+	top-padding:20px;  
+	margin-right:20px; 
+	margin-bottom:-40px;
+	
 }
 h2#footer_logo {
 	display: block;
@@ -279,6 +288,7 @@ input.puburl {
 
 .pagination {
 	text-align: center;
+	margin-bottom:60px;
 }
 
 h2.sortall_letter {
