@@ -1,5 +1,5 @@
 		</div><!-- close body .container -->
-		<div class="container">
+		<div class="container" role="contentinfo">
 			<p id="footer_accessibility">For accessible versions of any of our publications, contact <a href="mailto:atservices@ucf.edu">atservices@ucf.edu</a>.</p>
 		</div>
 		
