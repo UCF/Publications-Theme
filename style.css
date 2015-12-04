@@ -1,8 +1,8 @@
-/*   
+/*
 Theme Name: Publications Theme
 Author: UCF Web Communications
 Github Theme URI: https://github.com/UCF/Pegasus-Theme
-Version: v1.0.7
+Version: v1.0.9
 */
 
 /* UCF Header Styles */
@@ -62,7 +62,7 @@ p.caption {font-family:"Helvetica Neue",Helvetica,sans-serif;font-size:12px;}
 .tooltip-inner {border:1px solid #666;}
 
 h2 {
-	margin-bottom: 1em;	
+	margin-bottom: 1em;
 }
 
 
@@ -84,30 +84,30 @@ h2 {
 	#header .title a {
 		display: block;
 		height: 49px;
-		width: 100%;	
+		width: 100%;
 	}
 	#header .title h1 {
-		margin-top: 20px;	
+		margin-top: 20px;
 	}
 #pubsort {
-	margin: 0 auto 1em auto;	
+	margin: 0 auto 1em auto;
 	height: auto;
 	width: 940px;
 	font-size: 13px;
 }
 #navtitle {
-	float: left; 
-	margin: 8px 15px 0 -20px;	
+	float: left;
+	margin: 8px 15px 0 -20px;
 }
 #pubsort .tabs-below > .nav-tabs {
-	border-top: 0;	
+	border-top: 0;
 }
 #pubsort .tabs-below > .nav-tabs > li > a {
-	border-radius: 0 0 10px 10px;	
+	border-radius: 0 0 10px 10px;
 }
 
 .nav-tabs > li > a {
-	border: 0;	
+	border: 0;
 }
 
 .nav-tabs > li > a:hover {
@@ -132,19 +132,19 @@ h2 {
 }
 
 p#footer_accessibility{
-	font-size:12px; 
-	text-align:center; 
-	top-padding:20px;  
-	margin-right:20px; 
+	font-size:12px;
+	text-align:center;
+	top-padding:20px;
+	margin-right:20px;
 	margin-bottom:-40px;
-	
+
 }
 h2#footer_logo {
 	display: block;
 	width: 150px;
 	height: 55px;
 	text-indent: -9999px;
-	background: url('static/img/ucf_logo.png') center center no-repeat;	
+	background: url('static/img/ucf_logo.png') center center no-repeat;
 	margin: 0;
 }
 
@@ -154,21 +154,21 @@ h2#footer_logo {
 	text-transform: uppercase;
 	letter-spacing: 2.5px;
 }
-	
+
 #footer_navigation {
 	padding: 30px 0 0;
 }
 
 #footer_navigation .span2 {
-	padding-top: 35px;	
+	padding-top: 35px;
 	text-align: center;
 }
 	#footer_navigation .span2:first-child {
-		padding-top: 0;	
+		padding-top: 0;
 		text-align: left;
 	}
 	#footer_navigation .search {
-		margin-top: 4px;	
+		margin-top: 4px;
 	}
 
 #footer_navigation ul {
@@ -177,9 +177,9 @@ h2#footer_logo {
 }
 	#footer_navigation ul#menu-footer_navigation {
 		margin-top: 24px;
-	}	
+	}
 	#footer_navigation ul li {
-		padding-bottom: 8px;	
+		padding-bottom: 8px;
 	}
 #footer .search {
 	font-size:18px;
@@ -188,10 +188,10 @@ h2#footer_logo {
 	letter-spacing:1.5px;
 }
 form.search-form {
-	margin-bottom: 0;	
+	margin-bottom: 0;
 }
 button.search-submit {
-	display: none;	
+	display: none;
 }
 label#searchlabel {
 	color: #444;
@@ -232,17 +232,17 @@ input#s {
 		margin: 0 0 1em;
 	}
 .pub_details h3 {
-	line-height: 22px;	
+	line-height: 22px;
 	height: 45px;
 	position: relative;
 }
 .pub_details h3 a {
-	color: #000;	
+	color: #000;
 	position: absolute;
 	bottom: 0;
 }
 .pubthumb {
-	text-align: center;	
+	text-align: center;
 	height: 250px;
 	margin: 1em 0 !important;
 }
@@ -251,28 +251,28 @@ input#s {
 }
 h3.pubmodal_title {
 	position: static;
-	height: auto;	
+	height: auto;
 }
 
 .puburl_link {
 	float: left;
 }
 .pubembed_link {
-	float: right;	
+	float: right;
 }
 .puburl_link, .pubembed_link {
-	margin-bottom: 10px;	
+	margin-bottom: 10px;
 }
 
 .pubmodal_thumb img {
 	max-width: 140px;
-	height: auto;	
+	height: auto;
 }
 .modal .span4 {
-	width: 370px;	
+	width: 370px;
 }
 .modal .span4 .well {
-	padding: 12px;	
+	padding: 12px;
 	margin: 10px 0;
 	text-align: center;
 }
@@ -305,7 +305,7 @@ h2.sortall_letter {
 }
 
 ul.alphabetical_pubs {
-	list-style-type: none;	
+	list-style-type: none;
 	margin-left: 0;
 }
 ul.alphabetical_pubs li {
@@ -333,7 +333,7 @@ body.pubedition, body.pubedition .container, body.publication, body.publication 
 }
 
 .publication_wrap p, .publication_wrap>div>div {
-	display: none;	
+	display: none;
 }
 .publication_wrap>div, .publication_wrap>div>object, .publication_wrap>div>object>embed {
 	width: 100% !important;
@@ -341,7 +341,7 @@ body.pubedition, body.pubedition .container, body.publication, body.publication 
 }
 .alert {
 	margin-bottom: 0;
-	text-align: center;	
+	text-align: center;
 }
 
 #device_fallback_row {
@@ -360,9 +360,9 @@ body.pubedition, body.pubedition .container, body.publication, body.publication 
 	line-height: 24px;
 }
 	#device_fallback_wrap .btn-large {
-		padding: 10px 20px;	
+		padding: 10px 20px;
 	}
-	#device_fallback_wrap img { 
+	#device_fallback_wrap img {
 		max-width: 100px;
 		text-align: center;
 	}
@@ -372,7 +372,7 @@ body.pubedition, body.pubedition .container, body.publication, body.publication 
 #allcats_list a {
 	font-size: 18px;
 	font-weight: bold;
-	line-height: 27px;	
+	line-height: 27px;
 }
 
 
@@ -383,11 +383,11 @@ ul.result-list {
 	margin-left: 0;
 }
 	ul.result-list li {
-		margin-bottom: 1em;	
+		margin-bottom: 1em;
 	}
 	ul.result-list li p {
 		margin: 0;
-		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;	
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	}
 
 /* Forms: */
