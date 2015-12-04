@@ -1,11 +1,11 @@
 <div id="theme-help" class="i-am-a-fancy-admin">
 	<div class="container">
 		<h2>Help</h2>
-		
+
 		<?php if ($updated):?>
 		<div class="updated fade"><p><strong><?=__( 'Options saved' ); ?></strong></p></div>
 		<?php endif; ?>
-		
+
 		<div class="sections">
 			<ul>
 				<li class="section"><a href="#posting">Posting</a></li>
@@ -14,18 +14,36 @@
 		</div>
 		<div class="fields">
 			<ul>
-				
+
 				<li class="section" id="posting">
 					<h3>Posting</h3>
-					<p>General instructions for using the publications.ucf.edu WordPress site</p>
-					<p><strong>Get the embed code:</strong>
+					<p>General instructions for using the publications.ucf.edu WordPress site.  Last updated 12/4/2015.</p>
+					<p><strong>Get the embed code:</strong></p>
+					<img style="margin: 10px 0 20px;" src="<?php echo THEME_IMG_URL; ?>/issuu-getembed.gif">
 					<ol>
-						<li>Upload the publication to Issuu. After uploading, go to the UCF Issuu Library (after logging into Issuu, in the top-right-hand corner, hover over our username and select 'My Library') and locate the publication you uploaded. Hover over the publication's thumbnail and click 'Open'.</li>
-						<li>On this page, you'll see a small embed code with the publication's description and various sharing options. Directly under the publication embed, look for the icon with the brackets "< >" that says 'Get Embed Code.' Click it; a modal window will appear. To the left, click the 'WordPress' link. Right-click + copy the code in the text area directly underneath 'Get the embed code.'</li></ol>
+						<li>Upload the publication to Issuu.</li>
+						<li>
+							Navigate to the individual publication.  You can do this by logging into Issuu, clicking "Publisher Tools" at the top
+							of the page, and clicking the name or thumbnail of the publication.  Alternatively, you can click on the publication listed
+							on <a href="http://issuu.com/universityofcentralflorida" target="_blank">UCF's landing page on Issuu.</a>
+						</li>
+						<li>
+							On the individual publication page, scroll down just below the embedded publication, and click the "Share" link, then click "Embed".
+						</li>
+						<li>
+							A popup modal should appear on the screen with a preview of the embed.  In the top right corner of the modal, next to the
+							close icon, click "Looking for the old embed page?"
+						</li>
+						<li>
+							The popup modal should change and now provide a different set of configuration options.  At the top of the modal, you'll see
+							radio button options labeled "Embed Code:".  Select the "WordPress" radio button.  Copy the <strong>shortcode</strong>
+							that appears in the text field below.
+						</li>
+					</ol>
 <br>
-					<p><strong>Add the publication to WordPress:</strong></p>					
-						<ol>
-						<li>Log into the new publications.ucf.edu WordPress site. Once logged in, locate 'Pub Editions' in the left-hand menu, and click 'Add New'.
+					<p><strong>Add the publication to WordPress:</strong></p>
+					<ol>
+						<li>Log into publications.ucf.edu. Once logged in, locate 'Pub Editions' in the left-hand menu, and click 'Add New'.
 						<li>First, in the 'Issuu Pub' box underneath the text editor, paste the code from Issuu that you just copied.</li>
 						<li>In the box to the bottom-right labeled 'Publications', scroll and locate the name of the publication you'd like to add the new pub edition to.  Click the checkbox next to it. You should only check one publication name here. If this is a new piece that does not yet exist on the site, you can create a new one by clicking '+Add New Publication', typing a name, and clicking the 'Add New Publication' button below.</li>
 						<li>In the 'Categories' box, select the categor(ies) relevant to the pub edition. Assuming this isn't a new type of publication, you should use the same categories that the previous pub edition is tagged with.  Not doing so can mess up the list of publications by category on the front end. You can check for these categories easily by locating the publication on the front end and noting where the publication is 'Found in.'</li>
@@ -33,12 +51,11 @@
 						<li>If you want to designate a specific publication date, locate the 'Publish immediately' label in the 'Publish' box. Click the 'Edit' link next to it, and pick the date that the publication was originally published. Not setting a specific date here will default to the current day/time.</li>
 						<li>When you're finished, click the blue 'Publish' button.</li>
 					</ol>
-					</p>
 				</li>
-				
+
 				<li class="section" id="shortcodes">
 					<h3>Shortcodes</h3>
-					
+
 					<h4>slideshow</h4>
 					<p>Create a javascript slideshow of each top level element in the shortcode.  All attributes are optional, but may default to less than ideal values.  Available attributes:</p>
 					<table>
@@ -79,25 +96,8 @@
 &lt;div class="robots"&gt;Robots are coming!&lt;/div&gt;
 &lt;p&gt;I'm a slide!&lt;/p&gt;
 [/slideshow]</code></pre>
-					
-					<h4>document-list</h4>
-					<p>Outputs a list of {$plural} filtered by arbitrary taxonomies, for example a tag
-					or category.  A default output for when no objects matching the criteria are
-					found.</p>
-					<p>Example:</p>
-<pre><code># Output a maximum of 5 items tagged foo or bar, with a default output.
-[{$scode} tags="foo bar" limit="5"]No {$plural} were found.[/{$scode}]
-
-# Output all objects categorized as foo
-[{$scode} categories="foo"]
-
-# Output all objects matching the terms in the custom taxonomy named foo
-[{$scode} foo="term list example"]
-
-# Outputs all objects found categorized as staff and tagged as small.
-[{$scode} limit="5" join="and" categories="staff" tags="small"]</code></pre>
 				</li>
-				
+
 			</ul>
 		</div>
 	</div>
