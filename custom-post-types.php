@@ -1,7 +1,7 @@
 <?php
 
 abstract class CustomPostType{
-	public 
+	public
 		$name           = 'custom_post_type',
 		$plural_name    = 'Custom Posts',
 		$singular_name  = 'Custom Post',
@@ -19,8 +19,8 @@ abstract class CustomPostType{
 		                         # (see also objectsToHTML and toHTML methods)
 		$taxonomies     = array('post_tag'),
 		$built_in       = False;
-	
-	
+
+
 	/**
 	 * Wrapper for get_posts function, that predefines post_type for this
 	 * custom post type.  Any options valid in get_posts can be passed as an
@@ -38,8 +38,8 @@ abstract class CustomPostType{
 		$objects = get_posts($options);
 		return $objects;
 	}
-	
-	
+
+
 	/**
 	 * Similar to get_objects, but returns array of key values mapping post
 	 * title to id if available, otherwise it defaults to id=>id.
@@ -59,8 +59,8 @@ abstract class CustomPostType{
 		}
 		return $opt;
 	}
-	
-	
+
+
 	/**
 	 * Return the instances values defined by $key.
 	 **/
@@ -68,8 +68,8 @@ abstract class CustomPostType{
 		$vars = get_object_vars($this);
 		return $vars[$key];
 	}
-	
-	
+
+
 	/**
 	 * Additional fields on a custom post type may be defined by overriding this
 	 * method on an descendant object.
@@ -77,8 +77,8 @@ abstract class CustomPostType{
 	public function fields(){
 		return array();
 	}
-	
-	
+
+
 	/**
 	 * Using instance variables defined, returns an array defining what this
 	 * custom post type supports.
@@ -103,8 +103,8 @@ abstract class CustomPostType{
 		}
 		return $supports;
 	}
-	
-	
+
+
 	/**
 	 * Creates labels array, defining names for admin panel.
 	 **/
@@ -117,8 +117,8 @@ abstract class CustomPostType{
 			'new_item'      => __($this->options('new_item')),
 		);
 	}
-	
-	
+
+
 	/**
 	 * Creates metabox array for custom post type. Override method in
 	 * descendants to add or modify metaboxes.
@@ -136,8 +136,8 @@ abstract class CustomPostType{
 		}
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * Registers metaboxes defined for custom post type.
 	 **/
@@ -154,8 +154,8 @@ abstract class CustomPostType{
 			);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Registers the custom post type and any other ancillary actions that are
 	 * required for the post to function properly.
@@ -168,19 +168,19 @@ abstract class CustomPostType{
 			'taxonomies' => $this->options('taxonomies'),
 			'_builtin'   => $this->options('built_in')
 		);
-		
+
 		if ($this->options('use_order')){
 			$registration = array_merge($registration, array('hierarchical' => True,));
 		}
-		
+
 		register_post_type($this->options('name'), $registration);
-		
+
 		if ($this->options('use_shortcode')){
 			add_shortcode($this->options('name').'-list', array($this, 'shortcode'));
 		}
 	}
-	
-	
+
+
 	/**
 	 * Shortcode for this custom post type.  Can be overridden for descendants.
 	 * Defaults to just outputting a list of objects outputted as defined by
@@ -197,8 +197,8 @@ abstract class CustomPostType{
 		}
 		return sc_object_list($attr);
 	}
-	
-	
+
+
 	/**
 	 * Handles output for a list of objects, can be overridden for descendants.
 	 * If you want to override how a list of objects are outputted, override
@@ -207,10 +207,10 @@ abstract class CustomPostType{
 	 **/
 	public function objectsToHTML($objects, $css_classes){
 		if (count($objects) < 1){ return '';}
-		
+
 		$class = get_custom_post_type($objects[0]->post_type);
 		$class = new $class;
-		
+
 		ob_start();
 		?>
 		<ul class="<?php if($css_classes):?><?=$css_classes?><?php else:?><?=$class->options('name')?>-list<?php endif;?>">
@@ -224,8 +224,8 @@ abstract class CustomPostType{
 		$html = ob_get_clean();
 		return $html;
 	}
-	
-	
+
+
 	/**
 	 * Outputs this item in HTML.  Can be overridden for descendants.
 	 **/
@@ -248,7 +248,7 @@ class Document extends CustomPostType{
 		$use_editor     = False,
 		$use_shortcode  = True,
 		$use_metabox    = True;
-	
+
 	public function fields(){
 		$fields   = parent::fields();
 		$fields[] = array(
@@ -265,55 +265,55 @@ class Document extends CustomPostType{
 		);
 		return $fields;
 	}
-	
-	
+
+
 	static function get_document_application($form){
 		return mimetype_to_application(self::get_mimetype($form));
 	}
-	
-	
+
+
 	static function get_mimetype($form){
 		if (is_numeric($form)){
 			$form = get_post($form);
 		}
-		
+
 		$prefix   = post_type($form);
 		$document = get_post(get_post_meta($form->ID, $prefix.'_file', True));
-		
+
 		$is_url = get_post_meta($form->ID, $prefix.'_url', True);
-		
+
 		return ($is_url) ? "text/html" : $document->post_mime_type;
 	}
-	
-	
+
+
 	static function get_title($form){
 		if (is_numeric($form)){
 			$form = get_post($form);
 		}
-		
+
 		$prefix = post_type($form);
-		
+
 		return $form->post_title;
 	}
-	
+
 	static function get_url($form){
 		if (is_numeric($form)){
 			$form = get_post($form);
 		}
-		
+
 		$prefix = post_type($form);
-		
+
 		$x = get_post_meta($form->ID, $prefix.'_url', True);
 		$y = wp_get_attachment_url(get_post_meta($form->ID, $prefix.'_file', True));
-		
+
 		if (!$x and !$y){
 			return '#';
 		}
-		
+
 		return ($x) ? $x : $y;
 	}
-	
-	
+
+
 	/**
 	 * Handles output for a list of objects, can be overridden for descendants.
 	 * If you want to override how a list of objects are outputted, override
@@ -322,10 +322,10 @@ class Document extends CustomPostType{
 	 **/
 	public function objectsToHTML($objects, $css_classes){
 		if (count($objects) < 1){ return '';}
-		
+
 		$class_name = get_custom_post_type($objects[0]->post_type);
 		$class      = new $class_name;
-		
+
 		ob_start();
 		?>
 		<ul class="nobullet <?php if($css_classes):?><?=$css_classes?><?php else:?><?=$class->options('name')?>-list<?php endif;?>">
@@ -339,8 +339,8 @@ class Document extends CustomPostType{
 		$html = ob_get_clean();
 		return $html;
 	}
-	
-	
+
+
 	/**
 	 * Outputs this item in HTML.  Can be overridden for descendants.
 	 **/
@@ -383,7 +383,7 @@ class Page extends CustomPostType {
 
 
 class PubEdition extends CustomPostType{
-	public 
+	public
 		$name           = 'pubedition',
 		$plural_name    = 'Pub. Editions',
 		$singular_name  = 'Pub. Edition',
@@ -397,40 +397,32 @@ class PubEdition extends CustomPostType{
 		$use_title      = True,
 		$use_metabox    = True,
 		$taxonomies     = array('publications', 'category');
-	
+
 	public function toHTML($pub){
 		return sc_publication(array('pub' => $pub));
 	}
-	
-	public function metabox(){
-		$metabox = parent::metabox();
-		
-		$metabox['title']   = 'Issuu Pub';
-		$metabox['helptxt'] = 'Make sure to use the WordPress embed code provided by Issuu; e.g.: <br/>[issuu width=420 height=273 backgroundColor=%23222222 documentId=110808172738-cfb1264144454a57a1378fa3b4375aaf name=1107adm219_11_12viewbookissuu4 username=universityofcentralflorida tag=ucf unit=px v=2]<br/><br/>This is not the same as the HTML embed code.  On the "Embed Publication" screen in Issuu, click "WordPress" in the left-hand sidebar to get the correct shortcode.<br/><br/>You do not need to edit sizing parameters in the shortcode; this is edited automatically through the site theme.';
-		return $metabox;
-	}
-	
-	
+
+
 	public function register_metaboxes(){
 		$metabox = $this->metabox();
-			
+
 		global $wp_meta_boxes;
 		remove_meta_box('postimagediv', $metabox['page'], 'side');
-			
+
 		parent::register_metaboxes();
 	}
-		
-	
+
+
 	public function fields(){
 		$prefix = $this->options('name').'_';
 		return array(
 			array(
-				'name'  => 'WordPress Embed Code',
+				'name'  => 'URL of publication',
 				'desc' => '',
-				'id'   => $prefix.'embed',
-				'type' => 'textarea',
+				'id'   => $prefix . 'url',
+				'type' => 'text',
 				'std'  => '',
-			),
+			)
 		);
 	}
 }
