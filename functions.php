@@ -26,7 +26,6 @@ require_once('custom-taxonomies.php');  # Where per theme taxonomies are defined
 require_once('custom-post-types.php');  # Where per theme post types are defined
 require_once('shortcodes.php');         # Per theme shortcodes
 require_once('functions-admin.php');    # Admin/login functions
-require_once('third-party/wp-issuu.php'); # Includes WP Issuu plugin (does not register plugin in WP!)
 
 
 /**
@@ -94,7 +93,7 @@ Config::$theme_settings = array(
 			'value'       => $theme_options['cb_domain'],
 		)),
 	),
-	
+
 	'Search' => array(
 		new RadioField(array(
 			'name'        => 'Enable Google Search',
@@ -248,7 +247,7 @@ if ($theme_options['bw_verify']){
 	);
 }
 
-				
+
 /*
  * Returns featured image URL of a specified post ID
  * In this theme, this function retrieves the generic 'thumbnail' size, rather than 'single-post-thumbnail'.
@@ -305,15 +304,15 @@ add_filter('terms_clauses', 'filter_term_sort_by_latest_post_clauses', 10, 3);
 
 
 /*
- * Trim a string at the end of the last word before the character limit 
+ * Trim a string at the end of the last word before the character limit
  */
 
 function trim_pub_title($input) {
-	$length = 35;										
+	$length = 35;
 	if (strlen($input) <= $length) {
 		return $input;
 	}
-	else {				  
+	else {
 		//find last space within length
 		$last_space = strrpos(substr($input, 0, $length), ' ');
 		$trimmed_text = substr($input, 0, $last_space).'&#133;';
@@ -353,7 +352,7 @@ function is_only_edition($pubedition_id) {
 	$publication = wp_get_post_terms($pubedition_id, 'publications');
 	// This should never be an array, but we have to check in case of user error:
 	$publication = is_array($publication) ? $publication[0] : $publication;
-	
+
 	$args = array(
 		'post_type' 	=> 'pubedition',
 		'numberposts' 	=> -1,
@@ -361,12 +360,12 @@ function is_only_edition($pubedition_id) {
 		'term' 			=> $publication->name
 	);
 	$publication_pubs = get_posts($args);
-	
+
 	if (count($publication_pubs) == 1) {
 		return true;
 	}
 	return false;
-} 
+}
 
 /*
  * Return the number of pubeditions associated with a publication.
@@ -386,22 +385,22 @@ function get_pubedition_count_by_publication($publication_id) {
  * Returns an array of post (pubedition) objects, or false on an empty result.
  *
  * @arg $catid -    Category ID to filter publications by.
- * @arg $pubid -    Publication ID to filter by (will return a list of 
+ * @arg $pubid -    Publication ID to filter by (will return a list of
  * 				    pubeditions with this publication ID).
- * @arg $sort - 	How to sort returned publications. 'latest' will 
+ * @arg $sort - 	How to sort returned publications. 'latest' will
  * 					return publications from newest tagged pubedition to
- * 					oldest; 'alpha' will return publications in A-Z order.	
- * @return array				
+ * 					oldest; 'alpha' will return publications in A-Z order.
+ * @return array
  */
 function get_pubs($catid=null, $pubid=null, $sort='latest') {
-	
+
 	// Cannot return results by catid and pubid; return false if both are set
 	if ($catid !== null && $pubid !== null) { return false; }
-	
+
 	// Get terms or posts, depending on whether a pubid/catid is provided or not.
 	$publications = null;
 	$pubeditions  = null;
-	
+
 	// Default args
 	$args = array('post_type' => 'pubedition', 'numberposts' => -1);
 	// By publication id args
@@ -428,16 +427,16 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 			$args = array_merge($args, array('orderby' => 'date'));
 			break;
 	}
-	
+
 	$pubeditions = get_posts($args);
-	
-	
-	if ($pubid !== null) { 
+
+
+	if ($pubid !== null) {
 		foreach ($pubeditions as $pubedition) {
 			$publication = get_term($pubid, 'publications');
 			$pubedition->publication = $publication->slug;
-		}	
-		return $pubeditions; 
+		}
+		return $pubeditions;
 	}
 	else {
 		$sortable_pubedition_list = array();
@@ -445,23 +444,23 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 			$publication = wp_get_post_terms($pubedition->ID, 'publications', array('fields' => 'all'));
 			$publication = is_array($publication) ? $publication[0]->slug : $publication->slug;
 			$pubedition->publication = $publication;
-	
+
 			// Store the latest pubedition in relation to its publication in
 			// $sortable_pubedition_list.  Replace any newer pubeditions for
 			// a publication if they're found.
 			// Note: Pubeditions must have a publication associated with them, or
-			// else bad things happen.					
+			// else bad things happen.
 			if (
 				$pubedition->publication !== null &&
-				!isset($sortable_pubedition_list[$publication]) || 
+				!isset($sortable_pubedition_list[$publication]) ||
 				(
-					isset($sortable_pubedition_list[$publication]) && 
+					isset($sortable_pubedition_list[$publication]) &&
 					date('YmdHis', strtotime($sortable_pubedition_list[$publication]->post_date)) < date('YmdHis', strtotime($pubedition->post_date))
 				)
 				) {
 					$sortable_pubedition_list[strtolower($publication)] = $pubedition;
 			}
-				
+
 		}
 		// Realphabetize results by publication name if necessary
 		if ($sort == 'alpha') {
@@ -472,31 +471,31 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 		foreach ($sortable_pubedition_list as $pubedition) {
 			$pubeditions_numeric[] = $pubedition;
 		}
-				
+
 		return $pubeditions_numeric;
 	}
-	
+
 }
 
-/* 
+/*
  * Return a subset of publications for use in a paginated display.
  */
 function paginate_pubs($pubs, $per_page=16, $pagenum=0) {
 	if (empty($pubs)) { return false; }
-	
+
 	// Define an offset
-	if ($pagenum == 0) { 
+	if ($pagenum == 0) {
 		$offset = 0;
 	}
 	else { $offset = $per_page*($pagenum-1); }
-	
+
 	$paginated_pubs = array();
 	for ($i=$offset; $i<($offset + $per_page); $i++) {
 		if (isset($pubs[$i])) {
 			$paginated_pubs[] = $pubs[$i];
 		}
 	}
-	
+
 	return $paginated_pubs;
 }
 
@@ -512,20 +511,20 @@ function paginate_pubs($pubs, $per_page=16, $pagenum=0) {
  */
 function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 	if (empty($pubs)) { return null; }
-	
+
 	switch ($styling) {
 		case 'alphalist':
 			ob_start(); ?>
-			
+
 			<div class="span12">
 				<ul class="alphabetical_pubs">
 					<?php
 					$currentletter = '';
 					foreach ($pubs as $post) {
 						$cats    = get_the_category($post->ID);
-						$catlist = ''; 
-						if ($cats[0] == '') { $catlist = "n/a"; } 
-						else { 
+						$catlist = '';
+						if ($cats[0] == '') { $catlist = "n/a"; }
+						else {
 							foreach ($cats as $cat) {
 								$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
 							}
@@ -536,11 +535,11 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 						$publication_name = $publication->name;
 						$pubdate 		  = date('M j, Y', strtotime($post->post_date));
 						$publink 		  = get_term_link($publication_name, 'publications');
-			
+
 						$firstletter = strtoupper(substr($publication_name, 0, 1));
 						if ($firstletter != $currentletter) { ?>
 							<h2 class="sortall_letter"><?=$firstletter?></h2>
-						<?php	
+						<?php
 							$currentletter = $firstletter;
 						} ?>
 						<li>
@@ -548,7 +547,7 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 							<p><strong>Published:</strong> <?=$pubdate?></p>
 							<p><strong>Found in:</strong> <?=$catlist?></p>
 							<?php
-							if (is_only_edition($post->ID) == false) { 
+							if (is_only_edition($post->ID) == false) {
 								$archive_link = get_permalink(get_page_by_title('Archive')->ID).'?publication='.$publication->slug;
 							?>
 								<p><strong>Previous editions:</strong> <a href="<?=$archive_link?>">View All (<?=get_pubedition_count_by_publication($publication->term_id)?>)</a></p>
@@ -560,28 +559,28 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 					} ?>
 				</ul>
 			</div>
-			
+
 			<?php
 			print ob_get_clean();
 			break;
-			
+
 		case 'default':
 		default:
 			ob_start();
-			
+
 			foreach ($pubs as $post) {
 				//Get pubedition's thumbnail from Issuu based on the document ID found in the pub's shortcode:
 				$docID 			  = get_pubedition_docid($post->ID);
 				$thumb 			  = "<img src='//image.issuu.com/".$docID."/jpg/page_1_thumb_large.jpg' alt='".$post->post_title."' title='".$post->post_title."' />";
 				$cats  			  = get_the_category($post->ID);
-				$catlist = ''; 
-				if ($cats[0] == '') { $catlist = "n/a"; } 
-				else { 
+				$catlist = '';
+				if ($cats[0] == '') { $catlist = "n/a"; }
+				else {
 					foreach ($cats as $cat) {
 						$catlist .= "<a href='".get_category_link( $cat->cat_ID )."'>".$cat->cat_name."</a>, ";
 					}
 					$catlist = substr($catlist, 0, -2); //remove last stray comma and space
-				} 
+				}
 				$publication = $post->publication;
 				$publication = get_term_by('slug', $publication, 'publications');
 				$pubedition_link  = get_permalink($post->ID);
@@ -598,13 +597,13 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 				}
 				$pubdate 		  = date('M j, Y', strtotime($post->post_date));
 				$issuulink 		  = get_post_meta($post->ID, 'pubedition_embed', TRUE);
-			
+
 			?>
-			
+
 				<div class="span3 pub">
-					<div class="pub_details">		
+					<div class="pub_details">
 						<h3><a target="_blank" href="<?=$publink?>"><?=trim_pub_title($publication_name)?></a></h3>
-						<p class="pubthumb"><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>						
+						<p class="pubthumb"><a target="_blank" href="<?=$publink?>"><?=$thumb?></a></p>
 						<div>
 							<a data-toggle="modal" class="btn btn-small puburl_link" href="#linkmodal_<?=$post->post_name?>">Link To Publication</a>
 							<a data-toggle="modal" class="btn btn-small pubembed_link" href="#embedmodal_<?=$post->post_name?>"><i class="icon-share"></i> Embed Code</a>
@@ -633,7 +632,7 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 								<a href="#" class="btn" data-dismiss="modal">Close</a>
 							</div>
 						</div>
-						
+
 						<div class="modal fade hide" id="embedmodal_<?=$post->post_name?>">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">×</button>
@@ -660,19 +659,19 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 								<a href="#" class="btn" data-dismiss="modal">Close</a>
 							</div>
 						</div>
-						
+
 						<p><strong>Published:</strong> <?=$pubdate?></p>
 						<p><strong>Found in:</strong> <?=$catlist?></p>
 						<?php
-						if (is_only_edition($post->ID) == false && $reference_pubeditions == false) { 
+						if (is_only_edition($post->ID) == false && $reference_pubeditions == false) {
 							$archive_link = get_permalink(get_page_by_title('Archive')->ID).'?publication='.$publication->slug;
 						?>
 							<p><strong>Previous editions:</strong> <a href="<?=$archive_link?>">View All (<?=get_pubedition_count_by_publication($publication->term_id)?>)</a></p>
 						<?php
 						} ?>
 					</div>
-				</div>			
-			
+				</div>
+
 			<?php
 			}
 			print ob_get_clean();
@@ -683,12 +682,12 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 /*
  * Display pagination links for lists of publications.
  * Note that the $pubs arg here requires the total count
- * of all pubs, not the count of pubs already filtered with 
+ * of all pubs, not the count of pubs already filtered with
  * paginate_pubs().
  */
 function display_pagination($pubcount, $per_page, $pagenum, $pageurl) {
 	if (!$pubcount || !$per_page || !$pagenum || !$pageurl) { return false; }
-	
+
 	$queryseparator = strpos($pageurl, '?') !== false ? '&' : '?';
 	$pages = ceil($pubcount/$per_page);
 	if ($pubcount > $per_page) {
@@ -701,7 +700,7 @@ function display_pagination($pubcount, $per_page, $pagenum, $pageurl) {
 							1
 						</a>
 					</li>
-				<?php 
+				<?php
 				for ($pagecount = 2; $pagecount <= $pages; $pagecount++) { ?>
 					<li <?php if ($pagecount == $pagenum) { print 'class="active"'; } ?>>
 						<a href="<?=$pageurl?><?=$queryseparator?>pagenum=<?=$pagecount?>">
@@ -711,7 +710,7 @@ function display_pagination($pubcount, $per_page, $pagenum, $pageurl) {
 				<?php
 				}
 				?>
-		
+
 				</ul>
 			</div>
 		</div>
@@ -723,18 +722,18 @@ function display_pagination($pubcount, $per_page, $pagenum, $pageurl) {
 /*
  * Output an issuu pub or a link for ipad/iphone users
  */
-function embed_issuu($post_id) { 
-	
+function embed_issuu($post_id) {
+
 	$pub 		= get_post($post_id);
 	$pubtitle 	= $pub->post_title;
 	$shortcode 	= get_post_meta($post_id, 'pubedition_embed', TRUE);
-	
+
 	$docID 		= get_pubedition_docid($post_id);
 	$docname	= get_pubedition_docname($post_id);
-	
+
 	if( (strstr($_SERVER['HTTP_USER_AGENT'],"iPad")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPhone")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPod")) || (strstr($_SERVER['HTTP_USER_AGENT'],"Android")) ) {
 	?>
-	
+
 		<div class="container-fluid" id="device_fallback_wrap">
 			<div class="row-fluid" id="device_fallback_row">
 				<div class="span12">
@@ -745,15 +744,15 @@ function embed_issuu($post_id) {
 				</div>
 			</div>
 		</div>
-	
-	<?php 
+
+	<?php
 	} else {
 	?>
-	
+
 		<div class="publication_wrap">
 			<?=apply_filters('the_content', $shortcode)?>
 		</div>
-	
+
 	<?php
 	}
 
