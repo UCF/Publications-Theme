@@ -270,18 +270,6 @@ function get_theme_option($key) {
 	return isset($theme_options[$key]) ? $theme_options[$key] : NULL;
 }
 
-/*
- * Returns an array of choices for the front page features story site setting.
- */
-function get_front_page_story_choices() {
-	$choices = array();
-
-	$stories = get_posts(array('post_type'=>'story', 'numberposts'=>-1));
-	foreach($stories as $story) {
-		$choices[$story->post_title] = $story->ID;
-	}
-	return $choices;
-}
 
 /*
  * Sort publications by latest post filter - via http://jeffri.net/2012/01/sort-by-latest-post-for-wp_list_categories/
