@@ -413,15 +413,27 @@ class PubEdition extends CustomPostType{
 	}
 
 
-	public function fields(){
+	public function fields() {
 		$prefix = $this->options('name').'_';
 		return array(
 			array(
-				'name'  => 'Issuu URL of publication',
-				'desc' => '',
+				'name'  => 'issuu URL of publication',
+				'desc' => 'The URL linking to this publication on issuu.',
 				'id'   => $prefix . 'issuu_url',
 				'type' => 'text',
 				'std'  => '',
+			),
+			array(
+				'name'  => 'Document ID',
+				'desc' => 'This value is generated automatically.',
+				'id'   => $prefix . 'docid',
+				'type' => 'text',
+			),
+			array(
+				'name'  => 'Document Name',
+				'desc' => 'This value is generated automatically.',
+				'id'   => $prefix . 'docname',
+				'type' => 'text',
 			)
 		);
 	}

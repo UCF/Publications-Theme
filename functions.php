@@ -300,27 +300,172 @@ function trim_pub_title($input) {
 
 
 /**
- * Get the pubedition's Issuu ID based on the Wordpress embed code provided by Issuu
- * @return string
+ * Calls the issuu search api.  Returns a json response from the api.
+ *
+ * Query string format: http://developers.issuu.com/api/search/gettingstarted.html
+ * Field appendix:      http://developers.issuu.com/api/search/appendix.html
  **/
-function get_pubedition_docid($post_id) {
-	$embedcode  = get_post_meta($post_id, 'pubedition_embed', TRUE);
-	preg_match('/(?i)(documentid=)(?P<id>[A-Za-z0-9\-]+)/', $embedcode, $matches);
-	$docID		= $matches['id'];
-	return $docID;
+function get_issuu_search_results( $query ) {
+	$api_url = 'http://search.issuu.com/api/2_0/document?q=' . $query;
+	$opts = array(
+		'http' => array(
+			'timeout' => 15
+		)
+	);
+	$context = stream_context_create( $opts );
+	return json_decode( file_get_contents( $api_url, false, $context ) );
 }
 
 
 /**
- * Get the pubedition's Issuu docname based on the Wordpress embed code provided by Issuu
+ * Returns the issuu document id from an old issuu embed shortcode.
+ **/
+function get_docid_from_embed_shortcode( $embed_code ) {
+	preg_match('/(?i)(documentid=)(?P<id>[A-Za-z0-9\-]+)/', $embed_code, $matches);
+	return $matches['id'];
+}
+
+
+/**
+ * Returns the issuu document name from an old issuu embed shortcode.
+ **/
+function get_docname_from_embed_shortcode( $embed_code ) {
+	preg_match('/(?i)(docname=| name=)(?P<name>[A-Za-z0-9\-\_]+)/', $embed_code, $matches);
+	return $matches['name'];
+}
+
+
+/**
+ * Attempts to determine the docid from existing post data and/or the
+ * issuu search api.  The docid is then saved as post meta data.
+ **/
+function add_pubedition_docid( $post_id ) {
+	$embed_code  = get_post_meta( $post_id, 'pubedition_embed', true );
+	$doc_name = get_pubedition_docname( $post_id );
+	$doc_id = false;
+
+	// Either the embed code or the docname must already exist
+	if ( !$embed_code && !$doc_name ) { return false; }
+
+	if ( $embed_code ) {
+		$doc_id = get_docid_from_embed_shortcode( $embed_code );
+	}
+	else {
+		// If this is a newer pubedition without an old embed code, hit the
+		// issuu search api, searching by docname and username
+		$search_query = 'username:universityofcentralflorida+docname:' . $doc_name;
+		$api_response = get_issuu_search_results( $search_query );
+
+		// If the call to the issuu api failed or returned a bad response, stop here
+		if ( !$api_response || $api_response->response->numFound < 1 || !($doc_id = $api_response->response->docs[0]->documentId) ) {
+			return false;
+		}
+	}
+
+	update_post_meta( $post_id, 'pubedition_docid', $doc_id );
+
+	return $doc_id;
+}
+
+
+/**
+ * Get the pubedition's issuu document id, or create + save it if it isn't set
  * @return string
  **/
-function get_pubedition_docname($post_id) {
-	$embedcode  = get_post_meta($post_id, 'pubedition_embed', TRUE);
-	preg_match('/(?i)(docname=| name=)(?P<name>[A-Za-z0-9\-\_]+)/', $embedcode, $matches);
-	$docname	= $matches['name'];
-	return $docname;
+function get_pubedition_docid( $post_id ) {
+	return get_post_meta( $post_id, 'pubedition_docid', true ) ?: add_pubedition_docid( $post_id );
 }
+
+
+/**
+ * Attempts to determine the docname from existing post data and/or the
+ * issuu search api.  The docname is then saved as post meta data.
+ **/
+function add_pubedition_docname( $post_id ) {
+	$embed_code  = get_post_meta( $post_id, 'pubedition_embed', true );
+	$issuu_url = get_post_meta( $post_id, 'pubedition_issuu_url', true );
+	$doc_name = false;
+
+	// Either the embed code or the issuu url must already exist
+	if ( !$embed_code && !$issuu_url ) { return false; }
+
+	if ( $issuu_url ) {
+		// Extract the docname from the issuu url. Account for stray end slashes
+		// and potential extra path parts (e.g. page number designation).
+		$split = explode( '/docs/', $issuu_url );
+		$split = explode( '/', $split[1] );
+		$doc_name = $split[0];
+	}
+	else {
+		// Parse out the docname from an old issuu embed shortcode.  If the docname
+		// isn't present in the shortcode, parse out the docid and search for the
+		// document using the issuu search api.
+		$doc_name = get_docname_from_embed_shortcode( $embed_code );
+
+		if ( !$doc_name ) {
+			// $doc_id MUST be parsed from the old embed shortcode here--do not call
+			// get_pubedition_docid()
+			$doc_id = get_docid_from_embed_shortcode( $embed_code );
+
+			$search_query = 'documentId:' . $doc_id;
+			$api_response = get_issuu_search_results( $search_query );
+
+			// If the call to the issuu api failed or returned a bad response, stop here
+			if ( !$api_response || $api_response->response->numFound < 1 || !($doc_name = $api_response->response->docs[0]->docname) ) {
+				return false;
+			}
+		}
+	}
+
+	update_post_meta( $post_id, 'pubedition_docname', $doc_name );
+
+	return $doc_name;
+}
+
+
+/**
+ * Get the pubedition's Issuu docname, or create + save it if it isn't set
+ * @return string
+ **/
+function get_pubedition_docname( $post_id ) {
+	return get_post_meta( $post_id, 'pubedition_docname', true ) ?: add_pubedition_docname( $post_id );
+}
+
+
+/**
+ * If a pubedition's issuu url is not set (only an embed code is set), get the
+ * issuu url for the document and save the url meta field value.
+ **/
+function add_pubedition_url( $post_id ) {
+	$url = '';
+	$embed_code  = get_post_meta( $post_id, 'pubedition_embed', true );
+
+	// The embed code must already exist (e.g. this must be an old pubedition from
+	// before the switchover to using oembed for issuu embedding)
+	if ( !$embed_code ) { return false; }
+
+	$doc_name = get_pubedition_docname( $post_id );
+	$doc_id = get_pubedition_docid( $post_id );
+
+	// Docname must be set--it should always be set by this point, but just in case:
+	if ( !$doc_name ) { return false; }
+
+	$url = 'https://issuu.com/universityofcentralflorida/docs/' . $doc_name;
+
+	update_post_meta( $post_id, 'pubedition_issuu_url', $url );
+
+	return $url;
+}
+
+
+/**
+ * Returns a pubedition's issuu url, or figure out + save the url if one hasn't
+ * been saved to the post yet
+ **/
+function get_pubedition_issuu_url( $post_id ) {
+	return get_post_meta( $post_id, 'pubedition_issuu_url', true ) ?: add_pubedition_url( $post_id );
+}
+
 
 /*
  * Determine whether or not a pubedition is the only post under its publication.
@@ -702,55 +847,6 @@ function display_pagination($pubcount, $per_page, $pagenum, $pageurl) {
  */
 function embed_issuu( $post_id ) {
 	echo apply_filters( 'the_content', get_pubedition_issuu_url( $post_id ) );
-}
-
-
-/**
- * If a pubedition's issuu url is not set (only an embed code is set), get the
- * issuu url for the document and save the url meta field value.
- **/
-function create_pubedition_url( $post_id ) {
-	$pubedition = get_post( $post_id );
-	$doc_name = get_pubedition_docname( $post_id );
-	$doc_id = get_pubedition_docid( $post_id );
-	$url = '';
-
-	// If no document name is available from an existing embed shortcode, hit the
-	// issuu search api to find it by its documentId
-	if ( !$doc_name ) {
-
-		// We must have a doc id to return an issuu url
-		if ( !$doc_id ) { return false; }
-
-		$api_url = 'http://search.issuu.com/api/2_0/document?q=documentId:' . $doc_id;
-		$opts = array(
-			'http' => array(
-				'timeout' => 15
-			)
-		);
-		$context = stream_context_create( $opts );
-		$api_response = json_decode( file_get_contents( $api_url, false, $context ) );
-
-		// If the call to the issuu api failed or returned a bad response, stop here
-		if ( !$api_response || $api_response->response->numFound < 1 || !($doc_name = $api_response->response->docs[0]->docname) ) {
-			return false;
-		}
-	}
-
-	$url = 'https://issuu.com/universityofcentralflorida/docs/' . $doc_name;
-
-	update_post_meta( $post_id, 'pubedition_issuu_url', $url );
-
-	return $url;
-}
-
-
-/**
- * Returns a pubedition's issuu url, or figure out + save the url if one hasn't
- * been saved to the post yet
- **/
-function get_pubedition_issuu_url( $post_id ) {
-	return get_post_meta( $post_id, 'pubedition_issuu_url', true ) ?: create_pubedition_url( $post_id );
 }
 
 ?>
