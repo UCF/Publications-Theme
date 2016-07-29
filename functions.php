@@ -698,42 +698,59 @@ function display_pagination($pubcount, $per_page, $pagenum, $pageurl) {
 }
 
 /*
- * Output an issuu pub or a link for ipad/iphone users
+ * Output an issuu pub
  */
-function embed_issuu($post_id) {
+function embed_issuu( $post_id ) {
+	echo apply_filters( 'the_content', get_pubedition_issuu_url( $post_id ) );
+}
 
-	$pub 		= get_post($post_id);
-	$pubtitle 	= $pub->post_title;
-	$shortcode 	= get_post_meta($post_id, 'pubedition_embed', TRUE);
 
-	$docID 		= get_pubedition_docid($post_id);
-	$docname	= get_pubedition_docname($post_id);
+/**
+ * If a pubedition's issuu url is not set (only an embed code is set), get the
+ * issuu url for the document and save the url meta field value.
+ **/
+function create_pubedition_url( $post_id ) {
+	$pubedition = get_post( $post_id );
+	$doc_name = get_pubedition_docname( $post_id );
+	$doc_id = get_pubedition_docid( $post_id );
+	$url = '';
 
-	if( (strstr($_SERVER['HTTP_USER_AGENT'],"iPad")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPhone")) || (strstr($_SERVER['HTTP_USER_AGENT'],"iPod")) || (strstr($_SERVER['HTTP_USER_AGENT'],"Android")) ) {
-	?>
+	// If no document name is available from an existing embed shortcode, hit the
+	// issuu search api to find it by its documentId
+	if ( !$doc_name ) {
 
-		<div class="container-fluid" id="device_fallback_wrap">
-			<div class="row-fluid" id="device_fallback_row">
-				<div class="span12">
-					<h1><?=$pubtitle?></h1>
-					<br/>
-					<a href="//issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile"><img src='//image.issuu.com/<?=$docID?>/jpg/page_1_thumb_large.jpg' alt='<?=$pubtitle?>' title='<?=$pubtitle?>' /></a>
-					<p><a class="btn btn-primary btn-large" href="//issuu.com/universityofcentralflorida/docs/<?=$docname?>?mode=mobile">View Publication</a></p>
-				</div>
-			</div>
-		</div>
+		// We must have a doc id to return an issuu url
+		if ( !$doc_id ) { return false; }
 
-	<?php
-	} else {
-	?>
+		$api_url = 'http://search.issuu.com/api/2_0/document?q=documentId:' . $doc_id;
+		$opts = array(
+			'http' => array(
+				'timeout' => 15
+			)
+		);
+		$context = stream_context_create( $opts );
+		$api_response = json_decode( file_get_contents( $api_url, false, $context ) );
 
-		<div class="publication_wrap">
-			<?=apply_filters('the_content', $shortcode)?>
-		</div>
-
-	<?php
+		// If the call to the issuu api failed or returned a bad response, stop here
+		if ( !$api_response || $api_response->response->numFound < 1 || !($doc_name = $api_response->response->docs[0]->docname) ) {
+			return false;
+		}
 	}
 
+	$url = 'https://issuu.com/universityofcentralflorida/docs/' . $doc_name;
+
+	update_post_meta( $post_id, 'pubedition_issuu_url', $url );
+
+	return $url;
+}
+
+
+/**
+ * Returns a pubedition's issuu url, or figure out + save the url if one hasn't
+ * been saved to the post yet
+ **/
+function get_pubedition_issuu_url( $post_id ) {
+	return get_post_meta( $post_id, 'pubedition_issuu_url', true ) ?: create_pubedition_url( $post_id );
 }
 
 ?>

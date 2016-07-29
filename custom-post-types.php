@@ -417,9 +417,9 @@ class PubEdition extends CustomPostType{
 		$prefix = $this->options('name').'_';
 		return array(
 			array(
-				'name'  => 'URL of publication',
+				'name'  => 'Issuu URL of publication',
 				'desc' => '',
-				'id'   => $prefix . 'url',
+				'id'   => $prefix . 'issuu_url',
 				'type' => 'text',
 				'std'  => '',
 			)
