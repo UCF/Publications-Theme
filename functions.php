@@ -846,7 +846,15 @@ function display_pagination($pubcount, $per_page, $pagenum, $pageurl) {
  * Output an issuu pub
  */
 function embed_issuu( $post_id ) {
-	echo apply_filters( 'the_content', get_pubedition_issuu_url( $post_id ) );
+	ob_start();
+?>
+	<div class="embed-responsive embed-responsive-16by9">
+		<div class="embed-responsive-item">
+			<?php echo apply_filters( 'the_content', get_pubedition_issuu_url( $post_id ) ); ?>
+		</div>
+	</div>
+<?php
+	echo ob_get_clean();
 }
 
 ?>
