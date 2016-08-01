@@ -17,34 +17,30 @@
 
 				<li class="section" id="posting">
 					<h3>Posting</h3>
-					<p>General instructions for using the publications.ucf.edu WordPress site.  Last updated 12/4/2015.</p>
-					<p><strong>Get the embed code:</strong></p>
-					<img style="margin: 10px 0 20px;" src="<?php echo THEME_IMG_URL; ?>/issuu-getembed.gif">
+					<p>General instructions for using the publications.ucf.edu WordPress site.  Last updated 8/1/2016.</p>
+					<p><strong>Get the URL of the publication on issuu:</strong></p>
 					<ol>
 						<li>Upload the publication to Issuu.</li>
 						<li>
-							Navigate to the individual publication.  You can do this by logging into Issuu, clicking "Publisher Tools" at the top
+							Navigate to the individual publication.
+							<br>
+							You can do this by logging into Issuu, clicking "Publisher Tools" at the top
 							of the page, and clicking the name or thumbnail of the publication.  Alternatively, you can click on the publication listed
 							on <a href="http://issuu.com/universityofcentralflorida" target="_blank">UCF's landing page on Issuu.</a>
 						</li>
 						<li>
-							On the individual publication page, scroll down just below the embedded publication, and click the "Share" link, then click "Embed".
-						</li>
-						<li>
-							A popup modal should appear on the screen with a preview of the embed.  In the top right corner of the modal, next to the
-							close icon, click "Looking for the old embed page?"
-						</li>
-						<li>
-							The popup modal should change and now provide a different set of configuration options.  At the top of the modal, you'll see
-							radio button options labeled "Embed Code:".  Select the "WordPress" radio button.  Copy the <strong>shortcode</strong>
-							that appears in the text field below.
+							Simply <strong>copy the URL in your browser's address bar.</strong>
+							<br>
+							Alternatively, on the individual publication page, scroll down just below the embedded publication, and click the "Share" link, then copy the direct link provided.
+							<br>
+							<strong>Note: you no longer have to copy an embed code from issuu!</strong> All you need is the URL of the publication on issuu.
 						</li>
 					</ol>
 <br>
 					<p><strong>Add the publication to WordPress:</strong></p>
 					<ol>
 						<li>Log into publications.ucf.edu. Once logged in, locate 'Pub Editions' in the left-hand menu, and click 'Add New'.
-						<li>First, in the 'Issuu Pub' box underneath the text editor, paste the code from Issuu that you just copied.</li>
+						<li>First, in the 'Pub. Edition Fields' box underneath the text editor, paste the publication's url into the "issuu URL of publication" field. <strong>Leave the other fields in this box blank;</strong> they will be populated automatically for you.</li>
 						<li>In the box to the bottom-right labeled 'Publications', scroll and locate the name of the publication you'd like to add the new pub edition to.  Click the checkbox next to it. You should only check one publication name here. If this is a new piece that does not yet exist on the site, you can create a new one by clicking '+Add New Publication', typing a name, and clicking the 'Add New Publication' button below.</li>
 						<li>In the 'Categories' box, select the categor(ies) relevant to the pub edition. Assuming this isn't a new type of publication, you should use the same categories that the previous pub edition is tagged with.  Not doing so can mess up the list of publications by category on the front end. You can check for these categories easily by locating the publication on the front end and noting where the publication is 'Found in.'</li>
 						<li>Add a title for the pub edition. The naming convention here should be the name of the publication and what year/season/month it was released; i.e. "2011-2012 Transfer Viewbook"</li>
