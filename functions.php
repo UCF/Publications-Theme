@@ -330,7 +330,7 @@ function get_docid_from_embed_shortcode( $embed_code ) {
  * Returns the issuu document name from an old issuu embed shortcode.
  **/
 function get_docname_from_embed_shortcode( $embed_code ) {
-	preg_match('/(?i)(docname=| name=)(?P<name>[A-Za-z0-9\-\_]+)/', $embed_code, $matches);
+	preg_match('/(?i)(docname=| name=)(?P<name>[A-Za-z0-9\-\_\.]+)/', $embed_code, $matches);
 	return $matches['name'];
 }
 
