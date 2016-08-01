@@ -7,34 +7,8 @@ Version: v1.0.10
 
 /* UCF Header Styles */
 
-#UCFHBSearch_ucf fieldset #q {
-	line-height: 11px;
-	color: #000000;
-	padding: 2px!important;
-	font-size: 11px;
-	font-family: 'Lucida Grande',sans-serif;
-	height: 13px;
-	border-radius: 0;
-	webkit-border-radius: 0;
-	moz-border-radius: 0;
-	margin-bottom: 0;
-	margin-top: 1px;
-}
+body.pubedition #ucfhb { display: none; }
 
-select#UCFHBHeaderLinks {
-	height: 18px;
-	font-size: 11px;
-	color: #000000;
-	font-family: 'Lucida Grande', sans-serif;
-	border-radius: 0;
-	webkit-border-radius: 0;
-	moz-border-radius: 0;
-	margin-bottom: 0;
-	margin-top: 1px;
-	padding: 0;
-}
-
-body.pubedition #UCFHBHeader { display:none; }
 
 /* Universal Theme Styles */
 
@@ -321,51 +295,91 @@ ul.alphabetical_pubs li p {
 	}
 
 
+/*
+ * .embed-responsive class from Bootstrap 3
+ * Credit: Nicolas Gallagher and SUIT CSS.
+ */
+
+.embed-responsive {
+  position: relative;
+  display: block;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.embed-responsive .embed-responsive-item,
+.embed-responsive iframe,
+.embed-responsive embed,
+.embed-responsive object,
+.embed-responsive video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  border: 0;
+}
+
+.embed-responsive-16by9 {
+  padding-bottom: 56.25%;
+}
+
+.embed-responsive-4by3 {
+  padding-bottom: 75%;
+}
+
+
 
 /* Single Publication, Pubeditions styles */
 
-body.pubedition, body.pubedition .container, body.publication, body.publication .container, .publication_wrap {
+body.pubedition,
+body.pubedition .container,
+body.publication,
+body.publication .container {
 	width: 100%;
 	height: 100%;
 }
-.pubedition #header, .pubedition #pubsort, .pubedition #footer, .publication #header, .publication #pubsort, .publication #footer {
+
+.pubedition #header,
+.pubedition #pubsort,
+.pubedition #footer,
+.publication #header,
+.publication #pubsort,
+.publication #footer {
 	display: none;
 }
 
-.publication_wrap p, .publication_wrap>div>div {
-	display: none;
-}
-.publication_wrap>div, .publication_wrap>div>object, .publication_wrap>div>object>embed {
-	width: 100% !important;
-	height: 100% !important;
-}
-.alert {
-	margin-bottom: 0;
-	text-align: center;
+.publication .alert,
+.pubedition .alert {
+  margin-bottom: 0;
+  text-align: center;
 }
 
-#device_fallback_row {
-	display: visible !important;
+// Override .embed-responsive to use 100vh padding-bottom if supported
+.publication .embed-responsive,
+.pubedition .embed-responsive,
+.publication .alert.fade + .embed-responsive,
+.pubedition .alert.fade + .embed-responsive {
+  padding-bottom: 100vh;
 }
-#device_fallback_wrap {
-	margin-top: 10px;
-	text-align: center;
+
+.publication .alert + .embed-responsive,
+.pubedition .alert + .embed-responsive {
+  padding-bottom: calc(100vh - 50px); // give some space for .alert
 }
-#device_fallback_wrap p {
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+
+.issuuembed {
+  height: 100% !important;
+  width: 100% !important;
 }
-#device_fallback_wrap .btn-large, #device_fallback_wrap h1 {
-	font-size: 20px;
-	margin: 20px 0 10px 0;
-	line-height: 24px;
+
+.issuuembed > div > div + div,
+.issuuembed > div + div {
+  display: none !important;
 }
-	#device_fallback_wrap .btn-large {
-		padding: 10px 20px;
-	}
-	#device_fallback_wrap img {
-		max-width: 100px;
-		text-align: center;
-	}
+
 
 /* Categories page styles */
 
