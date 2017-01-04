@@ -16,7 +16,7 @@ else {
 		<script type="text/javascript">
 			var _sf_startpt = (new Date()).getTime();
 			<?php if(GA_ACCOUNT):?>
-			
+
 			var GA_ACCOUNT = '<?=GA_ACCOUNT?>';
 			var _gaq = _gaq || [];
 			_gaq.push(['_setAccount', GA_ACCOUNT]);
@@ -25,36 +25,46 @@ else {
 			_gaq.push(['_trackPageview']);
 			<?php endif;?>
 			<?php if(CB_UID):?>
-	
+
 			var CB_UID = '<?=CB_UID?>';
 			var CB_DOMAIN = '<?=CB_DOMAIN?>';
 			<?php endif?>
 		</script>
-		<?php endif;?>		
+		<?php endif;?>
 	</head>
-	
+
 	<body class="<?=get_post_type($post->ID)?>">
-	
-		<?php 
+
+		<?php
 		//Display message stating a newer issue is available, with link to new issue, if this is not the newest post under its taxonomy term
 		$terms	= wp_get_post_terms($post->ID, 'publications');
 		foreach ($terms as $term) {
-			$termid   = $term->term_id; 
-			$termlink = get_term_link( $term->name, 'publications' );
+			$termid   = $term->term_id;
+			$termlink = get_term_link( $term, 'publications' );
 		}
-		$latestEdition = get_posts(array('post_type' => 'pubedition', 'taxonomy' => 'publications', 'term' => $terms[0]->name, 'post_status' => 'publish', 'numberposts' => 1));
-		$latestEdition = $latestEdition[0];
-		if ($post->ID !== $latestEdition->ID) {
+		$latest_edition = get_posts( array(
+			'post_type' => 'pubedition',
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'publications',
+					'terms' => $terms[0],
+				)
+			),
+			'post_status' => 'publish',
+			'numberposts' => 1
+		) );
+		$latest_edition = $latest_edition[0];
+		if ($post->ID !== $latest_edition->ID) {
 			print '<div class="alert in fade">
 						<a class="close" data-dismiss="alert" href="#">×</a>
 						<strong>Note: </strong> A newer version of this publication is available!  <a class="btn btn-small" href="'.$termlink.'" style="margin-left: 6px;">View Updated Publication</a>
 					</div>';
 		}
-		
+
 		?>
 
 	<?php embed_issuu($post->ID); ?>
-	
+
 	</body>
 	<?="\n".footer_()."\n"?>
 </html>
