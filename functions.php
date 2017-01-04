@@ -718,8 +718,9 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 					$publication_link = get_term_link($publication_term_name, 'publications');
 					$publink = $pubedition_link;
 				}
-				$pubdate 		  = date('M j, Y', strtotime($post->post_date));
-				$issuulink 		  = get_post_meta($post->ID, 'pubedition_embed', TRUE);
+				$pubdate          = date('M j, Y', strtotime($post->post_date));
+				$issuu_link       = get_post_meta( $post->ID, 'pubedition_issuu_url', true );
+				$issuu_embed_code = wp_oembed_get( $issuu_link );
 
 			?>
 
@@ -770,9 +771,13 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 										<p><strong>Instructions:</strong></p>
 										<p>Copy/paste the code below wherever you want the publication* to display on your site.</p>
 										<div class="well">
-										<?php if ($docID) { ?>
-											<textarea name="pubembed" class="pubembed"><div><object style="width:420px;height:273px"><param name="movie" value="//static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf?mode=mini&amp;backgroundColor=%23222222&amp;documentId=<?=$docID?>" /><param name="allowfullscreen" value="true"/><param name="menu" value="false"/><param name="wmode" value="transparent"/><embed src="//static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf" type="application/x-shockwave-flash" allowfullscreen="true" menu="false" wmode="transparent" style="width:420px;height:273px" flashvars="mode=mini&amp;backgroundColor=%23222222&amp;documentId=<?=$docID?>" /></object></div></textarea>
-										<?php } else { ?>Embed code not available.<?php } ?>
+										<?php if ( $issuu_embed_code ): ?>
+											<textarea name="pubembed" class="pubembed">
+												<?php echo $issuu_embed_code; ?>
+											</textarea>
+										<?php else: ?>
+											Embed code not available.
+										<?php endif; ?>
 										</div>
 										<p><small>*If a new edition of this publication is released, you'll need to update your embed code to display the latest version.</small></p>
 									</div>
