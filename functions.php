@@ -528,16 +528,19 @@ function get_pubs($catid=null, $pubid=null, $sort='latest') {
 	$args = array('post_type' => 'pubedition', 'numberposts' => -1);
 	// By publication id args
 	if ($pubid !== null) {
-		$pub = get_term_by('id', $pubid, 'publications');
-		$args = array_merge($args, array(
-			'taxonomy' => 'publications',
-			'term'     => $pub->name,
-		));
+		$args = array_merge( $args, array(
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'publications',
+					'terms'    => $pubid,
+				)
+			)
+		) );
 	}
 	// By category id args
 	elseif ($catid !== null) {
 		$args = array_merge($args, array(
-			'cat' => $catid,
+			'category' => $catid,
 		));
 	}
 	// Sorting args
@@ -657,7 +660,7 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 						$publication = get_term_by('slug', $publication, 'publications');
 						$publication_name = $publication->name;
 						$pubdate 		  = date('M j, Y', strtotime($post->post_date));
-						$publink 		  = get_term_link($publication_name, 'publications');
+						$publink 		  = get_term_link($publication, 'publications');
 
 						$firstletter = strtoupper(substr($publication_name, 0, 1));
 						if ($firstletter != $currentletter) { ?>
@@ -704,20 +707,21 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 					}
 					$catlist = substr($catlist, 0, -2); //remove last stray comma and space
 				}
-				$publication = $post->publication;
-				$publication = get_term_by('slug', $publication, 'publications');
+
+				$publication = get_term_by('slug', $post->publication, 'publications');
 				$pubedition_link  = get_permalink($post->ID);
+
 				if ($reference_pubeditions == false) {
 					$publication_name = $publication->name;
-					$publication_link = get_term_link($publication_name, 'publications');
+					$publication_link = get_term_link($publication, 'publications');
 					$publink = $publication_link;
 				}
 				else {
 					$publication_name = $post->post_title;
-					$publication_term_name = $publication->name;
-					$publication_link = get_term_link($publication_term_name, 'publications');
+					$publication_link = get_term_link($publication, 'publications');
 					$publink = $pubedition_link;
 				}
+
 				$pubdate          = date('M j, Y', strtotime($post->post_date));
 				$issuu_link       = get_post_meta( $post->ID, 'pubedition_issuu_url', true );
 				$issuu_embed_code = wp_oembed_get( $issuu_link );
@@ -772,9 +776,7 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 										<p>Copy/paste the code below wherever you want the publication* to display on your site.</p>
 										<div class="well">
 										<?php if ( $issuu_embed_code ): ?>
-											<textarea name="pubembed" class="pubembed">
-												<?php echo $issuu_embed_code; ?>
-											</textarea>
+											<textarea name="pubembed" class="pubembed"><?php echo $issuu_embed_code; ?></textarea>
 										<?php else: ?>
 											Embed code not available.
 										<?php endif; ?>
