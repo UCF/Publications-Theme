@@ -724,7 +724,12 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 
 				$pubdate          = date('M j, Y', strtotime($post->post_date));
 				$issuu_link       = get_post_meta( $post->ID, 'pubedition_issuu_url', true );
-				$issuu_embed_code = wp_oembed_get( $issuu_link );
+				// Using wp_oembed_get( $issuu_link ) here would be ideal, except that
+				// wordpress doesn't cache the results, making the page load really slow with
+				// each external request.
+				// To avoid cache headaches, just insert the markup manually for the embed
+				// code buttons.
+				$issuu_embed_code = '<div data-url="'. $issuu_link.' " style="width: 500px; height: 325px;" class="issuuembed"></div><script type="text/javascript" src="//e.issuu.com/embed.js" async="true"></script>';
 
 			?>
 
