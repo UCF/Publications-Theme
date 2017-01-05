@@ -723,7 +723,7 @@ function display_pubs($pubs, $reference_pubeditions=false, $styling='default') {
 				}
 
 				$pubdate          = date('M j, Y', strtotime($post->post_date));
-				$issuu_link       = get_post_meta( $post->ID, 'pubedition_issuu_url', true );
+				$issuu_link       = get_pubedition_issuu_url( $post->ID );
 				// Using wp_oembed_get( $issuu_link ) here would be ideal, except that
 				// wordpress doesn't cache the results, making the page load really slow with
 				// each external request.
