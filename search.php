@@ -8,13 +8,13 @@
 ?>
 <?php get_header();?>
 	<div class="page-content row" id="search-results">
-		
+
 		<div class="results span12">
 			<h2>Search results for "<?=htmlentities($_GET['s'])?>"</h2>
 			<?php get_search_form()?>
-			
+
 			<?php if(count($results['items'])):?>
-			
+
 			<ul class="result-list">
 				<?php foreach($results['items'] as $result):?>
 				<li class="item">
@@ -34,36 +34,36 @@
 				</li>
 				<?php endforeach;?>
 			</ul>
-			
+
 			<?php if($start + $limit < $results['number']):?>
 			<a class="button more" href="./?s=<?=$_GET['s']?>&amp;start=<?=$start + $limit?>">More Results</a>
 			<?php endif;?>
-			
+
 			<?php else:?>
-				
+
 			<p>No results found for "<?=htmlentities($_GET['s'])?>".</p>
-			
+
 			<?php endif;?>
 		</div>
-		
+
 	</div>
 <?php get_footer();?>
 <?php else:?>
 	<?php get_header();?>
 	<div class="page-content row" id="search-results">
-		
+
 		<div class="results span12">
 			<h2>Search results for "<?=htmlentities($_GET['s'])?>"</h2>
 			<?php get_search_form()?>
-			
+
 			<?php if(have_posts()):?>
 			<ul class="result-list">
     			<?php while(have_posts()): the_post();?>
     			<li class="item">
 					<?php
-					$pubs 	 = get_the_terms($post->ID, 'publications'); 
+					$pubs 	 = get_the_terms($post->ID, 'publications');
 					foreach ($pubs as $pub) {
-						$publink = get_term_link($pub->slug, 'publications');
+						$publink = get_term_link($pub, 'publications');
 						$pubname = $pub->name;
 					}
 					?>
@@ -71,12 +71,12 @@
 					<p><strong>Published:</strong> <?php print get_the_date('M d, Y'); ?></p>
 					<p><strong>An edition of:</strong> <a target="_blank" href="<?=$publink?>"><?=$pubname?></a></p>
 					<p><strong>Found in:</strong> <?php the_category(', '); ?></p>
-    				
+
     			</li>
 			    <?php endwhile;?>
 			</ul>
 			<?php else:?>
-				
+
 			<p>No results found for "<?=htmlentities($_GET['s'])?>".</p>
 			<?php endif;?>
 		</div>
