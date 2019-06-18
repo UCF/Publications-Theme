@@ -306,7 +306,7 @@ function trim_pub_title($input) {
  * Field appendix:      http://developers.issuu.com/api/search/appendix.html
  **/
 function get_issuu_search_results( $query ) {
-	$api_url = 'http://search.issuu.com/api/2_0/document?q=' . $query;
+	$api_url = 'https://search.issuu.com/api/2_0/document?q=' . $query;
 	$opts = array(
 		'http' => array(
 			'timeout' => 15
