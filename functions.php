@@ -308,12 +308,9 @@ function trim_pub_title($input) {
 function get_issuu_search_results( $query ) {
 	$api_url = 'http://search.issuu.com/api/2_0/document?q=' . $query;
 	$opts = array(
-		'http' => array(
-			'timeout' => 15
-		)
+		'timeout' => 15
 	);
-	$context = stream_context_create( $opts );
-	return json_decode( file_get_contents( $api_url, false, $context ) );
+	return json_decode( wp_remote_retrieve_body( wp_remote_get( $api_url, $opts ) ) );
 }
 
 

@@ -426,10 +426,10 @@ function get_image_choices(){
 	);
 
 	$attachments = get_posts($args);
-	$attachments = array_filter($attachments, create_function('$a', '
+	$attachments = array_filter($attachments, function( $a ) {
 		$is_image = (strpos($a->post_mime_type, "image/") !== False);
 		return $is_image;
-	'));
+	});
 	foreach($attachments as $image){
 		$filename = basename(get_attached_file($image->ID));
 		$value    = $image->ID;
@@ -580,9 +580,9 @@ function shortcodes(){
 
 	# Auto generated shortcode documentation.
 	$codes = array();
-	$auto  = array_filter(installed_custom_post_types(), create_function('$c', '
+	$auto  = array_filter(installed_custom_post_types(), function( $c ) {
 		return $c->options("use_shortcode");
-	'));
+	});
 	foreach($auto as $code){
 		$scode  = $code->options('name').'-list';
 		$plural = $code->options('plural_name');
@@ -906,8 +906,8 @@ class FeedManager{
 		$content   = get_site_transient($cache_key);
 
 		if ($content === False){
-			$content = @file_get_contents($url);
-			if ($content === False){
+			$content = wp_remote_retrieve_body( wp_remote_get( $url ) );
+			if ( ! $content ){
 				$failed  = True;
 				$content = null;
 				error_log('FeedManager failed to fetch data using url of '.$url);
@@ -1191,7 +1191,7 @@ function get_search_results(
 	if (strlen($query) > 0){
 		$query_string = http_build_query($arguments);
 		$url          = $search_url.'?'.$query_string;
-		$response     = file_get_contents($url);
+		$response     = wp_remote_retrieve_body( wp_remote_get( $url ) );
 
 		if ($response){
 			$xml   = simplexml_load_string($response);
@@ -1675,9 +1675,9 @@ function disallow_direct_load($page){
 function installed_custom_post_types(){
 	$installed = Config::$custom_post_types;
 
-	return array_map(create_function('$class', '
+	return array_map(function( $class ) {
 		return new $class;
-	'), $installed);
+	}, $installed);
 }
 
 /**
@@ -1687,9 +1687,9 @@ function installed_custom_post_types(){
 function installed_custom_taxonomies(){
 	$installed = Config::$custom_taxonomies;
 
-	return array_map(create_function('$class', '
+	return array_map(function( $class ) {
 		return new $class;
-	'), $installed);
+	}, $installed);
 }
 
 function flush_rewrite_rules_if_necessary(){
